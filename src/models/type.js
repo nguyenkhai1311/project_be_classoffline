@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
+            Type.hasOne(models.User);
         }
     }
     Type.init(
@@ -18,7 +19,9 @@ module.exports = (sequelize, DataTypes) => {
                 primaryKey: true,
                 autoIncrement: true,
             },
-            name: DataTypes.STRING,
+            name: DataTypes.STRING(100),
+            createdAt: DataTypes.DATE,
+            updatedAt: DataTypes.DATE,
         },
         {
             sequelize,

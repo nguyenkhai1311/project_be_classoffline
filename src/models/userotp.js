@@ -19,10 +19,11 @@ module.exports = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
-            otp: DataTypes.STRING(10),
-            userId: {
-                type: DataTypes.INTEGER,
+            otp: {
+                type: DataTypes.STRING(10),
+                unique: true,
             },
+            userId: DataTypes.INTEGER,
             expires: DataTypes.DATE,
             createdAt: DataTypes.DATE,
             updatedAt: DataTypes.DATE,
