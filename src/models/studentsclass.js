@@ -21,9 +21,18 @@ module.exports = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
-            studentId: DataTypes.INTEGER,
-            classId: DataTypes.INTEGER,
-            statusId: DataTypes.INTEGER,
+            studentId: {
+                type: DataTypes.INTEGER,
+                references: "Users",
+            },
+            statusId: {
+                type: DataTypes.INTEGER,
+                references: "LearningStatuses",
+            },
+            classId: {
+                type: DataTypes.INTEGER,
+                references: "Classes",
+            },
             completeDate: DataTypes.DATE,
             dropDate: DataTypes.DATE,
             recover: DataTypes.DATE,

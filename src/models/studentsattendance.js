@@ -22,9 +22,18 @@ module.exports = (sequelize, DataTypes) => {
                 primaryKey: true,
             },
             dateLearn: DataTypes.DATE,
-            studentId: DataTypes.INTEGER,
-            statusId: DataTypes.INTEGER,
-            classId: DataTypes.INTEGER,
+            studentId: {
+                type: DataTypes.INTEGER,
+                references: "Users",
+            },
+            statusId: {
+                type: DataTypes.INTEGER,
+                references: "LearningStatuses",
+            },
+            classId: {
+                type: DataTypes.INTEGER,
+                references: "Classes",
+            },
             status: DataTypes.INTEGER(1),
             createdAt: DataTypes.DATE,
             updatedAt: DataTypes.DATE,

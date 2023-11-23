@@ -19,7 +19,10 @@ module.exports = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
-            userId: DataTypes.INTEGER,
+            userId: {
+                type: DataTypes.INTEGER,
+                references: "Users",
+            },
             featureName: DataTypes.STRING(100),
             status: DataTypes.TINYINT(1),
             position: DataTypes.INTEGER,

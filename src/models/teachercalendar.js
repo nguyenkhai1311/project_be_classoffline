@@ -20,8 +20,14 @@ module.exports = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
-            teacherId: DataTypes.INTEGER,
-            classId: DataTypes.INTEGER,
+            teacherId: {
+                type: DataTypes.INTEGER,
+                references: "Users",
+            },
+            classId: {
+                type: DataTypes.INTEGER,
+                references: "Classes",
+            },
             scheduleDate: DataTypes.DATE,
             createdAt: DataTypes.DATE,
             updatedAt: DataTypes.DATE,

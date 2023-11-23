@@ -20,7 +20,10 @@ module.exports = (sequelize, DataTypes) => {
                 primaryKey: true,
             },
             token: DataTypes.STRING(100),
-            userId: DataTypes.INTEGER,
+            userId: {
+                type: DataTypes.INTEGER,
+                references: "Users",
+            },
             createdAt: DataTypes.DATE,
             updatedAt: DataTypes.DATE,
         },

@@ -43,7 +43,10 @@ module.exports = (sequelize, DataTypes) => {
             password: DataTypes.STRING(100),
             phone: DataTypes.STRING(15),
             address: DataTypes.STRING(200),
-            typeId: DataTypes.INTEGER,
+            typeId: {
+                type: DataTypes.INTEGER,
+                references: "Types",
+            },
             firstLogin: {
                 type: DataTypes.TINYINT(1),
                 defaultValue: 0,
