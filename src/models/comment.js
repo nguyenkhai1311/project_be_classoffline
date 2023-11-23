@@ -20,7 +20,10 @@ module.exports = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
-            classId: DataTypes.INTEGER,
+            classId: {
+                type: DataTypes.INTEGER,
+                references: "Classes",
+            },
             title: DataTypes.STRING(200),
             content: DataTypes.TEXT,
             parentId: DataTypes.INTEGER,

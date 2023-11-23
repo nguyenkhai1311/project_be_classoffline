@@ -37,7 +37,10 @@ module.exports = (sequelize, DataTypes) => {
             endDate: DataTypes.DATE,
             schedule: DataTypes.INTEGER(1),
             timeLearn: DataTypes.STRING(50),
-            courseId: DataTypes.INTEGER,
+            courseId: {
+                type: DataTypes.INTEGER,
+                references: "Courses",
+            },
             createdAt: DataTypes.DATE,
             updatedAt: DataTypes.DATE,
         },

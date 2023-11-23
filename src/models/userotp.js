@@ -23,7 +23,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(10),
                 unique: true,
             },
-            userId: DataTypes.INTEGER,
+            userId: {
+                type: DataTypes.INTEGER,
+                references: "Users",
+            },
             expires: DataTypes.DATE,
             createdAt: DataTypes.DATE,
             updatedAt: DataTypes.DATE,
