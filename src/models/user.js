@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
             // define association here
             User.belongsTo(models.Type);
             User.hasOne(models.UserOtp);
-            User.hasOne(models.UserColumn);
+            User.hasMany(models.UserColumn);
             User.hasOne(models.LoginToken);
             User.hasMany(models.UserSocial);
             User.belongsToMany(models.Role, { through: "User_Role" });
