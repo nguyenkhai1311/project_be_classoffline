@@ -20,10 +20,7 @@ module.exports = (sequelize, DataTypes) => {
                 primaryKey: true,
             },
             pathName: DataTypes.STRING(200),
-            moduleId: {
-                type: DataTypes.INTEGER,
-                references: "CourseModules",
-            },
+            moduleId: DataTypes.INTEGER,
             createdAt: DataTypes.DATE,
             updatedAt: DataTypes.DATE,
         },

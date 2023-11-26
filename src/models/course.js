@@ -26,10 +26,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 defaultValue: 0,
             },
-            teacherId: {
-                type: DataTypes.INTEGER,
-                references: "Users",
-            },
+            teacherId: DataTypes.INTEGER,
             tryLearn: {
                 type: DataTypes.INTEGER(1),
                 defaultValue: 0,
