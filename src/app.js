@@ -10,6 +10,7 @@ const expressLayouts = require("express-ejs-layouts");
 const studentsRouter = require("./routes/students/index");
 const teachersRouter = require("./routes/teacher/index");
 const adminRouter = require("./routes/admin/index");
+const authRouter = require("./routes/auth/index");
 
 var app = express();
 
@@ -18,6 +19,7 @@ app.set("views", path.join(__dirname, "./resources/views"));
 app.set("view engine", "ejs");
 
 app.use(expressLayouts);
+app.set("layout", "layouts/master.layout.ejs"); // set layout default
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -26,6 +28,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
 
 // Routes
+app.use("/auth", authRouter);
 app.use("/", studentsRouter);
 app.use("/teacher", teachersRouter);
 app.use("/admin", adminRouter);

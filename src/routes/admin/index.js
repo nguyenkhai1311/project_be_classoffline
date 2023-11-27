@@ -1,8 +1,8 @@
 var express = require("express");
 var routes = express.Router();
 
-routes.get("/", (req, res) => {
-    res.send("admin");
-});
+const DashboardController = require("../../http/controllers/admin/DashboardController");
+
+routes.get("/", DashboardController.index);
 
 module.exports = routes;
