@@ -1,13 +1,22 @@
 module.exports = {
     login: (req, res) => {
+        const message = req.flash("error");
+        console.log(message);
         res.render("auth/login", {
             layout: "layouts/auth.layout.ejs",
+            message,
         });
     },
 
     handleLogin: (req, res) => {
-        const { email, password } = req.body;
-        console.log(email, password);
-        res.send("Đăng nhập");
+        res.redirect("/");
+    },
+
+    loginFacebook: (req, res) => {
+        res.redirect("/");
+    },
+
+    loginGoogle: (req, res) => {
+        res.redirect("/");
     },
 };

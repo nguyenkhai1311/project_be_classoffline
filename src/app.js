@@ -6,13 +6,49 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const expressLayouts = require("express-ejs-layouts");
+const session = require("express-session");
+const flash = require("connect-flash");
+const passport = require("passport");
 
+// Khai báo Router
 const studentsRouter = require("./routes/students/index");
 const teachersRouter = require("./routes/teacher/index");
 const adminRouter = require("./routes/admin/index");
 const authRouter = require("./routes/auth/index");
 
+// Model
+const model = require("./models/index");
+
+// Khai báo Passport
+const localPassport = require("./passport/localPassport");
+const facebookPassport = require("./passport/facebookPassport");
+const googlePassport = require("./passport/googlePassport");
+
 var app = express();
+app.use(
+    session({
+        secret: "f8",
+        resave: false,
+        saveUninitialized: true,
+    })
+);
+app.use(flash());
+
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(async function (id, done) {
+    const user = await model.User.findByPk(id);
+    done(null, user);
+});
+
+passport.use("local", localPassport);
+passport.use("facebook", facebookPassport);
+passport.use("google", googlePassport);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // view engine setup
 app.set("views", path.join(__dirname, "./resources/views"));
