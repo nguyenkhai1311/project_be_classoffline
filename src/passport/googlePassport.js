@@ -1,8 +1,8 @@
 // Xử lý đăng nhập thông qua mạng xã hội
 const GoogleStrategy = require("passport-google-oidc");
 const model = require("../models/index");
-const Provider = model.Provider;
-const User = model.User;
+const UserSocial = model.UserSocial;
+console.log(1234);
 
 module.exports = new GoogleStrategy(
     {
@@ -13,6 +13,21 @@ module.exports = new GoogleStrategy(
         prompt: "select_account",
     },
     async (issuer, profile, done) => {
-        console.log(profile);
+        const { id } = profile;
+        const provider = "google";
+        let providerDetail = await UserSocial.findOne({
+            where: {
+                provider: provider,
+            },
+        });
+
+        if (!providerDetail) {
+            providerDetail = await UserSocial.create({
+                provider: provider,
+                providerId: id,
+            });
+        }
+
+        return done(null, providerDetail);
     }
 );
