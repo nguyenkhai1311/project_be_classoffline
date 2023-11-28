@@ -1,4 +1,6 @@
 const FacebookStrategy = require("passport-facebook").Strategy;
+const model = require("../models/index");
+const UserSocial = model.UserSocial;
 
 module.exports = new FacebookStrategy(
     {
@@ -8,9 +10,24 @@ module.exports = new FacebookStrategy(
         scope: ["email"],
         profileFields: ["id", "displayName", "email"],
     },
-    (accessToken, refreshToken, profile, done) => {
-        console.log(1234);
-        console.log(profile);
-        done(null, user);
+    async (accessToken, refreshToken, profile, done) => {
+        const { id } = profile;
+
+        const provider = "facebook";
+        let providerDetail = await UserSocial.findOne({
+            where: {
+                provider: provider,
+                providerId: id,
+            },
+        });
+
+        if (!providerDetail) {
+            providerDetail = await UserSocial.create({
+                provider: provider,
+                providerId: id,
+            });
+        }
+
+        return done(null, providerDetail);
     }
 );

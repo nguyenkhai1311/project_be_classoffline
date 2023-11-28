@@ -23,6 +23,8 @@ const model = require("./models/index");
 const localPassport = require("./passport/localPassport");
 const facebookPassport = require("./passport/facebookPassport");
 const googlePassport = require("./passport/googlePassport");
+const GuestMiddleware = require("./http/middlewares/GuestMiddleware");
+const AuthMiddleware = require("./http/middlewares/AuthMiddleware");
 
 var app = express();
 app.use(
@@ -65,6 +67,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 // Routes
 app.use("/auth", authRouter);
+app.use(AuthMiddleware);
 app.use("/", studentsRouter);
 app.use("/teacher", teachersRouter);
 app.use("/admin", adminRouter);
