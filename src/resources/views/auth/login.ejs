@@ -1,4 +1,8 @@
 <div class="card-body login-card-body">
+    <% if(message) {%>
+            <%= message %>
+    <% } %>
+
     <form action="" method="post">
         <div class="input-group mb-3">
             <input
@@ -11,8 +15,10 @@
                 <div class="input-group-text">
                     <span class="fas fa-envelope"></span>
                 </div>
-            </div>
+            </div>  
+            
         </div>
+
         <div class="input-group mb-3">
             <input
                 name="password"
@@ -27,14 +33,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-7">
-                <div class="icheck-primary">
-                    <input type="checkbox" id="remember" />
-                    <label for="remember"> Remember Me </label>
-                </div>
-            </div>
-            <!-- /.col -->
-            <div class="col-5">
+            <div class="col">
                 <button
                     type="submit"
                     class="btn btn-primary btn-block"
@@ -42,20 +41,21 @@
                     Đăng nhập
                 </button>
             </div>
-            <!-- /.col -->
         </div>
     </form>
 
     <div class="social-auth-links text-center mb-3">
         <p>- OR -</p>
-        <a href="#" class="btn btn-block btn-primary">
-            <i class="fab fa-facebook mr-2"></i> Sign in using
-            Facebook
+        <a href="/auth/facebook/redirect" class="btn btn-block btn-primary">
+            <i class="fab fa-facebook mr-2"></i> Đăng nhập với Facebook
         </a>
-        <a href="#" class="btn btn-block btn-danger">
-            <i class="fab fa-google-plus mr-2"></i> Sign in
-            using Google+
+        <a href="/auth/google/redirect" class="btn btn-block btn-danger">
+            <i class="fab fa-google-plus mr-2"></i> Đăng nhập với Google+
         </a>
+        <a href="#" class="btn btn-block btn-success">
+            <i class="fab fa-github"></i> Đăng nhập với Github
+        </a>
+        
     </div>
     <!-- /.social-auth-links -->
 
