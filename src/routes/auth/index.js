@@ -26,6 +26,12 @@ router.post("/verification", AuthController.handleVerification);
 
 router.post("/logout", AuthController.logout);
 
+router.get("/forgot-password", AuthController.forgotPassword);
+router.post("/forgot-password", AuthController.handleForgotPassword);
+
+router.get("/reset", AuthController.reset);
+router.post("/reset", AuthController.handleReset);
+
 router.use("/", facebookRouter);
 router.use("/", googleRouter);
 router.use("/", githubRouter);

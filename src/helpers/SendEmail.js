@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-module.exports = async (email, otp) => {
+module.exports = async (email, html) => {
     const transporter = nodemailer.createTransport({
         host: process.env.MAIL_HOST,
         port: process.env.MAIL_PORT,
@@ -15,6 +15,6 @@ module.exports = async (email, otp) => {
         from: process.env.MAIL_USERNAME,
         to: email,
         subject: "Xác minh tài khoản",
-        html: "<b>Mã xác minh để đăng nhập:</b>" + otp,
+        html: html,
     });
 };
