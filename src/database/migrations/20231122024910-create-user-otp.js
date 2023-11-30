@@ -20,6 +20,9 @@ module.exports = {
                     key: "id",
                 },
             },
+            expires: {
+                type: Sequelize.DATE,
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,

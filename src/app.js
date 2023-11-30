@@ -23,7 +23,8 @@ const model = require("./models/index");
 const localPassport = require("./passport/localPassport");
 const facebookPassport = require("./passport/facebookPassport");
 const googlePassport = require("./passport/googlePassport");
-const GuestMiddleware = require("./http/middlewares/GuestMiddleware");
+const githubPassport = require("./passport/githubPassport");
+
 const AuthMiddleware = require("./http/middlewares/AuthMiddleware");
 
 var app = express();
@@ -48,6 +49,7 @@ passport.deserializeUser(async function (id, done) {
 passport.use("local", localPassport);
 passport.use("facebook", facebookPassport);
 passport.use("google", googlePassport);
+passport.use("github", githubPassport);
 
 app.use(passport.initialize());
 app.use(passport.session());

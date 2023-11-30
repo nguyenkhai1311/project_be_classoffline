@@ -17,7 +17,9 @@
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <a class="dropdown-item" href="">Tài khoản</a>
                 <a class="dropdown-item" href="">Đổi mật khẩu</a>
-                <a class="dropdown-item text-danger" href="">Đăng xuất</a>
+                <form action="/auth/logout" method="post">
+                    <button class="dropdown-item text-danger">Đăng xuất</button>
+                </form>
             </div>
         </li>
         <!-- Messages Dropdown Menu -->

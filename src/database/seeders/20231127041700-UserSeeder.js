@@ -18,6 +18,16 @@ module.exports = {
                     createdAt: new Date(),
                     updatedAt: new Date(),
                 },
+                {
+                    name: "Nguyễn Khải",
+                    email: "nguyenhuukhai1303@gmail.com",
+                    password: bcrypt.hashSync("123456", saltRounds),
+                    phone: "012354631",
+                    address: "Hà Nội",
+                    typeId: 1,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
             ],
             {}
         );
