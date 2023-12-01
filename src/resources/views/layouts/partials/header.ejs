@@ -9,17 +9,8 @@
     </ul>
 
     <!-- Right navbar links -->
+
     <ul class="navbar-nav ml-auto">
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
-                <strong>Nguyễn Khải</strong>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <a class="dropdown-item" href="">Tài khoản</a>
-                <a class="dropdown-item" href="">Đổi mật khẩu</a>
-                <a class="dropdown-item text-danger" href="">Đăng xuất</a>
-            </div>
-        </li>
         <!-- Messages Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
@@ -139,6 +130,24 @@
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
             </a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+                <img
+                    src="/assets/img/user2-160x160.jpg"
+                    class="img-circle elevation-2"
+                    alt="User Image"
+                    width="30"
+                />
+                <strong>Nguyễn Khải</strong>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                <a class="dropdown-item" href="/admin/profile">Tài khoản</a>
+                <a class="dropdown-item" href="">Đổi mật khẩu</a>
+                <form action="/auth/logout" method="post">
+                    <button class="dropdown-item text-danger">Đăng xuất</button>
+                </form>
+            </div>
         </li>
     </ul>
 </nav>

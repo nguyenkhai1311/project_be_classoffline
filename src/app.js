@@ -23,6 +23,10 @@ const model = require("./models/index");
 const localPassport = require("./passport/localPassport");
 const facebookPassport = require("./passport/facebookPassport");
 const googlePassport = require("./passport/googlePassport");
+const githubPassport = require("./passport/githubPassport");
+
+const AuthMiddleware = require("./http/middlewares/AuthMiddleware");
+const DeviceMiddleware = require("./http/middlewares/DeviceMiddleware");
 
 var app = express();
 app.use(
@@ -46,6 +50,7 @@ passport.deserializeUser(async function (id, done) {
 passport.use("local", localPassport);
 passport.use("facebook", facebookPassport);
 passport.use("google", googlePassport);
+passport.use("github", githubPassport);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -65,7 +70,10 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 // Routes
 app.use("/auth", authRouter);
+app.use(AuthMiddleware);
+app.use(DeviceMiddleware);
 app.use("/", studentsRouter);
+
 app.use("/teacher", teachersRouter);
 app.use("/admin", adminRouter);
 

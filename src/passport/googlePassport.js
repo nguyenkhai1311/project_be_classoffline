@@ -1,8 +1,6 @@
-// Xử lý đăng nhập thông qua mạng xã hội
 const GoogleStrategy = require("passport-google-oidc");
 const model = require("../models/index");
 const UserSocial = model.UserSocial;
-console.log(1234);
 
 module.exports = new GoogleStrategy(
     {
