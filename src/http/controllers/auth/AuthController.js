@@ -1,6 +1,9 @@
 const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const md5 = require("md5");
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const SendMail = require("../../../helpers/SendEmail");
 const FormatDate = require("../../../helpers/FormatDate");
@@ -8,6 +11,7 @@ const FormatDate = require("../../../helpers/FormatDate");
 const model = require("../../../models/index");
 const UserOtp = model.UserOtp;
 const User = model.User;
+const LoginToken = model.LoginToken;
 
 const saltRounds = 10;
 
@@ -23,7 +27,6 @@ module.exports = {
     handleLogin: async (req, res) => {
         const { email } = req.body;
         const { id } = req.user;
-
         req.flash("email", email);
         const userOtp = await UserOtp.findOne({
             where: {
@@ -73,9 +76,10 @@ module.exports = {
     handleVerification: async (req, res) => {
         const { numberOne, numberTwo, numberThree, numberFour, numberFive } =
             req.body;
+
         const { id } = req.user;
         const otp = `${numberOne}${numberTwo}${numberThree}${numberFour}${numberFive}`;
-        console.log(otp);
+
         const user = await UserOtp.findOne({
             where: {
                 [Op.and]: [{ otp: otp }, { userId: id }],
@@ -89,6 +93,28 @@ module.exports = {
                 res.redirect("/auth/verification");
                 return;
             }
+
+            const tokenUser = await LoginToken.findOne({
+                where: {
+                    userId: id,
+                },
+            });
+
+            if (tokenUser) {
+                await LoginToken.destroy({
+                    where: {
+                        userId: id,
+                    },
+                });
+            }
+
+            const token = md5(new Date() + Math.random());
+            await LoginToken.create({
+                token: token,
+                userId: id,
+            });
+            res.cookie("token", token, { maxAge: 900000, httpOnly: true });
+
             res.redirect("/");
             return;
         }
@@ -122,11 +148,10 @@ module.exports = {
                 exp: Math.floor(Date.now() / 1000) + 60 * 60,
                 data: user,
             },
-            "khai"
+            JWT_SECRET
         );
         const link = `http://localhost:3000/auth/reset?token=${token}`;
-        const html =
-            "<b>Vui lòng click vào link sau để lấy lại mật khẩu: </b>" + link;
+        const html = `<b>Vui lòng click vào đây để lấy lại mật khẩu <a href="${link}">tại đây</a></b>`;
         SendMail(email, html);
         res.redirect("/auth/login");
     },
@@ -145,7 +170,7 @@ module.exports = {
         const { password, repassword } = req.body;
         if (password === repassword) {
             try {
-                const decoded = jwt.verify(token[0], "khai");
+                const decoded = jwt.verify(token[0], JWT_SECRET);
                 await User.update(
                     { password: bcrypt.hashSync(password, saltRounds) },
                     {

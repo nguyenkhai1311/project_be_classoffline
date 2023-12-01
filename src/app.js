@@ -26,6 +26,7 @@ const googlePassport = require("./passport/googlePassport");
 const githubPassport = require("./passport/githubPassport");
 
 const AuthMiddleware = require("./http/middlewares/AuthMiddleware");
+const DeviceMiddleware = require("./http/middlewares/DeviceMiddleware");
 
 var app = express();
 app.use(
@@ -70,7 +71,9 @@ app.use(express.static(path.join(__dirname, "../public")));
 // Routes
 app.use("/auth", authRouter);
 app.use(AuthMiddleware);
+app.use(DeviceMiddleware);
 app.use("/", studentsRouter);
+
 app.use("/teacher", teachersRouter);
 app.use("/admin", adminRouter);
 
