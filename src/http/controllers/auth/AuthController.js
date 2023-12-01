@@ -23,12 +23,14 @@ module.exports = {
     handleLogin: async (req, res) => {
         const { email } = req.body;
         const { id } = req.user;
-        const user = UserOtp.findOne({
+
+        req.flash("email", email);
+        const userOtp = await UserOtp.findOne({
             where: {
                 userId: id,
             },
         });
-        if (user) {
+        if (userOtp) {
             await UserOtp.destroy({
                 where: {
                     userId: id,
@@ -61,15 +63,19 @@ module.exports = {
     },
 
     verification: (req, res) => {
+        const email = req.flash("email");
         res.render("auth/verification", {
             layout: "layouts/auth.layout.ejs",
+            email,
         });
     },
 
     handleVerification: async (req, res) => {
-        const { otp } = req.body;
+        const { numberOne, numberTwo, numberThree, numberFour, numberFive } =
+            req.body;
         const { id } = req.user;
-
+        const otp = `${numberOne}${numberTwo}${numberThree}${numberFour}${numberFive}`;
+        console.log(otp);
         const user = await UserOtp.findOne({
             where: {
                 [Op.and]: [{ otp: otp }, { userId: id }],
@@ -149,7 +155,6 @@ module.exports = {
                     }
                 );
             } catch (err) {
-                // err
                 console.log(err);
             }
             res.redirect("/auth/login");
