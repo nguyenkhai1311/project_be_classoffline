@@ -12,7 +12,6 @@ module.exports = new FacebookStrategy(
     },
     async (accessToken, refreshToken, profile, done) => {
         const { id } = profile;
-
         const provider = "facebook";
         let providerDetail = await UserSocial.findOne({
             where: {

@@ -152,5 +152,14 @@
         <!-- <script src="/assets/js/demo.js"></script> -->
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
         <script src="/assets/js/pages/dashboard.js"></script>
+        <!-- Bootstrap Switch -->
+        <script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
     </body>
+    <script>
+        $(function () {
+            $("input[data-bootstrap-switch]").each(function () {
+                $(this).bootstrapSwitch("state", $(this).prop("checked"));
+            });
+        });
+    </script>
 </html>
