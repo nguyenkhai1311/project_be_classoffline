@@ -21,12 +21,27 @@ module.exports = new FacebookStrategy(
         });
 
         if (!providerDetail) {
-            providerDetail = await UserSocial.create({
+            const userId = req.user.id;
+            const user = await UserSocial.create({
+                userId: userId,
                 provider: provider,
                 providerId: id,
             });
+            done(null, false, {
+                message:
+                    "Không tồn tại tài khoản nào liên kết với facebook này!",
+            });
+            return;
         }
 
-        return done(null, providerDetail);
+        if (!providerDetail?.userId) {
+            done(null, false, {
+                message:
+                    "Không tồn tại tài khoản nào liên kết với facebook này!",
+            });
+            return;
+        }
+
+        return done(null, user);
     }
 );

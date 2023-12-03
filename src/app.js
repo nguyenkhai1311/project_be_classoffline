@@ -15,6 +15,7 @@ const studentsRouter = require("./routes/students/index");
 const teachersRouter = require("./routes/teacher/index");
 const adminRouter = require("./routes/admin/index");
 const authRouter = require("./routes/auth/index");
+const connectRouter = require("./routes/connect/index");
 
 // Model
 const model = require("./models/index");
@@ -37,6 +38,13 @@ app.use(
     })
 );
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use("local", localPassport);
+passport.use("facebook", facebookPassport);
+passport.use("google", googlePassport);
+passport.use("github", githubPassport);
 
 passport.serializeUser(function (user, done) {
     done(null, user.id);
@@ -46,14 +54,6 @@ passport.deserializeUser(async function (id, done) {
     const user = await model.User.findByPk(id);
     done(null, user);
 });
-
-passport.use("local", localPassport);
-passport.use("facebook", facebookPassport);
-passport.use("google", googlePassport);
-passport.use("github", githubPassport);
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 // view engine setup
 app.set("views", path.join(__dirname, "./resources/views"));
@@ -73,9 +73,9 @@ app.use("/auth", authRouter);
 app.use(AuthMiddleware);
 app.use(DeviceMiddleware);
 app.use("/", studentsRouter);
-
 app.use("/teacher", teachersRouter);
 app.use("/admin", adminRouter);
+app.use("/connect", connectRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

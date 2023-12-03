@@ -27,6 +27,7 @@ module.exports = {
     handleLogin: async (req, res) => {
         const { email } = req.body;
         const { id } = req.user;
+
         req.flash("email", email);
         const userOtp = await UserOtp.findOne({
             where: {
@@ -67,6 +68,8 @@ module.exports = {
 
     verification: (req, res) => {
         const email = req.flash("email");
+        req.flash("id", req.user.id);
+
         res.render("auth/verification", {
             layout: "layouts/auth.layout.ejs",
             email,
@@ -76,8 +79,8 @@ module.exports = {
     handleVerification: async (req, res) => {
         const { numberOne, numberTwo, numberThree, numberFour, numberFive } =
             req.body;
-
-        const { id } = req.user;
+        const id = req.flash("id");
+        console.log("id" + id);
         const otp = `${numberOne}${numberTwo}${numberThree}${numberFour}${numberFive}`;
 
         const user = await UserOtp.findOne({
