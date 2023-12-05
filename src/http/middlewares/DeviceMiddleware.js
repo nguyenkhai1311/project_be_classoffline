@@ -3,7 +3,6 @@ const LoginToken = model.LoginToken;
 
 module.exports = async (req, res, next) => {
     const token = req.cookies.token;
-    console.log(token);
     if (token) {
         const tokenUser = await LoginToken.findOne({
             where: {

@@ -20,13 +20,39 @@
                             Chúng tôi vừa gửi một tin nhắn văn bản có một mã xác
                             minh tới email: <strong><%= email %></strong>
                         </p>
-
+                        <% if(message) {%>
+                        <div><%= message %></div>
+                        <% } %>
                         <div class="otp-field mb-4">
-                            <input type="number" name="numberOne" />
-                            <input type="number" name="numberTwo" disabled />
-                            <input type="number" name="numberThree" disabled />
-                            <input type="number" name="numberFour" disabled />
-                            <input type="number" name="numberFive" disabled />
+                            <input
+                                type="number"
+                                maxlength="1"
+                                name="numberOne"
+                            />
+                            <input
+                                type="number"
+                                maxlength="1"
+                                name="numberTwo"
+                                disabled
+                            />
+                            <input
+                                type="number"
+                                maxlength="1"
+                                name="numberThree"
+                                disabled
+                            />
+                            <input
+                                type="number"
+                                maxlength="1"
+                                name="numberFour"
+                                disabled
+                            />
+                            <input
+                                type="number"
+                                maxlength="1"
+                                name="numberFive"
+                                disabled
+                            />
                         </div>
 
                         <button class="btn btn-verify btn-primary mb-3">
@@ -35,7 +61,10 @@
                     </form>
 
                     <p class="resend text-muted mb-0">
-                        Không nhận được mã? <a href="">Gửi lại</a>
+                        Không nhận được mã?
+                        <form action="/auth/resetOtp" method="post">
+                            <button class="btn-reset-otp" style="font-size: 14px;">Gửi lại</button>
+                        </form>
                     </p>
                 </div>
             </div>

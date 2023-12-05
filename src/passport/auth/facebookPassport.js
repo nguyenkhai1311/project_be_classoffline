@@ -1,18 +1,21 @@
 const FacebookStrategy = require("passport-facebook").Strategy;
-const model = require("../models/index");
+const model = require("../../models/index");
 const UserSocial = model.UserSocial;
+const User = model.User;
 
 module.exports = new FacebookStrategy(
     {
         clientID: process.env.FACEBOOK_CLIENT_ID,
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
         callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+        passReqToCallback: true,
         scope: ["email"],
         profileFields: ["id", "displayName", "email"],
     },
-    async (accessToken, refreshToken, profile, done) => {
+    async (req, accessToken, refreshToken, profile, done) => {
         const { id } = profile;
         const provider = "facebook";
+
         let providerDetail = await UserSocial.findOne({
             where: {
                 provider: provider,
@@ -20,13 +23,20 @@ module.exports = new FacebookStrategy(
             },
         });
 
-        if (!providerDetail) {
-            providerDetail = await UserSocial.create({
-                provider: provider,
-                providerId: id,
+        if (!providerDetail?.userId) {
+            done(null, false, {
+                message: req.flash(
+                    "error",
+                    "Không tồn tại tài khoản nào liên kết với facebook này!"
+                ),
             });
+            return;
         }
-
-        return done(null, providerDetail);
+        const user = await User.findOne({
+            where: {
+                id: providerDetail.userId,
+            },
+        });
+        return done(null, user);
     }
 );

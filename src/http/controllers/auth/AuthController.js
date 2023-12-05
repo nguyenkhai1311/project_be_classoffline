@@ -27,6 +27,7 @@ module.exports = {
     handleLogin: async (req, res) => {
         const { email } = req.body;
         const { id } = req.user;
+
         req.flash("email", email);
         const userOtp = await UserOtp.findOne({
             where: {
@@ -67,16 +68,18 @@ module.exports = {
 
     verification: (req, res) => {
         const email = req.flash("email");
+        const message = req.flash("message");
+
         res.render("auth/verification", {
             layout: "layouts/auth.layout.ejs",
             email,
+            message,
         });
     },
 
     handleVerification: async (req, res) => {
         const { numberOne, numberTwo, numberThree, numberFour, numberFive } =
             req.body;
-
         const { id } = req.user;
         const otp = `${numberOne}${numberTwo}${numberThree}${numberFour}${numberFive}`;
 
@@ -89,7 +92,10 @@ module.exports = {
         if (user) {
             const timeMoment = new Date();
             const expires = user.expires;
+            console.log(expires < timeMoment);
             if (expires < timeMoment) {
+                req.flash("message", "Mã OTP đã hết hạn");
+                req.flash("email", req.user.email);
                 res.redirect("/auth/verification");
                 return;
             }
@@ -118,6 +124,8 @@ module.exports = {
             res.redirect("/");
             return;
         }
+        req.flash("message", "Mã OTP không chính xác");
+        req.flash("email", req.user.email);
         res.redirect("/auth/verification");
     },
 
@@ -186,5 +194,35 @@ module.exports = {
         } else {
             res.redirect("/auth/reset");
         }
+    },
+
+    resetOtp: async (req, res) => {
+        const { id, email } = req.user;
+
+        const userOtp = await UserOtp.findOne({
+            where: {
+                userId: id,
+            },
+        });
+
+        if (userOtp) {
+            await UserOtp.destroy({
+                where: {
+                    userId: id,
+                },
+            });
+        }
+
+        const otp = Math.floor(Math.random() * 90000) + 10000; // otp có 5 chữ số
+        const timeExpires = new Date(new Date().getTime() + 15000);
+        const html = "<b>Mã xác minh để đăng nhập: </b>" + otp;
+        SendMail(email, html);
+        await UserOtp.create({
+            otp: otp,
+            userId: id,
+            expires: FormatDate(new Date(timeExpires)),
+        });
+        req.flash("email", email);
+        res.redirect("/auth/verification");
     },
 };
