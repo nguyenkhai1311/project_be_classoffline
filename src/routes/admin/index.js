@@ -6,5 +6,7 @@ const ProfileController = require("../../http/controllers/admin/ProfileControlle
 
 routes.get("/", DashboardController.index);
 routes.get("/profile", ProfileController.profile);
+routes.get("/changePassword", ProfileController.changePassword);
+routes.post("/changePassword", ProfileController.handleChangePassword);
 
 module.exports = routes;

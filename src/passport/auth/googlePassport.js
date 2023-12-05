@@ -1,5 +1,5 @@
 const GoogleStrategy = require("passport-google-oidc");
-const model = require("../models/index");
+const model = require("../../models/index");
 const UserSocial = model.UserSocial;
 
 module.exports = new GoogleStrategy(
