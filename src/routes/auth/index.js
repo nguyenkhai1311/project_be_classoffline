@@ -32,6 +32,8 @@ router.post("/forgot-password", AuthController.handleForgotPassword);
 router.get("/reset", AuthController.reset);
 router.post("/reset", AuthController.handleReset);
 
+router.post("/resetOtp", AuthController.resetOtp);
+
 router.use("/", facebookRouter);
 router.use("/", googleRouter);
 router.use("/", githubRouter);

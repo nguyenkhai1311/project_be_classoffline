@@ -100,7 +100,42 @@
                                     </div>
                                     <div class="col-md-7">
                                         <a
-                                            href="/auth/facebook/redirect"
+                                            href="/connect/facebook/redirect"
+                                            style="z-index: 1000"
+                                        >
+                                            <input type="checkbox"
+                                            name="my-checkbox" <% users.forEach(
+                                            (user) => { %> <%= user.provider ===
+                                            'facebook' ?"checked" : "" %> <% })
+                                            %> data-bootstrap-switch />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row">
+                                    <div class="col-md-2">
+                                        <p>Google</p>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <a
+                                            href="/connect/google/redirect"
+                                            style="z-index: 1000"
+                                        >
+                                            <input type="checkbox"
+                                            name="my-checkbox" <% users.forEach(
+                                            (user) => { %> <%= user.provider ===
+                                            'google' ?"checked" : "" %> <% }) %>
+                                            data-bootstrap-switch />
+                                        </a>
+                                    </div>
+                                </div>
+                                <%#
+                                <div class="d-flex flex-row">
+                                    <div class="col-md-2">
+                                        <p>Github</p>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <a
+                                            href="/connect/github/redirect"
                                             style="z-index: 1000"
                                         >
                                             <input
@@ -112,36 +147,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="d-flex flex-row">
-                                    <div class="col-md-2">
-                                        <p>Google</p>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <a
-                                            href="/auth/google/redirect"
-                                            type="checkbox"
-                                            name="my-checkbox"
-                                            checked
-                                            data-bootstrap-switch
-                                        >
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-row">
-                                    <div class="col-md-2">
-                                        <p>Github</p>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <a
-                                            href=""
-                                            type="checkbox"
-                                            name="my-checkbox"
-                                            checked
-                                            data-bootstrap-switch
-                                        >
-                                        </a>
-                                    </div>
-                                </div>
+                                %>
                             </div>
                         </div>
                     </div>

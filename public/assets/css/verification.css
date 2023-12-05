@@ -54,3 +54,16 @@
     margin: 20px;
     border: none;
 }
+
+.btn-reset-otp {
+    display: inline;
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+    color: #0000ee;
+    padding: 0;
+    text-decoration: underline;
+    font-family: inherit;
+    font-size: inherit;
+}
