@@ -30,7 +30,7 @@ const githubPassport = require("./passport/auth/githubPassport");
 // Khai báo Connect-Social
 const connectFacebookPassport = require("./passport/connect/facebookPassport");
 const connectGooglePassport = require("./passport/connect/googlePassport");
-const connectGithubPassport = require("./passport/connect/githubPassport");
+// const connectGithubPassport = require("./passport/connect/githubPassport");
 
 const AuthMiddleware = require("./http/middlewares/AuthMiddleware");
 const DeviceMiddleware = require("./http/middlewares/DeviceMiddleware");
@@ -66,8 +66,8 @@ passport.use("github", githubPassport);
 
 // Connect Social
 passport.use("connectFacebook", connectFacebookPassport);
-passport.use("connect-google", connectGooglePassport);
-passport.use("connect-github", connectGithubPassport);
+passport.use("connectGoogle", connectGooglePassport);
+// passport.use("connect-github", connectGithubPassport);
 
 // view engine setup
 app.set("views", path.join(__dirname, "./resources/views"));
@@ -107,7 +107,9 @@ app.use(function (err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    res.render("error/404");
+    res.render("error/500", {
+        layout: "layouts/auth.layout.ejs",
+    });
 });
 
 module.exports = app;

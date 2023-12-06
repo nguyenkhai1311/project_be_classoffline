@@ -37,6 +37,8 @@ module.exports = new FacebookStrategy(
                 id: providerDetail.userId,
             },
         });
-        return done(null, user);
+        console.log(user);
+        done(null, user);
+        return;
     }
 );
