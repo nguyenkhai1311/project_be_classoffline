@@ -18,14 +18,14 @@ routes.get(
 
 routes.get(
     "/google/redirect",
-    passport.authenticate("connect-google", {
+    passport.authenticate("connectGoogle", {
         prompt: "select_account",
     })
 );
 
 routes.get(
     "/google/callback",
-    passport.authenticate("connect-google", {
+    passport.authenticate("connectGoogle", {
         failureRedirect: "/auth/login",
         failureMessage: true,
         successRedirect: "/admin/profile",

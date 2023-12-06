@@ -17,6 +17,25 @@ module.exports = new FacebookStrategy(
         const userId = req.user.id;
         const provider = "facebook";
 
+        const socialStatus = await UserSocial.findOne({
+            where: {
+                userId: userId,
+                provider: provider,
+                providerId: id,
+            },
+        });
+
+        if (socialStatus) {
+            await UserSocial.destroy({
+                where: {
+                    userId: userId,
+                    provider: provider,
+                    providerId: id,
+                },
+            });
+            return;
+        }
+
         await UserSocial.create({
             userId: userId,
             provider: provider,

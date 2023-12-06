@@ -28,7 +28,6 @@ module.exports = {
         const { email } = req.body;
         const { id } = req.user;
 
-        req.flash("email", email);
         const userOtp = await UserOtp.findOne({
             where: {
                 userId: id,
@@ -50,7 +49,7 @@ module.exports = {
             userId: id,
             expires: FormatDate(new Date(timeExpires)),
         });
-
+        req.flash("email", email);
         res.redirect("/auth/verification");
     },
 
@@ -66,10 +65,12 @@ module.exports = {
         res.redirect("/");
     },
 
-    verification: (req, res) => {
+    verification: async (req, res) => {
         const email = req.flash("email");
         const message = req.flash("message");
+        req.session.user = req.user;
 
+        res.cookie("id", req.user.id, { maxAge: 900000, httpOnly: true });
         res.render("auth/verification", {
             layout: "layouts/auth.layout.ejs",
             email,
@@ -80,7 +81,9 @@ module.exports = {
     handleVerification: async (req, res) => {
         const { numberOne, numberTwo, numberThree, numberFour, numberFive } =
             req.body;
-        const { id } = req.user;
+        console.log(req.session);
+        // const { id } = await req.session.user;
+        const id = req.cookies.id;
         const otp = `${numberOne}${numberTwo}${numberThree}${numberFour}${numberFive}`;
 
         const user = await UserOtp.findOne({
@@ -125,7 +128,7 @@ module.exports = {
             return;
         }
         req.flash("message", "Mã OTP không chính xác");
-        req.flash("email", req.user.email);
+        // req.flash("email", req.user.email);
         res.redirect("/auth/verification");
     },
 
