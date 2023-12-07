@@ -1,4 +1,4 @@
-const GoogleStrategy = require("passport-google-oidc");
+const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const model = require("../../models/index");
 const UserSocial = model.UserSocial;
 const User = model.User;
@@ -12,10 +12,8 @@ module.exports = new GoogleStrategy(
         scope: ["profile", "email"],
         prompt: "select_account",
     },
-    async (req, issuer, profile, done) => {
+    async (req, accessToken, refreshToken, profile, done) => {
         const { id } = profile;
-        console.log(1234);
-        console.log(req.user.id);
         const userId = req.user.id;
         const provider = "google";
 

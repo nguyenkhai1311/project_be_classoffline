@@ -99,16 +99,21 @@
                                         <p>Facebook</p>
                                     </div>
                                     <div class="col-md-7">
-                                        <a
-                                            href="/connect/facebook/redirect"
-                                            style="z-index: 1000"
+                                        <div
+                                            class="status-connect"
+                                            style="z-index: 2"
                                         >
-                                            <input type="checkbox"
-                                            name="my-checkbox" <% users.forEach(
-                                            (user) => { %> <%= user.provider ===
-                                            'facebook' ?"checked" : "" %> <% })
-                                            %> data-bootstrap-switch />
-                                        </a>
+                                            <a
+                                                href="/connect/facebook/redirect"
+                                            >
+                                                <input type="checkbox"
+                                                name="status-connect-facebook"
+                                                <% users.forEach( (user) => { %>
+                                                <%= user.provider === 'facebook'
+                                                ?"checked" : "" %> <% }) %>
+                                                data-bootstrap-switch />
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="d-flex flex-row">
@@ -121,9 +126,10 @@
                                             style="z-index: 1000"
                                         >
                                             <input type="checkbox"
-                                            name="my-checkbox" <% users.forEach(
-                                            (user) => { %> <%= user.provider ===
-                                            'google' ?"checked" : "" %> <% }) %>
+                                            name="status-connect-google" <%
+                                            users.forEach( (user) => { %> <%=
+                                            user.provider === 'google'
+                                            ?"checked" : "" %> <% }) %>
                                             data-bootstrap-switch />
                                         </a>
                                     </div>

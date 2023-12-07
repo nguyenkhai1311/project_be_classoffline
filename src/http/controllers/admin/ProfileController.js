@@ -13,12 +13,6 @@ module.exports = {
                 userId: id,
             },
         });
-        console.log(292002);
-        console.log(
-            users.forEach((user) => {
-                console.log(user.provider);
-            })
-        );
         res.render("admin/profile/index", {
             users,
         });
