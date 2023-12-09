@@ -103,16 +103,17 @@
                                             class="status-connect"
                                             style="z-index: 2"
                                         >
-                                            <a
+                                            <!-- <a
                                                 href="/connect/facebook/redirect"
-                                            >
-                                                <input type="checkbox"
-                                                name="status-connect-facebook"
-                                                <% users.forEach( (user) => { %>
-                                                <%= user.provider === 'facebook'
-                                                ?"checked" : "" %> <% }) %>
-                                                data-bootstrap-switch />
-                                            </a>
+                                                href="/connect/facebook/redirect"
+                                            > -->
+                                            <input type="checkbox"
+                                            id="checkboxFacebook"
+                                            name="status-connect-facebook" <%
+                                            users.forEach( (user) => { %> <%=
+                                            user.provider === 'facebook'
+                                            ?"checked" : "" %> <% }) %>
+                                            data-bootstrap-switch />
                                         </div>
                                     </div>
                                 </div>
@@ -162,3 +163,8 @@
         </div>
     </div>
 </section>
+
+<script>
+    const inputs = $("#checkboxFacebook");
+    console.log(inputs);
+</script>

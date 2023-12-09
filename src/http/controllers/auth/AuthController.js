@@ -49,6 +49,28 @@ module.exports = {
             userId: id,
             expires: FormatDate(new Date(timeExpires)),
         });
+
+        const tokenUser = await LoginToken.findOne({
+            where: {
+                userId: id,
+            },
+        });
+
+        if (tokenUser) {
+            await LoginToken.destroy({
+                where: {
+                    userId: id,
+                },
+            });
+        }
+
+        const token = md5(new Date() + Math.random());
+        await LoginToken.create({
+            token: token,
+            userId: id,
+        });
+        res.cookie("token", token, { maxAge: 900000, httpOnly: true });
+
         req.flash("email", email);
         res.redirect("/auth/verification");
     },
@@ -68,9 +90,7 @@ module.exports = {
     verification: async (req, res) => {
         const email = req.flash("email");
         const message = req.flash("message");
-        req.session.user = req.user;
 
-        res.cookie("id", req.user.id, { maxAge: 900000, httpOnly: true });
         res.render("auth/verification", {
             layout: "layouts/auth.layout.ejs",
             email,
@@ -81,9 +101,7 @@ module.exports = {
     handleVerification: async (req, res) => {
         const { numberOne, numberTwo, numberThree, numberFour, numberFive } =
             req.body;
-        console.log(req.session);
-        // const { id } = await req.session.user;
-        const id = req.cookies.id;
+        const { id } = req.user;
         const otp = `${numberOne}${numberTwo}${numberThree}${numberFour}${numberFive}`;
 
         const user = await UserOtp.findOne({
@@ -102,27 +120,6 @@ module.exports = {
                 res.redirect("/auth/verification");
                 return;
             }
-
-            const tokenUser = await LoginToken.findOne({
-                where: {
-                    userId: id,
-                },
-            });
-
-            if (tokenUser) {
-                await LoginToken.destroy({
-                    where: {
-                        userId: id,
-                    },
-                });
-            }
-
-            const token = md5(new Date() + Math.random());
-            await LoginToken.create({
-                token: token,
-                userId: id,
-            });
-            res.cookie("token", token, { maxAge: 900000, httpOnly: true });
 
             res.redirect("/");
             return;
