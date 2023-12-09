@@ -27,10 +27,10 @@ const facebookPassport = require("./passport/auth/facebookPassport");
 const googlePassport = require("./passport/auth/googlePassport");
 const githubPassport = require("./passport/auth/githubPassport");
 
-// Khai báo Connect-Social
+// // Khai báo Connect-Social
 const connectFacebookPassport = require("./passport/connect/facebookPassport");
 const connectGooglePassport = require("./passport/connect/googlePassport");
-// const connectGithubPassport = require("./passport/connect/githubPassport");
+const connectGithubPassport = require("./passport/connect/githubPassport");
 
 const AuthMiddleware = require("./http/middlewares/AuthMiddleware");
 const DeviceMiddleware = require("./http/middlewares/DeviceMiddleware");
@@ -40,31 +40,31 @@ var app = express();
 
 app.use(
     session({
-        secret: "f8",
+        secret: "f8111",
         resave: true,
         saveUninitialized: true,
     })
 );
 app.use(flash());
-app.use(passport.initialize());
 app.use(passport.session());
+app.use(passport.initialize());
 
 passport.serializeUser(function (user, done) {
-    done(null, user.id);
+    return done(null, user.id);
 });
 
 passport.deserializeUser(async function (id, done) {
     const user = await model.User.findByPk(id);
-    done(null, user);
+    return done(null, user);
 });
 
-// Login Social
+// // Login Social
 passport.use("local", localPassport);
 passport.use("facebook", facebookPassport);
 passport.use("google", googlePassport);
 passport.use("github", githubPassport);
 
-// Connect Social
+// // Connect Social
 passport.use("connectFacebook", connectFacebookPassport);
 passport.use("connectGoogle", connectGooglePassport);
 // passport.use("connect-github", connectGithubPassport);
@@ -82,7 +82,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
 
-// Routes
+app.get("/test", (req, res) => {
+    req.session.count = 1;
+    console.log(req.session);
+    res.send("111");
+});
+
+app.get("/test-1", (req, res) => {
+    console.log(req.session);
+    res.send("111");
+});
+// // Routes
+
 app.use("/auth", authRouter);
 app.use(AuthMiddleware);
 app.use(DeviceMiddleware);

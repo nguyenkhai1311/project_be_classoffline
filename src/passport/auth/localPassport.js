@@ -10,6 +10,7 @@ module.exports = new LocalStrategy(
         passwordField: "password",
     },
     async (email, password, done) => {
+        console.log("Email: ", email);
         const user = await User.findOne({
             where: {
                 email,
@@ -23,7 +24,10 @@ module.exports = new LocalStrategy(
 
         const hash = user.password;
         bcrypt.compare(password, hash, (err, result) => {
+            console.log("Result: ", result);
             if (result) {
+                // console.log("User Local: ", user);
+                console.log(user);
                 done(null, user);
                 return;
             }
