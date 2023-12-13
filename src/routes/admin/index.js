@@ -1,12 +1,16 @@
 var express = require("express");
-var routes = express.Router();
+var router = express.Router();
 
 const DashboardController = require("../../http/controllers/admin/DashboardController");
 const ProfileController = require("../../http/controllers/admin/ProfileController");
 
-routes.get("/", DashboardController.index);
-routes.get("/profile", ProfileController.profile);
-routes.get("/changePassword", ProfileController.changePassword);
-routes.post("/changePassword", ProfileController.handleChangePassword);
+const userRouter = require("./user");
 
-module.exports = routes;
+router.get("/", DashboardController.index);
+router.get("/profile", ProfileController.profile);
+router.get("/changePassword", ProfileController.changePassword);
+router.post("/changePassword", ProfileController.handleChangePassword);
+
+router.use("/user", userRouter);
+
+module.exports = router;
