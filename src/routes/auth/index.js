@@ -6,6 +6,7 @@ const GuestMiddleware = require("../../http/middlewares/GuestMiddleware");
 const AuthMiddleware = require("../../http/middlewares/AuthMiddleware");
 
 const AuthController = require("../../http/controllers/auth/AuthController");
+
 const facebookRouter = require("./facebook");
 const googleRouter = require("./google");
 const githubRouter = require("./github");

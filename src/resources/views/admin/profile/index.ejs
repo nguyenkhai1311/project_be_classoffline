@@ -100,20 +100,19 @@
                                     </div>
                                     <div class="col-md-7">
                                         <div
-                                            class="status-connect"
-                                            style="z-index: 2"
+                                            class="background_box background_box_facebook"
                                         >
-                                            <!-- <a
-                                                href="/connect/facebook/redirect"
-                                                href="/connect/facebook/redirect"
-                                            > -->
                                             <input type="checkbox"
-                                            id="checkboxFacebook"
-                                            name="status-connect-facebook" <%
+                                            id="checkbox_fb"
+                                            class="checkbox_social" <%
                                             users.forEach( (user) => { %> <%=
                                             user.provider === 'facebook'
-                                            ?"checked" : "" %> <% }) %>
-                                            data-bootstrap-switch />
+                                            ?"checked" : "" %> <% }) %> />
+                                            <label
+                                                class="toggle_box toggle_box_facebook"
+                                                for="checkbox_fb"
+                                            >
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -122,17 +121,21 @@
                                         <p>Google</p>
                                     </div>
                                     <div class="col-md-7">
-                                        <a
-                                            href="/connect/google/redirect"
-                                            style="z-index: 1000"
+                                        <div
+                                            class="background_box background_box_google"
                                         >
                                             <input type="checkbox"
-                                            name="status-connect-google" <%
+                                            id="checkbox_google"
+                                            class="checkbox_social" <%
                                             users.forEach( (user) => { %> <%=
                                             user.provider === 'google'
-                                            ?"checked" : "" %> <% }) %>
-                                            data-bootstrap-switch />
-                                        </a>
+                                            ?"checked" : "" %> <% }) %> />
+                                            <label
+                                                class="toggle_box toggle_box_google"
+                                                for="checkbox_goole"
+                                            >
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                                 <%#
@@ -163,8 +166,3 @@
         </div>
     </div>
 </section>
-
-<script>
-    const inputs = $("#checkboxFacebook");
-    console.log(inputs);
-</script>
