@@ -15,7 +15,6 @@ module.exports = {
                 "createdAt",
             ],
         });
-        console.log(users);
         res.render("admin/user/index", { users, moment });
     },
 
@@ -24,6 +23,57 @@ module.exports = {
     },
 
     store: async (req, res) => {
-        res.send("/admin/user");
+        const { nameUser, emailUser, phoneUser, addressUser, type } = req.body;
+        if (type === "Admin") {
+            await User.create({
+                name: nameUser,
+                email: emailUser,
+                phone: phoneUser,
+                address: addressUser,
+                typeId: 1,
+            });
+        }
+
+        if (type === "Teacher") {
+            await User.create({
+                name: nameUser,
+                email: emailUser,
+                phone: phoneUser,
+                address: addressUser,
+                typeId: 2,
+            });
+        }
+
+        if (type === "Student") {
+            await User.create({
+                name: nameUser,
+                email: emailUser,
+                phone: phoneUser,
+                address: addressUser,
+                typeId: 3,
+            });
+        }
+
+        if (type === "") {
+            req.flash("error", "Không được để trống");
+        }
+
+        res.redirect("/admin/user");
+    },
+
+    edit: async (req, res) => {
+        const { id } = req.params;
+
+        const user = await User.findOne({
+            where: {
+                id: id,
+            },
+        });
+        res.render("admin/user/edit", { user });
+    },
+
+    update: async (req, res) => {
+        const { id } = req.params;
+        res.send(`${id}`);
     },
 };

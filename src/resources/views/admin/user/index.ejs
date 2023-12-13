@@ -25,14 +25,21 @@
                 <td><%= user.address %></td>
                 <td><%= moment(user.createdAt).format("DD/MM/YYYY") %></td>
                 <td>
-                    <button type="button" class="btn btn-info">
-                        <i class="fas fa-edit"></i>
-                    </button>
+                    <form action="/admin/user/edit/<%= user.id %>" method="get">
+                        <button type="submit" class="btn btn-info">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </form>
                 </td>
                 <td>
-                    <button type="button" class="btn btn-danger">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
+                    <form
+                        action="/admin/user/delete/<%= user.id %>"
+                        method="post"
+                    >
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>
             <% }) %>

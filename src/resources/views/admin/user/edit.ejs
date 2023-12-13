@@ -1,10 +1,10 @@
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Thêm người dùng</h3>
+        <h3 class="card-title">Sửa người dùng</h3>
     </div>
     <!-- /.card-header -->
     <!-- form start -->
-    <form action="/admin/user/add" method="post">
+    <form action="/admin/user/edit/<%= user.id %>" method="post">
         <div class="card-body">
             <div class="form-group">
                 <label for="nameUser">Tên người dùng:</label>
@@ -14,6 +14,7 @@
                     id="nameUser"
                     name="nameUser"
                     placeholder="Nhập tên người dùng"
+                    value="<%= user.name %>"
                 />
             </div>
             <div class="form-group">
@@ -24,6 +25,7 @@
                     id="emailUser"
                     name="emailUser"
                     placeholder="Nhập email"
+                    value="<%= user.email %>"
                 />
             </div>
             <div class="form-group">
@@ -34,6 +36,7 @@
                     id="phoneUser"
                     name="phoneUser"
                     placeholder="Nhập số điện thoại"
+                    value="<%= user.phone %>"
                 />
             </div>
             <div class="form-group">
@@ -44,6 +47,7 @@
                     id="addressUser"
                     name="addressUser"
                     placeholder="Nhập địa chỉ"
+                    value="<%= user.address %>"
                 />
             </div>
             <div class="form-group">
@@ -70,7 +74,7 @@
 
         <div class="card-footer">
             <button type="submit" class="btn btn-primary">
-                Thêm người dùng
+                Sửa người dùng
             </button>
         </div>
     </form>
