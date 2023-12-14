@@ -7,4 +7,9 @@ router.get("/", UserController.index);
 router.get("/add", UserController.add);
 router.post("/add", UserController.store);
 
+router.get("/edit/:id", UserController.edit);
+router.post("/edit/:id", UserController.update);
+
+router.post("/delete/:id", UserController.destroy);
+
 module.exports = router;

@@ -30,7 +30,6 @@ const githubPassport = require("./passport/auth/githubPassport");
 // // Khai báo Connect-Social
 const connectFacebookPassport = require("./passport/connect/facebookPassport");
 const connectGooglePassport = require("./passport/connect/googlePassport");
-const connectGithubPassport = require("./passport/connect/githubPassport");
 
 const AuthMiddleware = require("./http/middlewares/AuthMiddleware");
 const DeviceMiddleware = require("./http/middlewares/DeviceMiddleware");
@@ -82,17 +81,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
 
-app.get("/test", (req, res) => {
-    req.session.count = 1;
-    console.log(req.session);
-    res.send("111");
-});
-
-app.get("/test-1", (req, res) => {
-    console.log(req.session);
-    res.send("111");
-});
-// // Routes
+// Routes
 
 app.use("/auth", authRouter);
 app.use(AuthMiddleware);

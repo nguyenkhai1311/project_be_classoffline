@@ -1,5 +1,6 @@
 module.exports = {
     index: (req, res) => {
-        res.render("admin/dashboard/index");
+        const title = "Dashboard";
+        res.render("admin/dashboard/index", { title });
     },
 };
