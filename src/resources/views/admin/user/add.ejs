@@ -1,8 +1,8 @@
 <div class="card card-primary">
-    <div class="card-header">
+    <!-- <div class="card-header">
         <h3 class="card-title">Thêm người dùng</h3>
     </div>
-    <!-- /.card-header -->
+    /.card-header -->
     <!-- form start -->
     <form action="/admin/user/add" method="post">
         <div class="card-body">
@@ -48,21 +48,11 @@
             </div>
             <div class="form-group">
                 <label for="">Chức vụ:</label>
-                <input type="radio" id="typeAdmin" name="type" value="Admin" />
+                <input type="radio" id="typeAdmin" name="typeId" value="1" />
                 <label for="typeAdmin">Quản trị</label>
-                <input
-                    type="radio"
-                    id="typeTeacher"
-                    name="type"
-                    value="Teacher"
-                />
+                <input type="radio" id="typeTeacher" name="typeId" value="2" />
                 <label for="typeTeacher">Giáo viên</label>
-                <input
-                    type="radio"
-                    id="typeStudent"
-                    name="type"
-                    value="Student"
-                />
+                <input type="radio" id="typeStudent" name="typeId" value="3" />
                 <label for="typeStudent">Học viên</label>
             </div>
         </div>

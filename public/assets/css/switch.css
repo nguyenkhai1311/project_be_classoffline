@@ -44,6 +44,17 @@
     transition: 0.2s;
 }
 
+.toggle_box_github::before {
+    position: absolute;
+    content: "";
+    background-color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    margin: 5px;
+    transition: 0.2s;
+}
+
 .checkbox_social:checked + .toggle_box {
     background-color: #4089f6;
 }

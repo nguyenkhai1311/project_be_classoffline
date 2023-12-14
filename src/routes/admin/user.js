@@ -10,4 +10,6 @@ router.post("/add", UserController.store);
 router.get("/edit/:id", UserController.edit);
 router.post("/edit/:id", UserController.update);
 
+router.post("/delete/:id", UserController.destroy);
+
 module.exports = router;

@@ -4,9 +4,12 @@ const User = model.User;
 const UserSocial = model.UserSocial;
 
 const saltRounds = 10;
+const moduleName = "Tài khoản";
 
 module.exports = {
     profile: async (req, res) => {
+        const title = "Thông tin tài khoản";
+        const moduleName = "Tài Khoản";
         const { id } = req.user;
         const users = await UserSocial.findAll({
             where: {
@@ -15,12 +18,19 @@ module.exports = {
         });
         res.render("admin/profile/index", {
             users,
+            title,
+            moduleName,
         });
     },
 
     changePassword: (req, res) => {
+        const title = "Đổi mật khẩu";
         const message = req.flash("message");
-        res.render("admin/profile/changePassword", { message });
+        res.render("admin/profile/changePassword", {
+            message,
+            title,
+            moduleName,
+        });
     },
 
     handleChangePassword: async (req, res) => {
