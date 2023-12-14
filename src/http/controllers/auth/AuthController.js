@@ -11,6 +11,7 @@ const FormatDate = require("../../../helpers/FormatDate");
 const model = require("../../../models/index");
 const UserOtp = model.UserOtp;
 const User = model.User;
+const UserSocial = model.UserSocial;
 const LoginToken = model.LoginToken;
 
 const saltRounds = 10;
@@ -84,7 +85,12 @@ module.exports = {
     },
 
     loginGithub: (req, res) => {
-        res.redirect("/");
+        console.log(req.isConnect);
+        if (req.isConnect) {
+            res.redirect("/admin/profile");
+        } else {
+            res.redirect("/");
+        }
     },
 
     verification: async (req, res) => {
@@ -224,5 +230,41 @@ module.exports = {
         });
         req.flash("email", email);
         res.redirect("/auth/verification");
+    },
+
+    disconnectFacebook: async (req, res) => {
+        const userId = req.user.id;
+        const provider = "facebook";
+        await UserSocial.destroy({
+            where: {
+                userId: userId,
+                provider: provider,
+            },
+        });
+        res.redirect("/admin/profile");
+    },
+
+    disconnectGoogle: async (req, res) => {
+        const userId = req.user.id;
+        const provider = "google";
+        await UserSocial.destroy({
+            where: {
+                userId: userId,
+                provider: provider,
+            },
+        });
+        res.redirect("/admin/profile");
+    },
+
+    disconnectGithub: async (req, res) => {
+        const userId = req.user.id;
+        const provider = "github";
+        await UserSocial.destroy({
+            where: {
+                userId: userId,
+                provider: provider,
+            },
+        });
+        res.redirect("/admin/profile");
     },
 };

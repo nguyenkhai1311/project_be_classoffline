@@ -1,6 +1,6 @@
-<div class="card-header">
+<!-- <div class="card-header">
     <h3 class="card-title">Danh sách người dùng</h3>
-</div>
+</div> -->
 <!-- /.card-header -->
 <div class="card-body">
     <table class="table table-bordered">
@@ -25,16 +25,66 @@
                 <td><%= user.address %></td>
                 <td><%= moment(user.createdAt).format("DD/MM/YYYY") %></td>
                 <td>
-                    <button type="button" class="btn btn-info">
-                        <i class="fas fa-edit"></i>
-                    </button>
+                    <form action="/admin/user/edit/<%= user.id %>" method="get">
+                        <button type="submit" class="btn btn-info">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </form>
                 </td>
                 <td>
-                    <button type="button" class="btn btn-danger">
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        data-toggle="modal"
+                        data-target="#modal-danger-<%= user.id %>"
+                    >
                         <i class="fas fa-trash-alt"></i>
                     </button>
+                    <div class="modal fade" id="modal-danger-<%= user.id %>">
+                        <div class="modal-dialog">
+                            <div class="modal-content bg-danger">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Xóa người dùng</h4>
+                                    <button
+                                        type="button"
+                                        class="close"
+                                        data-dismiss="modal"
+                                        aria-label="Close"
+                                    >
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Bạn có chắc xóa người dùng này?</p>
+                                </div>
+                                <div
+                                    class="modal-footer justify-content-between"
+                                >
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline-light"
+                                        data-dismiss="modal"
+                                    >
+                                        Không
+                                    </button>
+                                    <form
+                                        action="/admin/user/delete/<%= user.id %>"
+                                        method="post"
+                                    >
+                                        <button
+                                            type="submit"
+                                            class="btn btn-outline-light"
+                                        >
+                                            Có
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
+
             <% }) %>
         </tbody>
     </table>

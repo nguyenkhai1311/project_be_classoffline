@@ -138,26 +138,28 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%#
                                 <div class="d-flex flex-row">
                                     <div class="col-md-2">
                                         <p>Github</p>
                                     </div>
                                     <div class="col-md-7">
-                                        <a
-                                            href="/connect/github/redirect"
-                                            style="z-index: 1000"
+                                        <div
+                                            class="background_box background_box_github"
                                         >
-                                            <input
-                                                type="checkbox"
-                                                name="my-checkbox"
-                                                checked
-                                                data-bootstrap-switch
-                                            />
-                                        </a>
+                                            <input type="checkbox"
+                                            id="checkbox_github"
+                                            class="checkbox_social" <%
+                                            users.forEach( (user) => { %> <%=
+                                            user.provider === 'github'
+                                            ?"checked" : "" %> <% }) %> />
+                                            <label
+                                                class="toggle_box toggle_box_github"
+                                                for="checkbox_github"
+                                            >
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
-                                %>
                             </div>
                         </div>
                     </div>
