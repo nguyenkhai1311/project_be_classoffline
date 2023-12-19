@@ -1,8 +1,8 @@
 <div class="card card-primary">
-  <form action="/admin/user/edit/<%= user.id %>" method="post">
+  <form action="/admin/profile/update" method="post">
     <div class="card-body">
       <div class="form-group">
-        <label for="nameUser">Tên người dùng:</label>
+        <label for="nameUser">Họ tên:</label>
         <input type="text" class="form-control" id="nameUser" name="nameUser" placeholder="Nhập tên người dùng" value="<%= user.name %>" />
       </div>
       <div class="form-group">
@@ -17,22 +17,12 @@
         <label for="addressUser">Địa chỉ</label>
         <input type="text" class="form-control" id="addressUser" name="addressUser" placeholder="Nhập địa chỉ" value="<%= user.address %>" />
       </div>
-      <div class="form-group">
-        <label for="">Chức vụ:</label>
-        <input type="radio" id="typeAdmin" name="type" value="Admin" <%=
-                user.typeId === 1 ? "checked" : ""%> />
-        <label for="typeAdmin">Quản trị</label>
-        <input type="radio" id="typeTeacher" name="type" value="Teacher" <%= user.typeId === 2 ? "checked" : ""%> />
-        <label for="typeTeacher">Giáo viên</label>
-        <input type="radio" id="typeStudent" name="type" value="Student" <%= user.typeId === 3 ? "checked" : ""%> />
-        <label for="typeStudent">Học viên</label>
-      </div>
+
     </div>
-    <!-- /.card-body -->
 
     <div class="card-footer">
       <button type="submit" class="btn btn-primary">
-        Sửa người dùng
+        Cập nhật
       </button>
     </div>
   </form>

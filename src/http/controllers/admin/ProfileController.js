@@ -11,13 +11,19 @@ module.exports = {
         const title = "Thông tin tài khoản";
         const moduleName = "Tài Khoản";
         const { id } = req.user;
-        const users = await UserSocial.findAll({
+        const user = await User.findOne({
+            where: {
+                id: id,
+            },
+        });
+        const userSocials = await UserSocial.findAll({
             where: {
                 userId: id,
             },
         });
         res.render("admin/profile/index", {
-            users,
+            user,
+            userSocials,
             title,
             moduleName,
         });
@@ -68,5 +74,41 @@ module.exports = {
         );
         req.flash("message", "Đổi mật khẩu thành công!");
         res.redirect("/admin/changePassword");
+    },
+
+    edit: async (req, res) => {
+        const title = "Cập nhật tài khoản";
+        const { id } = req.user;
+        const user = await User.findOne({
+            where: {
+                id: id,
+            },
+        });
+        await res.render("admin/profile/update", {
+            title,
+            moduleName,
+            user,
+        });
+    },
+
+    update: async (req, res) => {
+        const { id } = req.user;
+        const { nameUser, emailUser, phoneUser, addressUser } = req.body;
+
+        await User.update(
+            {
+                name: nameUser,
+                email: emailUser,
+                phone: phoneUser,
+                address: addressUser,
+            },
+            {
+                where: {
+                    id: id,
+                },
+            }
+        );
+
+        res.redirect("/admin/profile/update");
     },
 };
