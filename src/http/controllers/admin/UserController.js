@@ -1,5 +1,8 @@
 const moment = require("moment");
 const { PER_PAGE } = process.env;
+const { Op } = require("sequelize");
+
+const { getPaginateUrl } = require("../../../utils/url");
 const model = require("../../../models/index");
 const User = model.User;
 
@@ -7,16 +10,37 @@ const moduleName = "Người dùng";
 
 module.exports = {
     index: async (req, res) => {
+        const filters = {};
         const title = "Danh sách người dùng";
-
+        let { keyword, page, recordNumber } = req.query;
         // Lấy tổng số bản ghi
         const totalCountObj = await User.findAndCountAll();
         const totalCount = totalCountObj.count;
         // Lấy tổng số trang
         const totalPage = Math.ceil(totalCount / PER_PAGE);
 
+        console.log(recordNumber);
+
+        // Tìm những người có quyền quản trị
+        filters.typeId = 1;
+
+        if (keyword) {
+            filters[Op.or] = [
+                {
+                    name: {
+                        [Op.like]: `%${keyword}%`,
+                    },
+                },
+                {
+                    email: {
+                        [Op.like]: `%${keyword}%`,
+                    },
+                },
+            ];
+        }
+        console.log(`Filters: `);
+        console.log(filters);
         // Lấy số trang
-        let { page } = req.query;
         if (!page || page < 1) {
             page = 1;
         }
@@ -24,12 +48,10 @@ module.exports = {
         if (page > totalPage) {
             page = totalPage;
         }
-        const offset = page - 1;
+        const offset = (page - 1) * PER_PAGE;
 
         const users = await User.findAll({
-            where: {
-                typeId: 1,
-            },
+            where: filters,
             attributes: [
                 "id",
                 "name",
@@ -43,10 +65,14 @@ module.exports = {
         });
 
         res.render("admin/user/index", {
+            req,
             users,
             moment,
             title,
             moduleName,
+            totalPage,
+            page,
+            getPaginateUrl,
         });
     },
 
