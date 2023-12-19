@@ -84,8 +84,8 @@ app.use(express.static(path.join(__dirname, "../public")));
 // Routes
 
 app.use("/auth", authRouter);
-app.use(AuthMiddleware);
-app.use(DeviceMiddleware);
+// app.use(AuthMiddleware);
+// app.use(DeviceMiddleware);
 app.use("/admin", adminRouter);
 app.use("/", studentsRouter);
 app.use("/teacher", teachersRouter);
