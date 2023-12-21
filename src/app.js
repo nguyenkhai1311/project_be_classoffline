@@ -9,6 +9,7 @@ const expressLayouts = require("express-ejs-layouts");
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
+const methodOverride = require("method-override");
 const cors = require("cors");
 
 // Khai báo Router
@@ -27,12 +28,14 @@ const facebookPassport = require("./passport/auth/facebookPassport");
 const googlePassport = require("./passport/auth/googlePassport");
 const githubPassport = require("./passport/auth/githubPassport");
 
-// // Khai báo Connect-Social
+// Khai báo Connect-Social
 const connectFacebookPassport = require("./passport/connect/facebookPassport");
 const connectGooglePassport = require("./passport/connect/googlePassport");
 
+// Khai báo Middleware
 const AuthMiddleware = require("./http/middlewares/AuthMiddleware");
 const DeviceMiddleware = require("./http/middlewares/DeviceMiddleware");
+const RoleMiddleware = require("./http/middlewares/RoleMiddleware");
 
 var app = express();
 // app.use(cors());
@@ -66,7 +69,6 @@ passport.use("github", githubPassport);
 // // Connect Social
 passport.use("connectFacebook", connectFacebookPassport);
 passport.use("connectGoogle", connectGooglePassport);
-// passport.use("connect-github", connectGithubPassport);
 
 // view engine setup
 app.set("views", path.join(__dirname, "./resources/views"));
@@ -80,23 +82,44 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
+app.use(
+    methodOverride(function (req, res) {
+        if (req.body && typeof req.body === "object" && "_method" in req.body) {
+            // look in urlencoded POST bodies and delete it
+            var method = req.body._method;
+            delete req.body._method;
+            return method;
+        }
+    })
+);
 
 // Routes
-
 app.use("/auth", authRouter);
-// app.use(AuthMiddleware);
-// app.use(DeviceMiddleware);
+app.use(AuthMiddleware);
+app.use(DeviceMiddleware);
+app.use("/connect", connectRouter);
 app.use("/admin", adminRouter);
 app.use("/", studentsRouter);
 app.use("/teacher", teachersRouter);
-app.use("/connect", connectRouter);
+// console.log(`Check Role: ${RoleMiddleware.check()}`);
+// if (RoleMiddleware.check === "Admin") {
+//     app.use("/admin", adminRouter);
+//     app.use("/", studentsRouter);
+//     app.use("/teacher", teachersRouter);
+// }
+// if (RoleMiddleware.check === "Teacher") {
+//     app.use("/teacher", teachersRouter);
+// }
+
+// if (RoleMiddleware.check === "Student") {
+//     app.use("/", studentsRouter);
+// }
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     res.render("error/404", {
         layout: "layouts/auth.layout.ejs",
     });
-    // next(createError(404));
 });
 
 // error handler
