@@ -19,7 +19,7 @@
             <p>Tổng quan</p>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item <%= moduleName === "Người dùng" ? "menu-is-opening menu-open" : "" %>">
           <a href="#" class="nav-link <%= moduleName === "Người dùng" ? "active" : "" %>">
             <i class="nav-icon fas fa-users"></i>
             <p>
@@ -35,7 +35,30 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="/admin/user/add" class="nav-link">
+              <a href="/admin/user/add" class="nav-link <%= title === "Thêm người dùng" ? "active" : "" %>">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Thêm mới</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item <%= moduleName === "Khóa học" ? "menu-is-opening menu-open" : "" %>">
+          <a href="#" class="nav-link <%= moduleName === "Khóa học" ? "active" : "" %>">
+            <i class="nav-icon fas fa-book"></i>
+            <p>
+              Khóa học
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="/admin/course" class="nav-link <%= title === "Danh sách khóa học" ? "active" : "" %>">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Danh sách</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/admin/course/add" class="nav-link <%= title === "Thêm khóa học" ? "active" : "" %>">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Thêm mới</p>
               </a>
@@ -46,19 +69,19 @@
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-book"></i>
             <p>
-              Khóa học
+              Lớp học
               <i class="fas fa-angle-left right"></i>
             </p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="pages/layout/top-nav.html" class="nav-link">
+              <a href="/admin/course" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Danh sách</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+              <a href="/admin/course/add" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Thêm mới</p>
               </a>

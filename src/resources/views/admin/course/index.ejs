@@ -1,0 +1,88 @@
+<div class="card-body">
+  <section class="content mb-3">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="d-flex align-items-center col-md-8 offset-md-2">
+          <p class="mt-3">Tìm kiếm: </p>
+          <form action="">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-md" name="keyword" placeholder="Nhập từ tìm kiếm">
+              <div class="input-group-append" width="38px" height="38px">
+                <button type="submit" class="btn btn-md btn-default">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <table class="table table-bordered">
+    <thead class="text-center">
+      <tr>
+        <th><input type="checkbox" name=""></th>
+        <th style="width: 10px">#</th>
+        <th>Tên</th>
+        <th>Học phí</th>
+        <th>Giảng viên</th>
+        <th>Học thử</th>
+        <th>Sĩ số</th>
+        <th>Thời gian</th>
+        <th>Tài liệu khóa học</th>
+        <th colspan="2">Chức năng</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th><input type="checkbox" name=""></th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          <form action="/admin/user/edit/" method="get">
+            <button type="submit" class="btn btn-info">
+              <i class="fas fa-edit"></i>
+            </button>
+          </form>
+        </td>
+        <td>
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-danger-">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <div class="modal fade" id="modal-danger-">
+            <div class="modal-dialog">
+              <div class="modal-content bg-danger">
+                <div class="modal-header">
+                  <h4 class="modal-title">Xóa người dùng</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Bạn có chắc xóa người dùng này?</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                  <button type="button" class="btn btn-outline-light" data-dismiss="modal">
+                    Không
+                  </button>
+                  <form action="/admin/user/delete/" method="post">
+                    <button type="submit" class="btn btn-outline-light">
+                      Có
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
