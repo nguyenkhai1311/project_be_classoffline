@@ -6,6 +6,7 @@ const ProfileController = require("../../http/controllers/admin/ProfileControlle
 
 const userRouter = require("./user");
 const profileRouter = require("./profile");
+const courseRouter = require("./course");
 
 router.get("/", DashboardController.index);
 router.get("/changePassword", ProfileController.changePassword);
@@ -13,5 +14,6 @@ router.post("/changePassword", ProfileController.handleChangePassword);
 
 router.use("/profile", profileRouter);
 router.use("/user", userRouter);
+router.use("/course", courseRouter);
 
 module.exports = router;

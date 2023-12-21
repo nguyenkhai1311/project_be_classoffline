@@ -26,8 +26,6 @@ module.exports = new LocalStrategy(
         bcrypt.compare(password, hash, (err, result) => {
             console.log("Result: ", result);
             if (result) {
-                // console.log("User Local: ", user);
-                console.log(user);
                 done(null, user);
                 return;
             }

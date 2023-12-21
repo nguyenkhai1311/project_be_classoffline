@@ -1,7 +1,5 @@
-// const model = require("../../../models/index");
-// console.log(model);
 const title = "Dashboard";
-let moduleName;
+let moduleName = "Tổng quan";
 
 module.exports = {
     index: (req, res) => {

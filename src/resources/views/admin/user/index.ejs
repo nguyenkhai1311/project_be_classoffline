@@ -70,6 +70,7 @@
                     Không
                   </button>
                   <form action="/admin/user/delete/<%= user.id %>" method="post">
+                    <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" class="btn btn-outline-light">
                       Có
                     </button>
@@ -90,10 +91,10 @@
         <div class="d-flex align-items-center" style="width: 170px">
           <label class="mr-2 mb-0 w-100">Số bản ghi</label>
           <select class="form-control record-number" name="recordNumber">
-            <option value="5" <%= req.query.recordNumber === '5' ? 'selected' : "" %>>5</option>
-            <option value="10" <%= req.query.recordNumber === '10' ? 'selected' : "" %>>10</option>
-            <option value="15" <%= req.query.recordNumber === '15' ? 'selected' : "" %>>15</option>
-            <option value="20" <%= req.query.recordNumber === '20' ? 'selected' : "" %>>20</option>
+            <option value="5" <%= +recordNumber === 5 ? 'selected' : "" %>>5</option>
+            <option value="10" <%= +recordNumber === 10 ? 'selected' : "" %>>10</option>
+            <option value="15" <%= +recordNumber === 15 ? 'selected' : "" %>>15</option>
+            <option value="20" <%= +recordNumber === 20 ? 'selected' : "" %>>20</option>
           </select>
         </div>
       </div>
