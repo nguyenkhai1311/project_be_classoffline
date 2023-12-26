@@ -1,8 +1,10 @@
 const moment = require("moment");
-const { PER_PAGE } = process.env;
 const { Op } = require("sequelize");
 const { validationResult } = require("express-validator");
 
+const constants = require("../../../constants/index");
+const exportFile = require("../../../utils/exportFile");
+const importFile = require("../../../utils/importFile");
 const { getPaginateUrl } = require("../../../utils/url");
 const validate = require("../../../utils/validate");
 const model = require("../../../models/index");
@@ -18,14 +20,6 @@ module.exports = {
 
         const title = "Danh sách người dùng";
         let { keyword, page, recordNumber } = req.query;
-        // Lấy tổng số bản ghi
-        const totalCountObj = await User.findAndCountAll({
-            where: filters,
-        });
-        // Lấy tổng số trang
-        const totalCount = totalCountObj.count;
-        const totalPage = Math.ceil(totalCount / PER_PAGE);
-
         if (!recordNumber) {
             recordNumber = 5;
         }
@@ -44,6 +38,15 @@ module.exports = {
                 },
             ];
         }
+
+        // Lấy tổng số bản ghi
+        const totalCountObj = await User.findAndCountAll({
+            where: filters,
+        });
+        // Lấy tổng số trang
+        const totalCount = totalCountObj.count;
+        console.log(totalCount);
+        const totalPage = Math.ceil(totalCount / recordNumber);
         // Lấy số trang
         if (!page || page < 1) {
             page = 1;
@@ -66,7 +69,8 @@ module.exports = {
             limit: +recordNumber,
             offset: offset,
         });
-        console.log(`Bản ghi: ` + recordNumber);
+
+        console.log(`Tổng số trang: ` + totalPage);
         res.render("admin/user/index", {
             req,
             users,
@@ -99,11 +103,11 @@ module.exports = {
                 address: addressUser,
                 typeId: typeId,
             });
-            res.redirect("/admin/user");
+            res.redirect("/admin/users");
             return;
         }
         req.flash("errors", result.errors);
-        res.redirect("/admin/user/add");
+        res.redirect("/admin/users/add");
     },
 
     edit: async (req, res) => {
@@ -137,7 +141,7 @@ module.exports = {
             }
         );
 
-        res.redirect(`/admin/user/edit/${id}`);
+        res.redirect(`/admin/users/edit/${id}`);
     },
 
     destroy: async (req, res) => {
@@ -154,7 +158,43 @@ module.exports = {
                 },
             });
         }
+        res.redirect("/admin/users");
+    },
 
-        res.redirect("/admin/user");
+    destroyAll: async (req, res) => {
+        const { listUserDelete } = req.body;
+        const listIdUser = listUserDelete.split(",");
+        await User.destroy({
+            where: {
+                id: {
+                    [Op.in]: listIdUser,
+                },
+            },
+        });
+        res.redirect("/admin/users");
+    },
+
+    export: async (req, res) => {
+        const user = await User.findAll({
+            where: {
+                typeId: 1,
+            },
+        });
+        const columns = constants.userColumnFile;
+        const date = new Date().getTime();
+        const fileName = `user_admin_${date}.xlsx`;
+        exportFile(res, user, "User_Admin", fileName, columns);
+    },
+
+    import: (req, res) => {
+        const title = "Import File";
+        res.render("admin/user/import", { title, moduleName });
+    },
+
+    handleImport: async (req, res) => {
+        const file = req.file;
+        console.log(file);
+        await importFile(file.path, "User_Admin");
+        res.redirect("/admin/users");
     },
 };
