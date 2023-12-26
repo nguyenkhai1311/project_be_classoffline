@@ -13,7 +13,7 @@ router.get("/changePassword", ProfileController.changePassword);
 router.post("/changePassword", ProfileController.handleChangePassword);
 
 router.use("/profile", profileRouter);
-router.use("/user", userRouter);
-router.use("/course", courseRouter);
+router.use("/users", userRouter);
+router.use("/courses", courseRouter);
 
 module.exports = router;
