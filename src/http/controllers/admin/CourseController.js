@@ -192,4 +192,12 @@ module.exports = {
     },
 
     destroyAll: async (req, res) => {},
+
+    detail: async (req, res) => {
+        const title = "Chi tiết khóa học";
+        res.render("admin/course/detail", {
+            title,
+            moduleName,
+        });
+    },
 };

@@ -15,6 +15,11 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
+                name: "Tutors",
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
                 name: "Student",
                 createdAt: new Date(),
                 updatedAt: new Date(),

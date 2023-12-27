@@ -13,4 +13,6 @@ router.patch("/edit/:id", CourseController.update);
 
 router.delete("/delete/:id", CourseController.destroy);
 
+router.get("/detail", CourseController.detail);
+
 module.exports = router;

@@ -58,7 +58,7 @@
       <tr>
         <th><input type="checkbox" class="checkboxItem"></th>
         <td><%= index + 1 %></td>
-        <td><%= course.name %></td>
+        <td><a href="/admin/courses/detail"><%= course.name %></a></td>
         <td><%= course.price.toLocaleString() %> đ</td>
         <td><%= course.User.name %></td>
         <td><%= course.tryLearn %> buổi</td>
