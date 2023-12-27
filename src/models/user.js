@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
                 through: "User_Permissions",
                 foreignKey: "userId",
             });
-            User.hasMany(models.Course);
+            User.hasMany(models.Course, { foreignKey: "teacherId" });
             User.belongsToMany(models.Class, {
                 through: "Classes_Teachers",
                 foreignKey: "teacherId",

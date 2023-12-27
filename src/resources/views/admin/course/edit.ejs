@@ -1,0 +1,44 @@
+<div class="card card-primary">
+  <form action="" method="post">
+    <div class="card-body">
+      <div class="form-group">
+        <label for="">Tên khóa học:</label>
+        <input type="text" class="form-control" id="" name="courseName" placeholder="Nhập tên khóa học" value="<%= course.name %>" />
+      </div>
+      <div class="form-group">
+        <label for="">Học phí:</label>
+        <input type="number" class="form-control" id="" name="coursePrice" placeholder="Nhập học phí" value="<%= course.price %>" />
+      </div>
+      <div class="form-group">
+        <label for="">Giảng viên:</label>
+        <select class="form-control" name="teacherId" id="">
+          <option value="">Chọn giảng viên</option>
+          <% if(teachers){ %>
+          <% teachers.forEach((teacher) => {%>
+          <option value="<%= teacher.id %>" <%= teacher.name === teacherName ? "selected" : "" %>><%= teacher.name %> - <%= teacher.email %></option>
+          <% }) %>
+          <% } %>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="">Học thử:</label>
+        <input type="number" class="form-control" id="" name="tryLearn" placeholder="Nhập số buổi học thử" value="<%= course.tryLearn %>" />
+      </div>
+      <div class="form-group">
+        <label for="">Sĩ số:</label>
+        <input type="number" class="form-control" id="" name="courseQuantity" placeholder="Nhập sĩ số" value="<%= course.quantity %>" />
+      </div>
+      <div class="form-group">
+        <label for="">Thời gian:</label>
+        <input type="number" class="form-control" id="" name="courseDuration" placeholder="Nhập số buổi học" value="<%= course.duration %>" />
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <input type="hidden" name="_method" value="PATCH">
+      <button type="submit" class="btn btn-primary">
+        Sửa khóa học
+      </button>
+    </div>
+  </form>
+</div>

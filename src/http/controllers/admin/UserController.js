@@ -14,10 +14,11 @@ const moduleName = "Người dùng";
 
 module.exports = {
     index: async (req, res) => {
+        const title = "Danh sách người dùng";
+
         const filters = {};
         // Tìm những người có quyền quản trị
         filters.typeId = 1;
-        const title = "Danh sách người dùng";
         let { keyword, page, recordNumber } = req.query;
         if (!recordNumber) {
             recordNumber = 5;
@@ -69,7 +70,6 @@ module.exports = {
             offset: offset,
         });
 
-        console.log(`Tổng số trang: ` + totalPage);
         res.render("admin/user/index", {
             req,
             users,
@@ -134,7 +134,6 @@ module.exports = {
         const { id } = req.params;
         const { nameUser, emailUser, phoneUser, addressUser, typeId } =
             req.body;
-
         await User.update(
             {
                 name: nameUser,
@@ -149,7 +148,6 @@ module.exports = {
                 },
             }
         );
-
         res.redirect(`/admin/users/edit/${id}`);
     },
 
