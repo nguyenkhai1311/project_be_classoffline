@@ -5,4 +5,8 @@ module.exports = {
         console.log(new URLSearchParams(query).toString());
         return new URLSearchParams(query).toString();
     },
+
+    pagination: (page) => {
+        return;
+    },
 };

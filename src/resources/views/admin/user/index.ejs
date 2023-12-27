@@ -1,9 +1,12 @@
 <div class="card-body">
   <div class="d-flex justify-content-end gap-2 container-fluid">
     <div class="d-flex mr-2">
-      <a href="/admin/users/import" class="btn btn-warning mr-2">Import File</a>
+      <a href="/admin/users/import" class="btn btn-warning mr-2">
+        <i class="fas fa-file-import mr-1"></i>
+        Import File</a>
       <form action="/admin/users/export" method="post">
         <button type="submit" class="btn btn-success">
+          <i class="fas fa-file-export mr-1"></i>
           Export File
         </button>
       </form>
@@ -12,6 +15,7 @@
       <input type="hidden" name="_method" value="DELETE">
       <input type="hidden" id="listDelete" name="listUserDelete" value="">
       <button type="submit" class="btn btn-danger" id="deleteAll">
+        <i class="fas fa-trash mr-1"></i>
         Xóa tất cả
       </button>
     </form>
@@ -30,12 +34,41 @@
               </div>
             </div>
           </form>
+          <div class="dropdown ml-2">
+            <button class="btn btn-default" data-toggle="dropdown">
+              <i class="fa fa-filter"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left">
+              <span class="dropdown-item dropdown-header"><strong>Lọc tìm kiếm</strong></span>
+              <div class="dropdown-divider"></div>
+              <div class="dropdown-item">
+                <label>
+                  <input type="checkbox" name="" id="addressUser">
+                  <span>Địa chỉ: </span>
+                  <div><input type="text" id=""></div>
+                </label>
+              </div>
+              <div class="dropdown-divider"></div>
+              <div class="dropdown-item">
+                <input type="checkbox" name="" id="">
+                <span>Ngày tạo: </span>
+                <div>
+                  <input type="text">
+                </div>
+              </div>
+              <div class="dropdown-divider"></div>
+              <div class="dropdown-item">
+                <button>OK</button>
+                <button>Cancel</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <table class="table table-bordered">
+  <table class="table table-bordered text-center">
     <thead>
       <tr>
         <th><input type="checkbox" id="checkboxAll"></th>
@@ -97,7 +130,6 @@
           </div>
         </td>
       </tr>
-
       <% }) %>
     </tbody>
   </table>
@@ -115,24 +147,7 @@
         </div>
       </div>
     </form>
-    <% if(totalPage > 1) {%>
-    <nav class="d-flex justify-content-end ml-3">
-      <ul class="pagination">
-        <% if(page > 1) { %>
-        <li class="page-item">
-          <a class="page-link" href="?<%= getPaginateUrl(req, +page - 1) %>">Trước</a>
-        </li>
-        <% } %> <% for(let i = 1; i <= totalPage; i++) { %>
-        <li class="page-item <%= +page === +i ? 'active': '' %>">
-          <a class="page-link" href="?<%= getPaginateUrl(req, i) %>"><%= i %></a>
-        </li>
-        <% } %> <% if(page < totalPage) { %>
-        <li class="page-item">
-          <a class="page-link" href="?<%= getPaginateUrl(req, +page + 1) %>">Sau</a>
-        </li>
-        <% } %>
-      </ul>
-    </nav>
-    <% } %>
+    <%- include("../../subviews/paginate", {totalPage, page}) %>
+
   </div>
 </div>
