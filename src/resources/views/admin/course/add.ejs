@@ -1,43 +1,38 @@
 <div class="card card-primary">
-  <form action="/admin/user/add" method="post">
+  <form action="/admin/courses/add" method="post">
     <div class="card-body">
       <div class="form-group">
         <label for="">Tên khóa học:</label>
-        <input type="text" class="form-control" id="" name="" placeholder="Nhập tên khóa học" />
+        <input type="text" class="form-control" name="courseName" placeholder="Nhập tên khóa học" />
       </div>
       <div class="form-group">
         <label for="">Học phí:</label>
-        <input type="email" class="form-control" id="" name="" placeholder="Nhập học phí" />
+        <input type="email" class="form-control" name="coursePrice" placeholder="Nhập học phí" />
       </div>
       <div class="form-group">
         <label for="phoneUser">Giảng viên:</label>
-        <select class="form-control" name="" id="">
+        <select class="form-control" name="teacherId" id="">
           <option value="">Chọn giảng viên</option>
           <% if(teachers){ %>
           <% teachers.forEach((teacher) => {%>
-          <option value=""><%= teacher.name %> - <%= teacher.email %></option>
+          <option value="<%= teacher.id %>"><%= teacher.name %> - <%= teacher.email %></option>
           <% }) %>
           <% } %>
         </select>
       </div>
       <div class="form-group">
         <label for="">Học thử:</label>
-        <input type="text" class="form-control" id="" name="" placeholder="Nhập số ngày học thử" />
+        <input type="text" class="form-control" name="tryLearn" placeholder="Nhập số ngày học thử" />
       </div>
       <div class="form-group">
         <label for="">Sĩ số:</label>
-        <input type="text" class="form-control" id="" name="" placeholder="Nhập sĩ số" />
+        <input type="text" class="form-control" name="quantityCourse" placeholder="Nhập sĩ số" />
       </div>
       <div class="form-group">
         <label for="">Thời gian:</label>
-        <input type="text" class="form-control" id="" name="" placeholder="Nhập thời gian" />
-      </div>
-      <div class="form-group">
-        <label for="">Tài liệu:</label>
-        <input type="text" class="form-control" id="" name="" placeholder="Nhập tài liệu" />
+        <input type="text" class="form-control" name="durationCourse" placeholder="Nhập thời gian" />
       </div>
     </div>
-    <!-- /.card-body -->
 
     <div class="card-footer">
       <button type="submit" class="btn btn-primary">

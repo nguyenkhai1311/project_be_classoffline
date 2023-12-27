@@ -4,15 +4,15 @@ const LoginToken = model.LoginToken;
 module.exports = async (req, res, next) => {
     const token = req.cookies.token;
     const { id } = req.user;
-    if (!token && req.user) {
-        req.logout(function (err) {
-            if (err) {
-                return next(err);
-            }
-            res.redirect("/");
-        });
-        return;
-    }
+    // if (!token && req.user) {
+    //     req.logout(function (err) {
+    //         if (err) {
+    //             return next(err);
+    //         }
+    //         res.redirect("/");
+    //     });
+    //     return;
+    // }
 
     if (token) {
         const tokenUser = await LoginToken.findOne({

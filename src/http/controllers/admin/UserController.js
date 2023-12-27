@@ -17,7 +17,6 @@ module.exports = {
         const filters = {};
         // Tìm những người có quyền quản trị
         filters.typeId = 1;
-
         const title = "Danh sách người dùng";
         let { keyword, page, recordNumber } = req.query;
         if (!recordNumber) {
@@ -87,7 +86,17 @@ module.exports = {
     add: async (req, res) => {
         const title = "Thêm người dùng";
         const errors = req.flash("errors");
-        res.render("admin/user/add", { title, moduleName, errors, validate });
+
+        const response = await fetch("https://provinces.open-api.vn/api/p/");
+        const provinces = await response.json();
+
+        res.render("admin/user/add", {
+            title,
+            moduleName,
+            errors,
+            validate,
+            provinces,
+        });
     },
 
     store: async (req, res) => {
@@ -193,8 +202,18 @@ module.exports = {
 
     handleImport: async (req, res) => {
         const file = req.file;
-        console.log(file);
-        await importFile(file.path, "User_Admin");
+        console.log("Tên file", file);
+        const data = await importFile(file.path);
+        console.log(data);
+        for (let index = 0; index < data.length; index++) {
+            await User.create({
+                name: data[index].column_1,
+                email: data[index].column_2.text,
+                phone: data[index].column_3,
+                address: data[index].column_4,
+                typeId: data[index].column_5,
+            });
+        }
         res.redirect("/admin/users");
     },
 };
