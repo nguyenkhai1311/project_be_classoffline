@@ -1,5 +1,6 @@
 const model = require("../../../models/index");
 const User = model.User;
+const Type = model.Type;
 
 const moduleName = "Khóa học";
 
@@ -15,8 +16,11 @@ module.exports = {
     add: async (req, res) => {
         const title = "Thêm khóa học";
         const teachers = await User.findAll({
-            where: {
-                typeId: 2,
+            include: {
+                model: Type,
+                where: {
+                    name: "Teacher",
+                },
             },
         });
         res.render("admin/course/add", {
@@ -25,4 +29,6 @@ module.exports = {
             teachers,
         });
     },
+
+    store: async (req, res) => {},
 };

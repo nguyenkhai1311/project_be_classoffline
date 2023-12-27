@@ -1,26 +1,25 @@
 const ExcelJS = require("exceljs");
-const model = require("../models/index");
-const User = model.User;
 
-module.exports = async (filename, nameSheet) => {
-    var workbook = new ExcelJS.Workbook();
-
+module.exports = async (filename) => {
+    const workbook = new ExcelJS.Workbook();
+    let arr = [];
     await workbook.xlsx.readFile(filename).then(function () {
-        var worksheet = workbook.getWorksheet(nameSheet);
+        const worksheet = workbook.getWorksheet(1);
+        const columnCount = worksheet.actualColumnCount;
         worksheet.eachRow(
             { includeEmpty: false },
             async function (row, rowNumber) {
                 const currRow = worksheet.getRow(rowNumber);
+                let data = {};
                 if (rowNumber !== 1) {
-                    await User.create({
-                        name: currRow.getCell(2).value,
-                        email: currRow.getCell(3).value.text,
-                        phone: currRow.getCell(4).value,
-                        address: currRow.getCell(5).value,
-                        typeId: currRow.getCell(6).value,
-                    });
+                    for (let index = 2; index < columnCount; index++) {
+                        data[`column_${index - 1}`] =
+                            currRow.getCell(index).value;
+                    }
+                    arr.push(data);
                 }
             }
         );
     });
+    return arr;
 };

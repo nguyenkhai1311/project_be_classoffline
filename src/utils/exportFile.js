@@ -14,15 +14,14 @@ module.exports = async (
         sheet.columns = columns;
 
         await models.map((value, index) => {
-            console.log(value.dataValues);
             sheet.addRow({
                 stt: index + 1,
                 name: value.dataValues.name,
                 email: value.dataValues.email,
                 address: value.dataValues.address,
+                createdAt: value.dataValues.createdAt,
             });
         });
-        console.log(sheet);
 
         res.setHeader(
             "Content-Type",
