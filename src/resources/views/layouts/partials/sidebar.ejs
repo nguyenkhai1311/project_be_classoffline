@@ -65,8 +65,8 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
+        <li class="nav-item <%= moduleName === "Lớp học" ? "menu-is-opening menu-open" : "" %>">
+          <a href="#" class="nav-link <%= moduleName === "Lớp học" ? "active" : "" %>">
             <i class="fas fa-book-reader mr-1"></i>
             <p>
               Lớp học
@@ -75,13 +75,13 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="/admin/course" class="nav-link">
+              <a href="/admin/classes" class="nav-link <%= title === "Danh sách lớp học" ? "active" : "" %>">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Danh sách</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="/admin/course/add" class="nav-link">
+              <a href="/admin/classes/add" class="nav-link <%= title === "Thêm lớp học" ? "active" : "" %>">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Thêm mới</p>
               </a>

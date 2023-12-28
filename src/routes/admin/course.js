@@ -12,6 +12,7 @@ router.get("/edit/:id", CourseController.edit);
 router.patch("/edit/:id", CourseController.update);
 
 router.delete("/delete/:id", CourseController.destroy);
+router.delete("/deleteAll", CourseController.destroyAll);
 
 router.get("/detail", CourseController.detail);
 
