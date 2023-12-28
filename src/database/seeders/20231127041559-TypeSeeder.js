@@ -10,12 +10,17 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
-                name: "Giảng viên",
+                name: "Teacher",
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
             {
-                name: "Học Viên",
+                name: "Tutors",
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                name: "Student",
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },

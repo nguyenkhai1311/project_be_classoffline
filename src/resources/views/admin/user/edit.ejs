@@ -1,5 +1,5 @@
 <div class="card card-primary">
-  <form action="/admin/user/edit/<%= user.id %>" method="post">
+  <form action="/admin/users/edit/<%= user.id %>" method="post">
     <div class="card-body">
       <div class="form-group">
         <label for="nameUser">Tên người dùng:</label>
@@ -14,7 +14,7 @@
         <input type="text" class="form-control" id="phoneUser" name="phoneUser" placeholder="Nhập số điện thoại" value="<%= user.phone %>" />
       </div>
       <div class="form-group">
-        <label for="addressUser">Địa chỉ</label>
+        <label for="addressUser">Địa chỉ:</label>
         <input type="text" class="form-control" id="addressUser" name="addressUser" placeholder="Nhập địa chỉ" value="<%= user.address %>" />
       </div>
       <div class="form-group">
