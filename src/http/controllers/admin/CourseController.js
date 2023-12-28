@@ -191,5 +191,25 @@ module.exports = {
         1;
     },
 
-    destroyAll: async (req, res) => {},
+    destroyAll: async (req, res) => {
+        const { listCourseDelete } = req.body;
+        const listIdCourse = listCourseDelete.split(",");
+        console.log(listIdCourse);
+        await Course.destroy({
+            where: {
+                id: {
+                    [Op.in]: listIdCourse,
+                },
+            },
+        });
+        res.redirect("/admin/courses");
+    },
+
+    detail: async (req, res) => {
+        const title = "Chi tiết khóa học";
+        res.render("admin/course/detail", {
+            title,
+            moduleName,
+        });
+    },
 };
