@@ -40,6 +40,7 @@ module.exports = {
             },
             where: filters,
         });
+
         // Lấy tổng số trang
         const totalCount = totalCountObj.count;
         const totalPage = Math.ceil(totalCount / recordNumber);
@@ -47,10 +48,10 @@ module.exports = {
         if (!page || page < 1) {
             page = 1;
         }
-        if (page > totalPage) {
+        if (page > totalPage && page > 1) {
             page = totalPage;
         }
-
+        console.log("Tổng số trang", page, totalPage);
         const offset = (page - 1) * recordNumber;
 
         const courses = await Course.findAll({
@@ -61,6 +62,7 @@ module.exports = {
             limit: +recordNumber,
             offset: offset,
         });
+
         res.render("admin/course/index", {
             req,
             title,

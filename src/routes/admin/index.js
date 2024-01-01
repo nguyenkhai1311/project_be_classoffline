@@ -8,6 +8,7 @@ const userRouter = require("./user");
 const profileRouter = require("./profile");
 const courseRouter = require("./course");
 const classRouter = require("./class");
+const teacherRouter = require("./teacher");
 
 router.get("/", DashboardController.index);
 router.get("/changePassword", ProfileController.changePassword);
@@ -17,5 +18,6 @@ router.use("/profile", profileRouter);
 router.use("/users", userRouter);
 router.use("/courses", courseRouter);
 router.use("/classes", classRouter);
+router.use("/teachers", teacherRouter);
 
 module.exports = router;

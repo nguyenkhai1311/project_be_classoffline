@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            Class.belongsTo(models.Course);
+            Class.belongsTo(models.Course, { foreignKey: "courseId" });
             Class.belongsToMany(models.User, {
                 through: "Classes_Teachers",
                 foreignKey: "classId",
@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
             Class.hasMany(models.StudentsAttendance);
             Class.hasMany(models.Exercise);
             Class.hasMany(models.Comment);
+            Class.hasMany(models.StudentsClass, { foreignKey: "classId" });
         }
     }
     Class.init(
@@ -35,8 +36,6 @@ module.exports = (sequelize, DataTypes) => {
             quantity: DataTypes.INTEGER,
             startDate: DataTypes.DATE,
             endDate: DataTypes.DATE,
-            schedule: DataTypes.INTEGER(1),
-            timeLearn: DataTypes.STRING(50),
             courseId: DataTypes.INTEGER,
             createdAt: DataTypes.DATE,
             updatedAt: DataTypes.DATE,
