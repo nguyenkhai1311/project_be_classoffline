@@ -51,7 +51,7 @@ module.exports = {
         if (!page || page < 1) {
             page = 1;
         }
-        if (page > totalPage) {
+        if (page > totalPage && page > 1) {
             page = totalPage;
         }
 

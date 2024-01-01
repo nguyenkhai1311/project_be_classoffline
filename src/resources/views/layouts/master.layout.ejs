@@ -28,6 +28,11 @@
   <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css" />
   <!-- Switch ON/OFF -->
   <link rel="stylesheet" href="/assets/css/switch.css" />
+
+  <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+
   <style>
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,
@@ -39,6 +44,13 @@
     /* Firefox */
     input[type=number] {
       -moz-appearance: textfield;
+    }
+
+
+    .form-add-course .form-group .chosen-choices {
+      font-family: "Source Sans Pro";
+      border-radius: 0.25rem;
+      padding: 6px 12px !important;
     }
   </style>
 </head>
@@ -140,6 +152,9 @@
   <script src="/assets/js/recordNumber.js"></script>
   <!-- Check All -->
   <script src="/assets/js/checkboxAll.js"></script>
+
+  <script src="/assets/js/setTimeSchedule.js"></script>
+
 </body>
 <script>
   $(function() {
