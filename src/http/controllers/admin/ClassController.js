@@ -53,9 +53,9 @@ module.exports = {
         });
 
         const classEndDate = date.getEndDate(
-            classStartDate,
-            course.duration,
-            classSchedule.length
+            classStartDate, // Ngày bắt đầu
+            course.duration, // Tổng số buổi học của 1 khóa
+            classSchedule.length // Tổng số buổi học trong 1 tuần
         );
 
         const statusClass = await Class.create({
@@ -66,12 +66,20 @@ module.exports = {
             courseId: courseId,
         });
 
-        for (let index = 0; index < classSchedule.length; index++) {
+        if (classSchedule.length === 1) {
             await ScheduleClass.create({
-                schedule: classSchedule[index],
-                timeLearn: `${timeLearnStart[index]} - ${timeLearnEnd[index]}`,
+                schedule: classSchedule,
+                timeLearn: `${timeLearnStart} - ${timeLearnEnd}`,
                 classId: statusClass.id,
             });
+        } else {
+            for (let index = 0; index < classSchedule.length; index++) {
+                await ScheduleClass.create({
+                    schedule: classSchedule[index],
+                    timeLearn: `${timeLearnStart[index]} - ${timeLearnEnd[index]}`,
+                    classId: statusClass.id,
+                });
+            }
         }
         res.redirect("/admin/classes");
     },
@@ -79,6 +87,7 @@ module.exports = {
     edit: async (req, res) => {
         const title = "Sửa lớp học";
         const { id } = req.params;
+        let scheduleVal = [];
 
         const classVal = await Class.findOne({
             where: {
@@ -87,13 +96,25 @@ module.exports = {
         });
 
         const courses = await Course.findAll();
-        console.log(moment(classVal.startDate).format("MM/DD/YYYY"));
+
+        const scheduleClass = await ScheduleClass.findAll({
+            where: {
+                classId: id,
+            },
+        });
+
+        scheduleClass.forEach(({ schedule }) => {
+            scheduleVal.push(schedule);
+        });
+        console.log(scheduleVal);
+
         res.render("admin/class/edit", {
             title,
             moduleName,
             classVal,
             courses,
             moment,
+            scheduleVal,
         });
     },
 };

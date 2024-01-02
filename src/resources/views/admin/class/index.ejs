@@ -61,9 +61,9 @@
         <td><%= classVal.quantity %></td>
         <td><%= moment(classVal.startDate).format("MM/DD/YYYY") %></td>
         <td><%= moment(classVal.endDate).format("MM/DD/YYYY") %></td>
-        <td><% scheduleClass.forEach((scheduleVal) => { %>
+        <td><% scheduleClass.forEach((scheduleVal,i) => { %>
           <% if(classVal.id === scheduleVal.classId) {%>
-          <%= scheduleVal.schedule === 0 ? "Chủ Nhật" : `Thứ ${scheduleVal.schedule + 1}, ` %>
+          <%= scheduleVal.schedule === 0 ? "Chủ Nhật" : `Thứ ${scheduleVal.schedule + 1}${i<scheduleClass.length-1 ?',': ''}` %>
           <% } %>
           <% })  %>
         </td>
