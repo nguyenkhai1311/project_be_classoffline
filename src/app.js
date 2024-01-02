@@ -36,6 +36,11 @@ const connectGooglePassport = require("./passport/connect/googlePassport");
 const AuthMiddleware = require("./http/middlewares/AuthMiddleware");
 const DeviceMiddleware = require("./http/middlewares/DeviceMiddleware");
 const RoleMiddleware = require("./http/middlewares/RoleMiddleware");
+const AdminMiddleware = require("./http/middlewares/AdminMiddleware");
+const StudentMiddleware = require("./http/middlewares/StudentMiddleware");
+const TeacherMiddleware = require("./http/middlewares/TeacherMiddleware");
+
+const typeName = require("./http/middlewares/RoleMiddleware");
 
 var app = express();
 // app.use(cors());
@@ -95,25 +100,13 @@ app.use(
 
 // Routes
 app.use("/auth", authRouter);
-app.use(AuthMiddleware);
-app.use(DeviceMiddleware);
+// app.use(AuthMiddleware);
+// app.use(DeviceMiddleware);
 app.use("/connect", connectRouter);
-app.use("/admin", adminRouter);
+
 app.use("/", studentsRouter);
 app.use("/teacher", teachersRouter);
-// console.log(`Check Role: ${RoleMiddleware.check()}`);
-// if (RoleMiddleware.check === "Admin") {
-//     app.use("/admin", adminRouter);
-//     app.use("/", studentsRouter);
-//     app.use("/teacher", teachersRouter);
-// }
-// if (RoleMiddleware.check === "Teacher") {
-//     app.use("/teacher", teachersRouter);
-// }
-
-// if (RoleMiddleware.check === "Student") {
-//     app.use("/", studentsRouter);
-// }
+app.use("/admin", adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -45,3 +45,9 @@ if (schedule) {
         setEventCloseDaySchedule(wrapTimeSchedule);
     });
 }
+
+window.onload = () => {
+    const wrapTimeSchedule = document.querySelector(".wrap__time-schedule");
+    setEventCloseDaySchedule(wrapTimeSchedule);
+    renderTimeLearnSchedule(wrapTimeSchedule);
+};

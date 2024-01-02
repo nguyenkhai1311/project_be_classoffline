@@ -3,10 +3,9 @@ const Type = model.Type;
 
 module.exports = {
     check: async (req, res, next) => {
-        const { typeId } = req.user;
         const type = await Type.findOne({
             where: {
-                id: typeId,
+                id: req.user.typeId,
             },
         });
 
