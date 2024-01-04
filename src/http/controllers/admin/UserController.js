@@ -97,30 +97,29 @@ module.exports = {
         const title = "Thêm người dùng";
         const errors = req.flash("errors");
 
-        const response = await fetch("https://provinces.open-api.vn/api/p/");
-        const provinces = await response.json();
-
         res.render("admin/user/add", {
             title,
             moduleName,
             errors,
             validate,
-            provinces,
         });
     },
 
     store: async (req, res) => {
         const result = validationResult(req);
         if (result.isEmpty()) {
-            const { nameUser, emailUser, phoneUser, addressUser, typeId } =
-                req.body;
-
+            const { name, email, phone, address } = req.body;
+            const type = await Type.findOne({
+                where: {
+                    name: "Admin",
+                },
+            });
             await User.create({
-                name: nameUser,
-                email: emailUser,
-                phone: phoneUser,
-                address: addressUser,
-                typeId: typeId,
+                name: name,
+                email: email,
+                phone: phone,
+                address: address,
+                typeId: type.id,
             });
             res.redirect("/admin/users");
             return;
@@ -142,15 +141,19 @@ module.exports = {
 
     update: async (req, res) => {
         const { id } = req.params;
-        const { nameUser, emailUser, phoneUser, addressUser, typeId } =
-            req.body;
+        const { name, email, phone, address } = req.body;
+        const type = await Type.findOne({
+            where: {
+                name: "Admin",
+            },
+        });
         await User.update(
             {
-                name: nameUser,
-                email: emailUser,
-                phone: phoneUser,
-                address: addressUser,
-                typeId: typeId,
+                name: name,
+                email: email,
+                phone: phone,
+                address: address,
+                typeId: type.id,
             },
             {
                 where: {
