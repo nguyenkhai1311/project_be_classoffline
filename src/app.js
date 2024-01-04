@@ -98,22 +98,9 @@ app.use("/auth", authRouter);
 app.use(AuthMiddleware);
 app.use(DeviceMiddleware);
 app.use("/connect", connectRouter);
-app.use("/admin", adminRouter);
-app.use("/", studentsRouter);
-app.use("/teacher", teachersRouter);
-// console.log(`Check Role: ${RoleMiddleware.check()}`);
-// if (RoleMiddleware.check === "Admin") {
-//     app.use("/admin", adminRouter);
-//     app.use("/", studentsRouter);
-//     app.use("/teacher", teachersRouter);
-// }
-// if (RoleMiddleware.check === "Teacher") {
-//     app.use("/teacher", teachersRouter);
-// }
-
-// if (RoleMiddleware.check === "Student") {
-//     app.use("/", studentsRouter);
-// }
+app.use("/admin", RoleMiddleware, adminRouter);
+app.use("/teacher", RoleMiddleware, teachersRouter);
+app.use("/", RoleMiddleware, studentsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

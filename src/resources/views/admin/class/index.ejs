@@ -49,24 +49,26 @@
         <th>Ngày khai giảng</th>
         <th>Ngày bế giảng</th>
         <th>Lịch học</th>
-        <th>Thời gian học</th>
-        <th>Giảng viên</th>
         <th colspan="2">Chức năng</th>
       </tr>
     </thead>
     <tbody>
+      <% classes.forEach( (classVal, index) => {%>
       <tr>
         <th><input type="checkbox" class="checkboxItem"></th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td><%= moment(endDate).format("DD/MM/YYYY") %></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td><%= index + 1 %></td>
+        <td><a href=""><%= classVal.name %></a></td>
+        <td><%= classVal.quantity %></td>
+        <td><%= moment(classVal.startDate).format("MM/DD/YYYY") %></td>
+        <td><%= moment(classVal.endDate).format("MM/DD/YYYY") %></td>
+        <td><% scheduleClass.forEach((scheduleVal,i) => { %>
+          <% if(classVal.id === scheduleVal.classId) {%>
+          <%= scheduleVal.schedule === 0 ? "Chủ Nhật" : `Thứ ${scheduleVal.schedule + 1}${i<scheduleClass.length-1 ?',': ''}` %>
+          <% } %>
+          <% })  %>
+        </td>
         <td>
-          <form action="/admin/courses/edit/" method="get">
+          <form action="/admin/classes/edit/<%= classVal.id %>" method="get">
             <button type="submit" class="btn btn-info">
               <i class="fas fa-edit"></i>
             </button>
@@ -92,7 +94,7 @@
                   <button type="button" class="btn btn-outline-light" data-dismiss="modal">
                     Không
                   </button>
-                  <form action="/admin/courses/delete/" method="post">
+                  <form action="/admin/classes/delete/<%= classVal.id %>" method="post">
                     <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" class="btn btn-outline-light">
                       Có
@@ -104,6 +106,7 @@
           </div>
         </td>
       </tr>
+      <% }) %>
     </tbody>
   </table>
 </div>

@@ -1,0 +1,29 @@
+<div class="card card-primary">
+  <form action="/admin/teachers/edit/<%= teacher.id %>" method="post">
+    <div class="card-body">
+      <div class="form-group">
+        <label for="nameUser">Tên người dùng:</label>
+        <input type="text" class="form-control" id="nameUser" name="name" placeholder="Nhập tên người dùng" value="<%= teacher.name %>" />
+      </div>
+      <div class="form-group">
+        <label for="emailUser">Email:</label>
+        <input type="email" class="form-control" id="emailUser" name="email" placeholder="Nhập email" value="<%= teacher.email %>" />
+      </div>
+      <div class="form-group">
+        <label for="phoneUser">Số điện thoại:</label>
+        <input type="text" class="form-control" id="phoneUser" name="phone" placeholder="Nhập số điện thoại" value="<%= teacher.phone %>" />
+      </div>
+      <div class="form-group">
+        <label for="addressUser">Địa chỉ:</label>
+        <input type="text" class="form-control" id="addressUser" name="address" placeholder="Nhập địa chỉ" value="<%= teacher.address %>" />
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <input type="hidden" name="_method" value="PATCH">
+      <button type="submit" class="btn btn-primary">
+        Sửa giảng viên
+      </button>
+    </div>
+  </form>
+</div>

@@ -11,11 +11,11 @@ const model = require("../../../models/index");
 const User = model.User;
 const Type = model.Type;
 
-const moduleName = "Người dùng";
+const moduleName = "Giảng viên";
 
 module.exports = {
     index: async (req, res) => {
-        const title = "Danh sách người dùng";
+        const title = "Danh sách giảng viên";
         const filters = {};
 
         let { keyword, page, recordNumber } = req.query;
@@ -43,7 +43,7 @@ module.exports = {
             include: {
                 model: Type,
                 where: {
-                    name: "Admin",
+                    name: "Teacher",
                 },
             },
             where: filters,
@@ -60,11 +60,11 @@ module.exports = {
         }
 
         const offset = (page - 1) * recordNumber;
-        const users = await User.findAll({
+        const teachers = await User.findAll({
             include: {
                 model: Type,
                 where: {
-                    name: "Admin",
+                    name: "Teacher",
                 },
             },
             where: filters,
@@ -80,9 +80,9 @@ module.exports = {
             offset: offset,
         });
 
-        res.render("admin/user/index", {
+        res.render("admin/teacher/index", {
             req,
-            users,
+            teachers,
             moment,
             title,
             moduleName,
@@ -94,63 +94,66 @@ module.exports = {
     },
 
     add: async (req, res) => {
-        const title = "Thêm người dùng";
+        const title = "Thêm giảng viên";
         const errors = req.flash("errors");
 
-        const response = await fetch("https://provinces.open-api.vn/api/p/");
-        const provinces = await response.json();
-
-        res.render("admin/user/add", {
+        res.render("admin/teacher/add", {
             title,
             moduleName,
             errors,
             validate,
-            provinces,
         });
     },
 
     store: async (req, res) => {
         const result = validationResult(req);
         if (result.isEmpty()) {
-            const { nameUser, emailUser, phoneUser, addressUser, typeId } =
-                req.body;
-
-            await User.create({
-                name: nameUser,
-                email: emailUser,
-                phone: phoneUser,
-                address: addressUser,
-                typeId: typeId,
+            const { name, email, phone, address } = req.body;
+            const type = await Type.findOne({
+                where: {
+                    name: "Teacher",
+                },
             });
-            res.redirect("/admin/users");
+            await User.create({
+                name: name,
+                email: email,
+                phone: phone,
+                address: address,
+                typeId: type.id,
+            });
+            res.redirect("/admin/teachers");
             return;
         }
         req.flash("errors", result.errors);
-        res.redirect("/admin/users/add");
+        res.redirect("/admin/teachers/add");
     },
 
     edit: async (req, res) => {
         const { id } = req.params;
-        const title = "Sửa người dùng";
-        const user = await User.findOne({
+        const title = "Sửa giảng viên";
+        const teacher = await User.findOne({
             where: {
                 id: id,
             },
         });
-        res.render("admin/user/edit", { user, title, moduleName });
+        res.render("admin/teacher/edit", { teacher, title, moduleName });
     },
 
     update: async (req, res) => {
         const { id } = req.params;
-        const { nameUser, emailUser, phoneUser, addressUser, typeId } =
-            req.body;
+        const { name, email, phone, address } = req.body;
+        const type = await Type.findOne({
+            where: {
+                name: "Teacher",
+            },
+        });
         await User.update(
             {
-                name: nameUser,
-                email: emailUser,
-                phone: phoneUser,
-                address: addressUser,
-                typeId: typeId,
+                name: name,
+                email: email,
+                phone: phone,
+                address: address,
+                typeId: type.id,
             },
             {
                 where: {
@@ -158,37 +161,37 @@ module.exports = {
                 },
             }
         );
-        res.redirect(`/admin/users/edit/${id}`);
+        res.redirect(`/admin/teachers/edit/${id}`);
     },
 
     destroy: async (req, res) => {
         const { id } = req.params;
-        const user = await User.findOne({
+        const teacher = await User.findOne({
             where: {
                 id: id,
             },
         });
-        if (user) {
+        if (teacher) {
             await User.destroy({
                 where: {
                     id: id,
                 },
             });
         }
-        res.redirect("/admin/users");
+        res.redirect("/admin/teachers");
     },
 
     destroyAll: async (req, res) => {
-        const { listUserDelete } = req.body;
-        const listIdUser = listUserDelete.split(",");
+        const { listTeacherDelete } = req.body;
+        const listIdTeacher = listTeacherDelete.split(",");
         await User.destroy({
             where: {
                 id: {
-                    [Op.in]: listIdUser,
+                    [Op.in]: listIdTeacher,
                 },
             },
         });
-        res.redirect("/admin/users");
+        res.redirect("/admin/teachers");
     },
 
     export: async (req, res) => {
