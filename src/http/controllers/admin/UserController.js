@@ -9,16 +9,15 @@ const { getPaginateUrl } = require("../../../utils/url");
 const validate = require("../../../utils/validate");
 const model = require("../../../models/index");
 const User = model.User;
+const Type = model.Type;
 
 const moduleName = "Người dùng";
 
 module.exports = {
     index: async (req, res) => {
         const title = "Danh sách người dùng";
-
         const filters = {};
-        // Tìm những người có quyền quản trị
-        filters.typeId = 1;
+
         let { keyword, page, recordNumber } = req.query;
         if (!recordNumber) {
             recordNumber = 5;
@@ -41,11 +40,16 @@ module.exports = {
 
         // Lấy tổng số bản ghi
         const totalCountObj = await User.findAndCountAll({
+            include: {
+                model: Type,
+                where: {
+                    name: "Admin",
+                },
+            },
             where: filters,
         });
         // Lấy tổng số trang
         const totalCount = totalCountObj.count;
-        console.log(totalCount);
         const totalPage = Math.ceil(totalCount / recordNumber);
         // Lấy số trang
         if (!page || page < 1) {
@@ -57,6 +61,12 @@ module.exports = {
 
         const offset = (page - 1) * recordNumber;
         const users = await User.findAll({
+            include: {
+                model: Type,
+                where: {
+                    name: "Admin",
+                },
+            },
             where: filters,
             attributes: [
                 "id",
