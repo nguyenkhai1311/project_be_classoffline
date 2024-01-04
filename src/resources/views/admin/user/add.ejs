@@ -3,42 +3,24 @@
     <div class="card-body">
       <div class="form-group">
         <label for="nameUser">Tên người dùng:</label>
-        <input type="text" class="form-control" id="nameUser" name="nameUser" placeholder="Nhập tên người dùng" />
-        <span class="text-danger"><%= validate.getError(errors, "nameUser")%></span>
+        <input type="text" class="form-control" id="nameUser" name="name" placeholder="Nhập tên người dùng" />
+        <span class="text-danger"><%= validate.getError(errors, "name")%></span>
       </div>
       <div class="form-group">
         <label for="emailUser">Email:</label>
-        <input type="email" class="form-control" id="emailUser" name="emailUser" placeholder="Nhập email" />
-        <span class="text-danger"><%= validate.getError(errors, "emailUser")%></span>
+        <input type="email" class="form-control" id="emailUser" name="email" placeholder="Nhập email người dùng" />
+        <span class="text-danger"><%= validate.getError(errors, "email")%></span>
       </div>
       <div class="form-group">
         <label for="phoneUser">Số điện thoại:</label>
-        <input type="text" class="form-control" id="phoneUser" name="phoneUser" placeholder="Nhập số điện thoại" />
-        <span class="text-danger"><%= validate.getError(errors, "phoneUser")%></span>
+        <input type="text" class="form-control" id="phoneUser" name="phone" placeholder="Nhập số điện thoại người dùng" />
+        <span class="text-danger"><%= validate.getError(errors, "phone")%></span>
       </div>
       <div class="form-group">
         <label for="addressUser">Địa chỉ:</label>
-        <select class="form-control" name="" id="">
-          <option value="">Chọn tỉnh thành</option>
-          <% if(provinces){ %>
-          <% provinces.forEach(({name}) => {%>
-          <option value="<%= name %>"><%= name %></option>
-          <% }) %>
-          <% } %>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="">Chức vụ:</label>
-        <input type="radio" id="typeAdmin" name="typeId" value="1" />
-        <label for="typeAdmin">Quản trị</label>
-        <input type="radio" id="typeTeacher" name="typeId" value="2" />
-        <label for="typeTeacher">Giáo viên</label>
-        <input type="radio" id="typeStudent" name="typeId" value="3" />
-        <label for="typeStudent">Học viên</label>
-        <p><span class="text-danger"><%= validate.getError(errors, "typeId")%></span></p>
+        <input type="text" class="form-control" id="addressUser" name="address" placeholder="Nhập địa chỉ người dùng" />
       </div>
     </div>
-    <!-- /.card-body -->
 
     <div class="card-footer">
       <button type="submit" class="btn btn-primary">
