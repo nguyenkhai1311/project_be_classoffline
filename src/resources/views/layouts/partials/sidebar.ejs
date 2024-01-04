@@ -111,8 +111,8 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
+        <li class="nav-item <%= moduleName === "Học viên" ? "menu-is-opening menu-open" : "" %>">
+          <a href="#" class="nav-link <%= moduleName === "Học viên" ? "active" : "" %>">
             <i class="fas fa-graduation-cap"></i>
             <p>
               Học viên
@@ -121,13 +121,13 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="/admin/students" class="nav-link">
+              <a href="/admin/students" class="nav-link <%= title === "Danh sách học viên" ? "active" : "" %>">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Danh sách</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="/admin/students/add" class="nav-link">
+              <a href="/admin/students/add" class="nav-link <%= title === "Thêm học viên" ? "active" : "" %>">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Thêm mới</p>
               </a>
