@@ -11,14 +11,39 @@
         </button>
       </form>
     </div>
-    <form action="/admin/users/deleteAll" method="POST">
-      <input type="hidden" name="_method" value="DELETE">
-      <input type="hidden" id="listDelete" name="listUserDelete" value="">
-      <button type="submit" class="btn btn-danger" id="deleteAll">
+    <div>
+      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-danger">
         <i class="fas fa-trash mr-1"></i>
         Xóa tất cả
       </button>
-    </form>
+      <div class="modal fade" id="modal-danger">
+        <div class="modal-dialog">
+          <div class="modal-content bg-danger">
+            <div class="modal-header">
+              <h4 class="modal-title">Xóa nhiều người dùng</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Bạn có chắc xóa tất cả các người dùng này?</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-outline-light" data-dismiss="modal">
+                Không
+              </button>
+              <form action="/admin/users/deleteAll" method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" id="listDelete" name="listUserDelete" value="">
+                <button type="submit" class="btn btn-outline-light" id="deleteAll">
+                  Có
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <section class="justify-content-between content mb-3">
     <div class="container-fluid">
@@ -38,30 +63,6 @@
             <button class="btn btn-default" data-toggle="dropdown">
               <i class="fa fa-filter"></i>
             </button>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left">
-              <span class="dropdown-item dropdown-header"><strong>Lọc tìm kiếm</strong></span>
-              <div class="dropdown-divider"></div>
-              <div class="dropdown-item">
-                <label>
-                  <input type="checkbox" name="" id="addressUser">
-                  <span>Địa chỉ: </span>
-                  <div><input type="text" id=""></div>
-                </label>
-              </div>
-              <div class="dropdown-divider"></div>
-              <div class="dropdown-item">
-                <input type="checkbox" name="" id="">
-                <span>Ngày tạo: </span>
-                <div>
-                  <input type="text">
-                </div>
-              </div>
-              <div class="dropdown-divider"></div>
-              <div class="dropdown-item">
-                <button>OK</button>
-                <button>Cancel</button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
