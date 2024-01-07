@@ -9,6 +9,12 @@ module.exports = async (req, res, next) => {
             id: req.user.typeId,
         },
     });
+
+    // Nếu người dùng là trợ giảng thì sẽ có vai trò như giảng viên
+    if (type.name === "TA") {
+        type.name = "Teacher";
+    }
+
     // Tạo đường dẫn cho vai trò của người dùng.
     const rolePath = `/${type.name.toLowerCase()}`;
 
