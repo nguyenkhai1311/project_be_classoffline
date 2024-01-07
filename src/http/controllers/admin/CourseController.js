@@ -1,5 +1,8 @@
 const { Op } = require("sequelize");
 
+const constants = require("../../../constants/index");
+const exportFile = require("../../../utils/exportFile");
+const importFile = require("../../../utils/importFile");
 const { getPaginateUrl } = require("../../../utils/url");
 const model = require("../../../models/index");
 const User = model.User;
@@ -209,9 +212,62 @@ module.exports = {
 
     detail: async (req, res) => {
         const title = "Chi tiết khóa học";
+        const { id } = req.params;
+        const course = await Course.findOne({
+            include: {
+                model: User,
+            },
+            where: {
+                id: id,
+            },
+        });
         res.render("admin/course/detail", {
             title,
             moduleName,
+            course,
         });
+    },
+
+    export: async (req, res) => {
+        const courses = await Course.findAll({
+            include: {
+                model: User,
+            },
+        });
+        courses.forEach((course, index) => {
+            courses[index].dataValues.teacherName = course.User.name;
+        });
+        const columns = constants.courseColumnFile;
+        const date = new Date().getTime();
+        const fileName = `course_${date}.xlsx`;
+        exportFile(res, courses, "Course", fileName, columns);
+    },
+
+    import: (req, res) => {
+        const title = "Import File";
+        res.render("admin/course/import", { title, moduleName });
+    },
+
+    handleImport: async (req, res) => {
+        const file = req.file;
+        const data = await importFile(file.path);
+
+        for (let index = 0; index < data.length; index++) {
+            const user = await User.findOne({
+                where: {
+                    name: data[index].column_3,
+                },
+            });
+            console.log("Dataaaa: ", data);
+            await Course.create({
+                name: data[index].column_1,
+                price: data[index].column_2,
+                teacherId: user.id,
+                tryLearn: data[index].column_4,
+                quantity: data[index].column_5,
+                duration: data[index].column_6,
+            });
+        }
+        res.redirect("/admin/courses");
     },
 };

@@ -9,18 +9,22 @@ module.exports = async (
 ) => {
     try {
         let workbook = new ExcelJS.Workbook();
-
+        let arrData = [];
         const sheet = workbook.addWorksheet(nameSheet);
         sheet.columns = columns;
 
-        await models.map((value, index) => {
-            sheet.addRow({
-                stt: index + 1,
-                name: value.dataValues.name,
-                email: value.dataValues.email,
-                address: value.dataValues.address,
-                createdAt: value.dataValues.createdAt,
-            });
+        await models.forEach((model, index) => {
+            let data = {};
+            data[`${columns[0].key}`] = index + 1;
+            console.log("DataValues ", model.dataValues[`User`]["name"]);
+            for (let i = 1; i < columns.length; i++) {
+                data[`${columns[i].key}`] =
+                    model.dataValues[`${columns[i].key}`];
+            }
+            arrData.push(data);
+        });
+        arrData.forEach((data) => {
+            sheet.addRow(data);
         });
 
         res.setHeader(
