@@ -216,16 +216,19 @@ module.exports = {
 
     handleImport: async (req, res) => {
         const file = req.file;
-        console.log("Tên file", file);
         const data = await importFile(file.path);
-        console.log(data);
+        const type = await Type.findOne({
+            where: {
+                name: "Admin",
+            },
+        });
         for (let index = 0; index < data.length; index++) {
             await User.create({
                 name: data[index].column_1,
                 email: data[index].column_2.text,
                 phone: data[index].column_3,
                 address: data[index].column_4,
-                typeId: data[index].column_5,
+                typeId: type.id,
             });
         }
         res.redirect("/admin/users");

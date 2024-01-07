@@ -79,4 +79,31 @@ module.exports = {
             key: "address",
         },
     ],
+
+    studentColumnFile: [
+        {
+            header: "STT",
+            key: "stt",
+        },
+        {
+            header: "Tên",
+            key: "name",
+        },
+        {
+            header: "Email",
+            key: "email",
+        },
+        {
+            header: "SĐT",
+            key: "phone",
+        },
+        {
+            header: "Địa chỉ",
+            key: "address",
+        },
+        {
+            header: "Ngày tạo",
+            key: "createdAt",
+        },
+    ],
 };
