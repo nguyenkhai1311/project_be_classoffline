@@ -196,8 +196,11 @@ module.exports = {
 
     export: async (req, res) => {
         const user = await User.findAll({
-            where: {
-                typeId: 1,
+            include: {
+                model: Type,
+                where: {
+                    name: "Admin",
+                },
             },
         });
         const columns = constants.userColumnFile;
