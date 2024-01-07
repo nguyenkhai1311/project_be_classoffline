@@ -13,7 +13,7 @@ const methodOverride = require("method-override");
 const cors = require("cors");
 
 // Khai báo Router
-const studentsRouter = require("./routes/students/index");
+const studentsRouter = require("./routes/student/index");
 const teachersRouter = require("./routes/teacher/index");
 const adminRouter = require("./routes/admin/index");
 const authRouter = require("./routes/auth/index");
