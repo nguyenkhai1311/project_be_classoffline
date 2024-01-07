@@ -15,7 +15,7 @@ const moduleName = "Giảng viên";
 
 module.exports = {
     index: async (req, res) => {
-        const title = "Danh sách giảng viên";
+        const title = "Danh sách giảng viên, trợ giảng";
         const filters = {};
 
         let { keyword, page, recordNumber } = req.query;
@@ -43,7 +43,9 @@ module.exports = {
             include: {
                 model: Type,
                 where: {
-                    name: "Teacher",
+                    name: {
+                        [Op.or]: ["Teacher", "TA"],
+                    },
                 },
             },
             where: filters,
@@ -64,7 +66,9 @@ module.exports = {
             include: {
                 model: Type,
                 where: {
-                    name: "Teacher",
+                    name: {
+                        [Op.or]: ["Teacher", "TA"],
+                    },
                 },
             },
             where: filters,
@@ -73,6 +77,7 @@ module.exports = {
                 "name",
                 "email",
                 "phone",
+                "typeId",
                 "address",
                 "createdAt",
             ],
@@ -94,7 +99,7 @@ module.exports = {
     },
 
     add: async (req, res) => {
-        const title = "Thêm giảng viên";
+        const title = "Thêm giảng viên, trợ giảng";
         const errors = req.flash("errors");
 
         res.render("admin/teacher/add", {
@@ -108,10 +113,10 @@ module.exports = {
     store: async (req, res) => {
         const result = validationResult(req);
         if (result.isEmpty()) {
-            const { name, email, phone, address } = req.body;
+            const { name, email, phone, address, typeName } = req.body;
             const type = await Type.findOne({
                 where: {
-                    name: "Teacher",
+                    name: typeName,
                 },
             });
             await User.create({
@@ -130,21 +135,25 @@ module.exports = {
 
     edit: async (req, res) => {
         const { id } = req.params;
-        const title = "Sửa giảng viên";
+        const title = "Sửa giảng viên, trợ giảng";
         const teacher = await User.findOne({
+            include: {
+                model: Type,
+            },
             where: {
                 id: id,
             },
         });
+        console.log("Teacher: ", teacher);
         res.render("admin/teacher/edit", { teacher, title, moduleName });
     },
 
     update: async (req, res) => {
         const { id } = req.params;
-        const { name, email, phone, address } = req.body;
+        const { name, email, phone, address, typeName } = req.body;
         const type = await Type.findOne({
             where: {
-                name: "Teacher",
+                name: typeName,
             },
         });
         await User.update(
@@ -194,37 +203,67 @@ module.exports = {
         res.redirect("/admin/teachers");
     },
 
+    detail: async (req, res) => {
+        const title = "Chi tiết giảng viên/trợ giảng";
+        res.render("admin/teacher/detail", {
+            title,
+            moduleName,
+        });
+    },
+
     export: async (req, res) => {
-        const user = await User.findAll({
-            where: {
-                typeId: 1,
+        const teachers = await User.findAll({
+            include: {
+                model: Type,
+                where: {
+                    name: {
+                        [Op.or]: ["Teacher", "TA"],
+                    },
+                },
             },
         });
-        const columns = constants.userColumnFile;
+        teachers.forEach((teacher, index) => {
+            if (teacher.Type.name === "Teacher") {
+                teachers[index].dataValues.typeName = "Giảng viên";
+            } else {
+                teachers[index].dataValues.typeName = "Trợ giảng";
+            }
+        });
+        const columns = constants.teacherColumnFile;
         const date = new Date().getTime();
-        const fileName = `user_admin_${date}.xlsx`;
-        exportFile(res, user, "User_Admin", fileName, columns);
+        const fileName = `user_teacher_${date}.xlsx`;
+        exportFile(res, teachers, "User_Teacher", fileName, columns);
     },
 
     import: (req, res) => {
-        const title = "Import File";
-        res.render("admin/user/import", { title, moduleName });
+        const title = "Import File Teacher";
+        res.render("admin/teacher/import", { title, moduleName });
     },
 
     handleImport: async (req, res) => {
         const file = req.file;
         console.log("Tên file", file);
         const data = await importFile(file.path);
-        console.log(data);
         for (let index = 0; index < data.length; index++) {
+            if (data[index].column_4 === "Giảng viên") {
+                data[index].column_4 = "Teacher";
+            } else {
+                data[index].column_4 = "TA";
+            }
+            const type = await Type.findOne({
+                where: {
+                    name: data[index].column_4,
+                },
+            });
+            console.log(type);
             await User.create({
                 name: data[index].column_1,
                 email: data[index].column_2.text,
                 phone: data[index].column_3,
-                address: data[index].column_4,
-                typeId: data[index].column_5,
+                typeId: type.id,
+                address: data[index].column_5,
             });
         }
-        res.redirect("/admin/users");
+        res.redirect("/admin/teachers");
     },
 };

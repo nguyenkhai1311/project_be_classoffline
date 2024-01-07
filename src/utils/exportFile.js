@@ -16,7 +16,6 @@ module.exports = async (
         await models.forEach((model, index) => {
             let data = {};
             data[`${columns[0].key}`] = index + 1;
-            console.log("DataValues ", model.dataValues[`User`]["name"]);
             for (let i = 1; i < columns.length; i++) {
                 data[`${columns[i].key}`] =
                     model.dataValues[`${columns[i].key}`];
