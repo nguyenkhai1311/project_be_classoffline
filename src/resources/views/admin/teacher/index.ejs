@@ -101,6 +101,7 @@
         <th>Tên</th>
         <th>Email</th>
         <th>SĐT</th>
+        <th>Chức vụ</th>
         <th>Địa chỉ</th>
         <th>Ngày tạo</th>
         <th colspan="2">Chức năng</th>
@@ -111,9 +112,10 @@
       <tr>
         <th><input type="checkbox" class="checkboxItem" value="<%= teacher.id %>"></th>
         <td><%= index + 1 %></td>
-        <td><%= teacher.name %></td>
+        <td><a href="/admin/teachers/detail/<%= teacher.id %>"><%= teacher.name %></a></td>
         <td><%= teacher.email %></td>
         <td><%= teacher.phone %></td>
+        <td><%= teacher.Type.name === "Teacher" ? "Giảng viên" : "Trợ giảng" %></td>
         <td><%= teacher.address %></td>
         <td><%= moment(teacher.createdAt).format("DD/MM/YYYY") %></td>
         <td>
