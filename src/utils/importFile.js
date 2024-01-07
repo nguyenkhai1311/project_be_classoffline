@@ -12,7 +12,7 @@ module.exports = async (filename) => {
                 const currRow = worksheet.getRow(rowNumber);
                 let data = {};
                 if (rowNumber !== 1) {
-                    for (let index = 2; index < columnCount; index++) {
+                    for (let index = 2; index <= columnCount; index++) {
                         data[`column_${index - 1}`] =
                             currRow.getCell(index).value;
                     }

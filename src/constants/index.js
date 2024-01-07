@@ -1,7 +1,7 @@
 module.exports = {
     userColumnFile: [
         {
-            header: "Số thứ tự",
+            header: "STT",
             key: "stt",
         },
         {
@@ -15,6 +15,37 @@ module.exports = {
         {
             header: "Địa chỉ",
             key: "address",
+        },
+    ],
+
+    courseColumnFile: [
+        {
+            header: "STT",
+            key: "stt",
+        },
+        {
+            header: "Tên",
+            key: "name",
+        },
+        {
+            header: "Học phí",
+            key: "price",
+        },
+        {
+            header: "Giảng viên",
+            key: "teacherName",
+        },
+        {
+            header: "Học thử",
+            key: "tryLearn",
+        },
+        {
+            header: "Số lượng",
+            key: "quantity",
+        },
+        {
+            header: "Thời gian",
+            key: "duration",
         },
     ],
 };
