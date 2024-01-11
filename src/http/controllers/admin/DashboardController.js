@@ -1,8 +1,50 @@
+const model = require("../../../models/index");
+const User = model.User;
+const Course = model.Course;
+const Class = model.Class;
+const Type = model.Type;
+
 const moduleName = "Tổng quan";
 
 module.exports = {
-    index: (req, res) => {
+    index: async (req, res) => {
         const title = "Dashboard";
-        res.render("admin/dashboard/index", { title, moduleName });
+        const studentQuantity = await User.count({
+            include: {
+                model: Type,
+                where: {
+                    name: "Student",
+                },
+            },
+        });
+
+        const courseQuantity = await Course.count();
+        const classQuantity = await Class.count();
+        const teacherQuantity = await User.count({
+            include: {
+                model: Type,
+                where: {
+                    name: "Teacher",
+                },
+            },
+        });
+        const teachingAssistantQuantity = await User.count({
+            include: {
+                model: Type,
+                where: {
+                    name: "TA",
+                },
+            },
+        });
+
+        res.render("admin/dashboard/index", {
+            title,
+            moduleName,
+            studentQuantity,
+            courseQuantity,
+            classQuantity,
+            teacherQuantity,
+            teachingAssistantQuantity,
+        });
     },
 };
