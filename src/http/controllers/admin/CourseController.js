@@ -54,7 +54,6 @@ module.exports = {
         if (page > totalPage && page > 1) {
             page = totalPage;
         }
-        console.log("Tổng số trang", page, totalPage);
         const offset = (page - 1) * recordNumber;
 
         const courses = await Course.findAll({
@@ -193,7 +192,6 @@ module.exports = {
             });
         }
         res.redirect("/admin/courses");
-        1;
     },
 
     destroyAll: async (req, res) => {

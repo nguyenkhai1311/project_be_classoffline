@@ -16,7 +16,7 @@
       <div class="form-group">
         <label for="">Lịch học:</label>
 
-        <select data-placeholder="Chọn lịch học" multiple id="classSchedule" class="chosen-select form-control" name="classSchedule">
+        <select data-placeholder="Chọn lịch học" multiple id="classScheduleClass" class="chosen-select form-control" name="classSchedule">
           <option value="1" <%= scheduleVal.includes(1) ? "selected" : "" %>>Thứ 2</option>
           <option value="2" <%= scheduleVal.includes(2) ? "selected" : "" %>>Thứ 3</option>
           <option value="3" <%= scheduleVal.includes(3) ? "selected" : "" %>>Thứ 4</option>
@@ -26,7 +26,17 @@
           <option value="0" <%= scheduleVal.includes(0) ? "selected" : "" %>>Chủ nhật</option>
         </select>
       </div>
-      <div class="wrap__time-schedule"></div>
+      <% scheduleValStart.forEach((timeStart) => { %>
+      <% if(scheduleVal.includes(Number(timeStart.split(" - ")[0]))) { %>
+      <input type="hidden" data-time-learn-start value="<%= timeStart.split(" - ")[1] %>">
+      <% }}) %>
+      <% scheduleValEnd.forEach((timeEnd) => { %>
+      <% if(scheduleVal.includes(Number(timeEnd.split(" - ")[0]))) { %>
+      <input type="hidden" data-time-learn-end value="<%= timeEnd.split(" - ")[1] %>">
+      <% }}) %>
+      <div class="wrap__time-schedule">
+
+      </div>
 
       <div class="form-group">
         <label for="">Khóa học:</label>
@@ -40,8 +50,9 @@
     </div>
 
     <div class="card-footer">
+      <input type="hidden" name="_method" value="PATCH">
       <button type="submit" class="btn btn-primary">
-        Thêm lớp học
+        Sửa lớp học
       </button>
     </div>
   </form>

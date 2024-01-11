@@ -106,4 +106,35 @@ module.exports = {
             key: "createdAt",
         },
     ],
+
+    classColumnFile: [
+        {
+            header: "STT",
+            key: "stt",
+        },
+        {
+            header: "Tên Lớp",
+            key: "className",
+        },
+        {
+            header: "Sĩ số",
+            key: "quantity",
+        },
+        {
+            header: "Ngày khai giảng",
+            key: "startDate",
+        },
+        {
+            header: "Ngày bế giảng",
+            key: "endDate",
+        },
+        {
+            header: "Lịch học",
+            key: "schedule",
+        },
+        {
+            header: "Thời gian",
+            key: "timeLearn",
+        },
+    ],
 };

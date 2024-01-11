@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
         if (!fs.existsSync("./public/uploads/file")) {
             fs.mkdirSync("./public/uploads/file");
         }
-        cb(null, "./public/uploads/");
+        cb(null, "./public/uploads/file/");
     },
     filename: function (req, file, cb) {
         const dateNow = Date.now();
