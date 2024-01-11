@@ -67,7 +67,7 @@
         </li>
         <li class="nav-item <%= moduleName === "Lớp học" ? "menu-is-opening menu-open" : "" %>">
           <a href="#" class="nav-link <%= moduleName === "Lớp học" ? "active" : "" %>">
-            <i class="fas fa-book-reader mr-1"></i>
+            <i class="fas fa-door-open mr-1"></i>
             <p>
               Lớp học
               <i class="fas fa-angle-left right"></i>
@@ -133,6 +133,22 @@
               </a>
             </li>
           </ul>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/calendar" class="nav-link <%= moduleName === "Lịch trình" ? "active" : "" %>">
+            <i class="far fa-calendar-alt"></i>
+            <p>
+              Lịch trình
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/settings" class="nav-link <%= moduleName === "Cài đặt" ? "active" : "" %>">
+            <i class="fas fa-cog"></i>
+            <p>
+              Cài Đặt
+            </p>
+          </a>
         </li>
       </ul>
     </nav>

@@ -1,45 +1,49 @@
-<h2>Khóa học <%= course.name %></h2>
-<p>Học phí: <%= course.price.toLocaleString() %> đ</p>
-<p>Giảng viên: <%= course.User.name %></p>
-<p>Học thử: <%= course.tryLearn %> buổi</p>
-<p>Sĩ số: <%= course.quantity %> học viên</p>
-<h3>Nội dung khóa học: </h3>
-<div id="accordion">
-  <div class="card">
-    <div class="card-header">
-      <a class="card-link" data-toggle="collapse" href="#collapseOne">
-      </a>
-    </div>
-    <div id="collapseOne" class="collapse show" data-parent="#accordion">
-      <div class="card-body">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      </div>
-      <div class="card-body">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header">
-      <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
-        Collapsible Group Item #2
-      </a>
-    </div>
-    <div id="collapseTwo" class="collapse" data-parent="#accordion">
-      <div class="card-body">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header">
-      <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
-        Collapsible Group Item #3
-      </a>
-    </div>
-    <div id="collapseThree" class="collapse" data-parent="#accordion">
-      <div class="card-body">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+<style>
+  .accordion-head i {
+    font-size: 2.0em;
+    float: right;
+  }
+
+  .accordion-head>.collapsed>i:before {
+    content: "\f105";
+  }
+</style>
+<h4><strong>Mô tả</strong></h4>
+<ul class="ml-4">
+  <li class="py-2"><strong>Khóa học:</strong> <%= course.name %></li>
+  <li class="py-2"><strong>Học phí:</strong> <%= course.price.toLocaleString() %> đ</li>
+  <li class="py-2"><strong>Giảng viên:</strong> <%= course.User.name %></li>
+  <li class="py-2"><strong>Học thử:</strong> <%= course.tryLearn %> buổi</li>
+  <li class="py-2"><strong>Sĩ số:</strong> <%= course.quantity %> học viên</li>
+</ul>
+
+<h4><strong>Nội dung khóa học:</strong> <a href="/admin/course-modules" class="btn btn-success">Thêm tài liệu</a></h4>
+
+<div class="container-fluid p-0">
+  <div class="my-auto">
+    <div id="accordion" role="tablist" aria-multiselectable="true">
+      <!-- Accordion Item 1 -->
+      <div class="card">
+        <div class="card-header" role="tab" id="accordionHeadingOne">
+          <div class="mb-0 row">
+            <div class="col-12 no-padding accordion-head">
+              <a data-toggle="collapse" data-parent="#accordion" href="#accordionBodyOne" aria-expanded="false" aria-controls="accordionBodyOne" class="collapsed ">
+                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                <h3>Accordion Item 1 - Heading</h3>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div id="accordionBodyOne" class="collapse" role="tabpanel" aria-labelledby="accordionHeadingOne" aria-expanded="false" data-parent="accordion">
+          <div class="card-block col-12">
+            <p>Accordion Item 1 - Body</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin laoreet ante at nisi tempus, maximus bibendum
+              odio consequat. Proin eleifend elit nec facilisis luctus. Donec ut ornare tellus. Proin posuere et leo
+              vel congue. Nunc ipsum eros, vestibulum non mi et, porttitor tristique nulla. Pellentesque habitant morbi
+              tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum a turpis eu quam bibendum
+              interdum a quis erat. Fusce porta odio sed nulla ultrices, gravida viverra nunc imperdiet.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

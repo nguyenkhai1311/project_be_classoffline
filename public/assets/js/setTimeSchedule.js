@@ -1,5 +1,4 @@
 const schedule = document.querySelector("#classSchedule");
-
 const renderTimeLearnSchedule = (wrapTimeSchedule) => {
     const searchChoices = document.querySelectorAll(".search-choice");
     let html = "";
@@ -10,11 +9,11 @@ const renderTimeLearnSchedule = (wrapTimeSchedule) => {
                     <div class="row">
                         <div class="col">
                         <p>Bắt đầu:</p>
-                        <input type="time" class="form-control" name="timeLearnStart" placeholder="Nhập sĩ số" />
+                        <input type="time" class="form-control" name="timeLearnStart"/>
                         </div>
                         <div class="col">
                         <p>Kết thúc:</p>
-                        <input type="time" class="form-control" name="timeLearnEnd" placeholder="Nhập sĩ số" />
+                        <input type="time" class="form-control" name="timeLearnEnd"/>
                         </div>
                     </div>
                     </div>
