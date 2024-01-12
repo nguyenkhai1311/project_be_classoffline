@@ -16,34 +16,100 @@
   <li class="py-2"><strong>Học thử:</strong> <%= course.tryLearn %> buổi</li>
   <li class="py-2"><strong>Sĩ số:</strong> <%= course.quantity %> học viên</li>
 </ul>
-
-<h4><strong>Nội dung khóa học:</strong> <a href="/admin/course-modules" class="btn btn-success">Thêm tài liệu</a></h4>
-
+<h4><strong>Nội dung khóa học:</strong> <a href="/admin/course-modules/add" class="btn btn-success">Thêm tài liệu</a></h4>
 <div class="container-fluid p-0">
   <div class="my-auto">
     <div id="accordion" role="tablist" aria-multiselectable="true">
       <!-- Accordion Item 1 -->
       <div class="card">
-        <div class="card-header" role="tab" id="accordionHeadingOne">
+        <% modules.forEach((moduleVal, index) => {%>
+        <div class="card-header position-relative" role="tab" id="accordionHeadingOne">
           <div class="mb-0 row">
             <div class="col-12 no-padding accordion-head">
-              <a data-toggle="collapse" data-parent="#accordion" href="#accordionBodyOne" aria-expanded="false" aria-controls="accordionBodyOne" class="collapsed ">
+              <a data-toggle="collapse" style="color: #000000;" data-parent="#accordion" href="#accordionBody<%= index %>" aria-expanded="false" aria-controls="accordionBody<%= index %>" class="collapsed ">
                 <i class="fa fa-angle-down" aria-hidden="true"></i>
-                <h3>Accordion Item 1 - Heading</h3>
+                <h5><%= index +1 %>. <%= moduleVal.name %></h5>
               </a>
             </div>
           </div>
-        </div>
-        <div id="accordionBodyOne" class="collapse" role="tabpanel" aria-labelledby="accordionHeadingOne" aria-expanded="false" data-parent="accordion">
-          <div class="card-block col-12">
-            <p>Accordion Item 1 - Body</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin laoreet ante at nisi tempus, maximus bibendum
-              odio consequat. Proin eleifend elit nec facilisis luctus. Donec ut ornare tellus. Proin posuere et leo
-              vel congue. Nunc ipsum eros, vestibulum non mi et, porttitor tristique nulla. Pellentesque habitant morbi
-              tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum a turpis eu quam bibendum
-              interdum a quis erat. Fusce porta odio sed nulla ultrices, gravida viverra nunc imperdiet.</p>
+          <div class="position-absolute" style="top: 18px; right: 73px; font-size: 19px;">
+            <a href="/admin/module-documents/add"><i class="fa fa-plus" style="color: #000000;"></i></a>
+            <a href="/admin/course-modules/edit/<%= moduleVal.id %>"><i class="far fa-edit ml-2" style="color: #316bf0;"></i></a>
+            <button type="button" data-toggle="modal" style="border: none; background-color: #fff;" data-target="#modal-danger-<%= moduleVal.id %>">
+              <i class="fa fa-times ml-2" style="color: #ff0000;"></i>
+            </button>
+            <div class="modal fade" id="modal-danger-<%= moduleVal.id %>">
+              <div class="modal-dialog">
+                <div class="modal-content bg-danger">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Xóa tài liệu khóa học</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Bạn có chắc xóa tài liệu này không?</p>
+                  </div>
+                  <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">
+                      Không
+                    </button>
+                    <form action="/admin/course-modules/delete/<%= moduleVal.id %>" method="POST">
+                      <input type="hidden" name="_method" value="DELETE">
+                      <button type="submit" class="btn btn-outline-light" id="deleteAll">
+                        Có
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+        <div id="accordionBody<%= index %>" class="collapse mt-3" role="tabpanel" aria-labelledby="accordionHeading<%= index%>" aria-expanded="false" data-parent="accordion">
+          <div class="card-block col-12">
+            <% documents.forEach((document, i) => {%>
+            <% if(document.moduleId === moduleVal.id) {%>
+            <div class="position-relative">
+              <h6 class="ml-3 "><a href="<%= document.pathName %>" target="_blank"><%=index+1%>.<%= i+1 %>. <%= document.content %></a></h6>
+              <hr>
+              <div class="position-absolute" style="top: 0px; right: 73px; font-size: 15px;">
+                <a href="/admin/module-documents/edit/<%= document.id %>"><i class="far fa-edit" style="color: #316bf0;"></i></a>
+                <button type="button" data-toggle="modal" style="border: none; background-color: #fff;" data-target="#modal-danger-<%= document.id %>">
+                  <i class="fa fa-times ml-4" style="color: #ff0000;"></i>
+                </button>
+                <div class="modal fade" id="modal-danger-<%= document.id %>">
+                  <div class="modal-dialog">
+                    <div class="modal-content bg-danger">
+                      <div class="modal-header">
+                        <h4 class="modal-title">Xóa nội dung tài liệu</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Bạn có chắc xóa nội dung này không?</p>
+                      </div>
+                      <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">
+                          Không
+                        </button>
+                        <form action="/admin/module-documents/delete/<%= document.id %>" method="POST">
+                          <input type="hidden" name="_method" value="DELETE">
+                          <button type="submit" class="btn btn-outline-light" id="deleteAll">
+                            Có
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <%}}) %>
+          </div>
+        </div>
+        <% }) %>
       </div>
     </div>
   </div>

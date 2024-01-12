@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            ModuleDocument.belongsTo(models.CourseModule);
+            ModuleDocument.belongsTo(models.CourseModule, {
+                foreignKey: "moduleId",
+            });
         }
     }
     ModuleDocument.init(
@@ -19,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
+            content: DataTypes.TEXT,
             pathName: DataTypes.STRING(200),
             moduleId: DataTypes.INTEGER,
             createdAt: DataTypes.DATE,

@@ -30,7 +30,7 @@ module.exports = {
                 },
                 {
                     name: "Hoàng An",
-                    email: "nguyenhuukhai1303@gmail.com",
+                    email: "hoangan@gmail.com",
                     password: bcrypt.hashSync("123456", saltRounds),
                     phone: "012354631",
                     address: "Hà Nội",
