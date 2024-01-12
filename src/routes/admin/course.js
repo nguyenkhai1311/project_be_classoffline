@@ -19,6 +19,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 const CourseController = require("../../http/controllers/admin/CourseController");
+const CourseModuleController = require("../../http/controllers/admin/CourseModuleController");
 
 router.get("/", CourseController.index);
 

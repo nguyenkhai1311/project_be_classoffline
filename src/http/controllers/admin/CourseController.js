@@ -4,10 +4,13 @@ const constants = require("../../../constants/index");
 const exportFile = require("../../../utils/exportFile");
 const importFile = require("../../../utils/importFile");
 const { getPaginateUrl } = require("../../../utils/url");
+
 const model = require("../../../models/index");
 const User = model.User;
 const Type = model.Type;
 const Course = model.Course;
+const ModuleDocument = model.ModuleDocument;
+const CourseModule = model.CourseModule;
 
 const moduleName = "Khóa học";
 
@@ -211,6 +214,7 @@ module.exports = {
     detail: async (req, res) => {
         const title = "Chi tiết khóa học";
         const { id } = req.params;
+        req.flash("courseId", id);
         const course = await Course.findOne({
             include: {
                 model: User,
@@ -219,10 +223,26 @@ module.exports = {
                 id: id,
             },
         });
+        const modules = await CourseModule.findAll({
+            include: {
+                model: Course,
+                where: {
+                    id: id,
+                },
+            },
+        });
+        const documents = await ModuleDocument.findAll({
+            include: {
+                model: CourseModule,
+            },
+        });
+
         res.render("admin/course/detail", {
+            course,
+            documents,
+            modules,
             title,
             moduleName,
-            course,
         });
     },
 
