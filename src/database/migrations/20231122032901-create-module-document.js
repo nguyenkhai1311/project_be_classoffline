@@ -9,6 +9,9 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
+            content: {
+                type: Sequelize.TEXT,
+            },
             pathName: {
                 type: Sequelize.STRING(200),
             },
