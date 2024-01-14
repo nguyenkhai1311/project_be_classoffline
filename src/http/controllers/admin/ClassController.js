@@ -367,4 +367,21 @@ module.exports = {
         });
         res.render("admin/class/teacherList", { title, moduleName, teachers });
     },
+    calendar: async (req, res) => {
+        const title = "Lịch học";
+        const { id } = req.params;
+        const scheduleClass = await ScheduleClass.findAll({
+            include: {
+                model: Class,
+            },
+            where: {
+                classId: id,
+            },
+        });
+        res.render("admin/class/calendar", {
+            title,
+            moduleName,
+            scheduleClass,
+        });
+    },
 };
