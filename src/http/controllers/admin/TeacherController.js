@@ -114,6 +114,7 @@ module.exports = {
         const result = validationResult(req);
         if (result.isEmpty()) {
             const { name, email, phone, address, typeName } = req.body;
+            console.log(typeName);
             const type = await Type.findOne({
                 where: {
                     name: typeName,

@@ -40,4 +40,6 @@ router.post(
     ClassController.handleImport
 );
 
+router.get("/detail/:id", ClassController.detail);
+
 module.exports = router;

@@ -9,13 +9,9 @@ module.exports = () => {
         body("name", "Tên bắt buộc phải nhập").notEmpty(),
         body("email", "Không được để trống email").notEmpty(),
         body("email").custom(async (value) => {
-            // const { id } = req.params;
             const user = await User.findOne({
                 where: {
                     email: value,
-                    // id: {
-                    //     [Op.not]: id,
-                    // },
                 },
             });
             if (user) {
