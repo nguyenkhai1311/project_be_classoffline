@@ -1,0 +1,21 @@
+<table class="table table-bordered text-center">
+  <thead>
+    <tr>
+      <th style="width: 10px">#</th>
+      <th>Tên</th>
+      <th>Email</th>
+      <th>Chức vụ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% teachers.forEach((teacher, index) => { %>
+    <tr>
+      <td><%= index + 1 %></td>
+      <td><a href="/admin/teachers/detail/<%= teacher.id %>"><%= teacher.name %></a></td>
+      <td><%= teacher.email %></td>
+      <td><%= teacher.Type.name === "Teacher" ? "Giảng viên" : "Trợ giảng" %></td>
+      <th><input type="checkbox" class="checkboxItem" value="<%= teacher.id %>"></th>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
