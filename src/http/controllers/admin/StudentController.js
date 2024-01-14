@@ -196,8 +196,19 @@ module.exports = {
 
     detail: async (req, res) => {
         const title = "Chi tiết học viên";
-
-        res.render("admin/student/detail", { title, moduleName });
+        const { id } = req.params;
+        const student = await User.findOne({
+            include: {
+                model: Type,
+                where: {
+                    name: "Student",
+                },
+            },
+            where: {
+                id: id,
+            },
+        });
+        res.render("admin/student/detail", { title, moduleName, student });
     },
 
     export: async (req, res) => {
