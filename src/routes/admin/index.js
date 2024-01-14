@@ -5,6 +5,7 @@ const DashboardController = require("../../http/controllers/admin/DashboardContr
 const ProfileController = require("../../http/controllers/admin/ProfileController");
 const SettingsController = require("../../http/controllers/admin/SettingsController");
 const CalendarController = require("../../http/controllers/admin/CalendarController");
+const ClassController = require("../../http/controllers/admin/ClassController");
 
 const userRouter = require("./user");
 const profileRouter = require("./profile");
@@ -27,6 +28,8 @@ router.use("/teachers", teacherRouter);
 router.use("/students", studentRouter);
 router.use("/course-modules", courseModuleRouter);
 router.use("/module-documents", moduleDocumentRouter);
+
+router.get("/classes-teacher/add", ClassController.listTeacher);
 
 router.get("/settings", SettingsController.index);
 router.get("/calendar", CalendarController.index);

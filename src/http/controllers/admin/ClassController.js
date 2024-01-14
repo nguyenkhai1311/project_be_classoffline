@@ -10,6 +10,8 @@ const model = require("../../../models/index");
 const Course = model.Course;
 const Class = model.Class;
 const ScheduleClass = model.ScheduleClass;
+const User = model.User;
+const Type = model.Type;
 
 const moduleName = "Lớp học";
 
@@ -130,6 +132,7 @@ module.exports = {
                 });
             }
         }
+
         res.redirect("/admin/classes");
     },
 
@@ -326,5 +329,42 @@ module.exports = {
             }
         }
         res.redirect("/admin/classes");
+    },
+
+    detail: async (req, res) => {
+        const title = "Chi tiết lớp học";
+        const { id } = req.params;
+        const classInfor = await Class.findOne({
+            where: {
+                id: id,
+            },
+        });
+        const scheduleClass = await ScheduleClass.findAll({
+            where: {
+                classId: id,
+            },
+        });
+        console.log(scheduleClass);
+        res.render("admin/class/detail", {
+            title,
+            moduleName,
+            classInfor,
+            scheduleClass,
+        });
+    },
+
+    listTeacher: async (req, res) => {
+        const title = "Danh sách giảng viên, trợ giảng";
+        const teachers = await User.findAll({
+            include: {
+                model: Type,
+                where: {
+                    name: {
+                        [Op.or]: ["Teacher", "TA"],
+                    },
+                },
+            },
+        });
+        res.render("admin/class/teacherList", { title, moduleName, teachers });
     },
 };
