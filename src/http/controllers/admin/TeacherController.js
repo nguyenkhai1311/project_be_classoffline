@@ -145,7 +145,6 @@ module.exports = {
                 id: id,
             },
         });
-        console.log("Teacher: ", teacher);
         res.render("admin/teacher/edit", { teacher, title, moduleName });
     },
 
@@ -206,9 +205,21 @@ module.exports = {
 
     detail: async (req, res) => {
         const title = "Chi tiết giảng viên/trợ giảng";
+        const { id } = req.params;
+        const teacher = await User.findOne({
+            include: {
+                model: Type,
+            },
+            where: {
+                id: id,
+            },
+        });
+        const classes = await teacher.getClasses();
         res.render("admin/teacher/detail", {
             title,
             moduleName,
+            teacher,
+            classes,
         });
     },
 

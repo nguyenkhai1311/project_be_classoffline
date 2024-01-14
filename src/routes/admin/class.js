@@ -42,4 +42,6 @@ router.post(
 
 router.get("/detail/:id", ClassController.detail);
 
+router.get("/calendar/:id", ClassController.calendar);
+
 module.exports = router;
