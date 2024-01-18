@@ -9,7 +9,6 @@ module.exports = new GitHubStrategy(
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
         callbackURL: process.env.GITHUB_CALLBACK_URL,
         passReqToCallback: true,
-        scope: ["user:email"],
     },
     async (req, accessToken, refreshToken, profile, done) => {
         const { id } = profile;
@@ -21,41 +20,41 @@ module.exports = new GitHubStrategy(
                 providerId: id,
             },
         });
-
-        if (!providerDetail?.userId && !req.user) {
-            done(null, false, {
-                message: req.flash(
-                    "error",
-                    "Không tồn tại tài khoản nào liên kết với github này!"
-                ),
-            });
-            return;
+        try {
+            if (req.isAuthenticated() && !providerDetail?.userId) {
+                await UserSocial.create({
+                    userId: req.user.id,
+                    provider: provider,
+                    providerId: id,
+                });
+                const user = await User.findOne({
+                    where: {
+                        id: req.user.id,
+                    },
+                });
+                req.isConnectGithub = true;
+                return done(null, user);
+            }else {
+                if (providerDetail.userId) {
+                    const user = await User.findOne({
+                        where: {
+                            id: providerDetail.userId,
+                        },
+                    });
+        
+                    return done(null, user);
+                }
+                return done(null, false, {
+                    message: req.flash(
+                        "error",
+                        "Không tồn tại tài khoản nào liên kết với github này!"
+                    ),
+                });
+            }
+            
+        }catch(e) {
+            console.log(e);
         }
-
-        if (!providerDetail?.userId) {
-            const userId = req.user.id;
-            await UserSocial.create({
-                userId: userId,
-                provider: provider,
-                providerId: id,
-            });
-            const user = await User.findOne({
-                where: {
-                    id: userId,
-                },
-            });
-            req.isConnect = true;
-            done(null, user);
-            return;
-        }
-
-        const user = await User.findOne({
-            where: {
-                id: providerDetail.userId,
-            },
-        });
-
-        done(null, user);
-        return;
+        
     }
 );

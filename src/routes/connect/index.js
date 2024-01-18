@@ -34,6 +34,20 @@ routes.get(
     })
 );
 
+// routes.get(
+//     "/github/redirect",
+//     passport.authenticate("connect-github", { scope: ["user:email"] })
+// );
+
+// routes.get(
+//     "/github/callback",
+//     passport.authenticate("connect-github", {
+//         failureRedirect: "/auth/login",
+//         failureMessage: true,
+//         successRedirect: "/admin/profile",
+//     })
+// );
+
 routes.get("/facebook/destroy", AuthController.disconnectFacebook);
 routes.get("/google/destroy", AuthController.disconnectGoogle);
 routes.get("/github/destroy", AuthController.disconnectGithub);

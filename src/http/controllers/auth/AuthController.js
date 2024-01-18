@@ -85,8 +85,7 @@ module.exports = {
     },
 
     loginGithub: (req, res) => {
-        console.log(req.isConnect);
-        if (req.isConnect) {
+        if (req.isConnectGithub) {
             res.redirect("/admin/profile");
         } else {
             res.redirect("/");

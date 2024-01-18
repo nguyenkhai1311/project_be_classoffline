@@ -31,6 +31,7 @@ const githubPassport = require("./passport/auth/githubPassport");
 // Khai báo Connect-Social
 const connectFacebookPassport = require("./passport/connect/facebookPassport");
 const connectGooglePassport = require("./passport/connect/googlePassport");
+// const connectGithubPassport = require("./passport/connect/githubPassport");
 
 // Khai báo Middleware
 const AuthMiddleware = require("./http/middlewares/AuthMiddleware");
@@ -60,15 +61,16 @@ passport.deserializeUser(async function (id, done) {
     return done(null, user);
 });
 
+// // Connect Social
+passport.use("connectFacebook", connectFacebookPassport);
+passport.use("connectGoogle", connectGooglePassport);
+// passport.use("connect-github", connectGithubPassport);
+
 // // Login Social
 passport.use("local", localPassport);
 passport.use("facebook", facebookPassport);
 passport.use("google", googlePassport);
 passport.use("github", githubPassport);
-
-// // Connect Social
-passport.use("connectFacebook", connectFacebookPassport);
-passport.use("connectGoogle", connectGooglePassport);
 
 // view engine setup
 app.set("views", path.join(__dirname, "./resources/views"));
