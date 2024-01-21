@@ -65,8 +65,6 @@ module.exports = {
             offset: offset,
         });
 
-        console.log("Pageee: ", page, totalPage);
-
         res.render("admin/class/index", {
             req,
             title,
@@ -404,5 +402,23 @@ module.exports = {
             });
         }
         res.redirect(`/admin/classes/detail/${classId}`);
+    },
+
+    calendar: async (req, res) => {
+        const title = "Lịch học";
+        const { id } = req.params;
+        const scheduleClass = await ScheduleClass.findAll({
+            include: {
+                model: Class,
+            },
+            where: {
+                classId: id,
+            },
+        });
+        res.render("admin/class/calendar", {
+            title,
+            moduleName,
+            scheduleClass,
+        });
     },
 };
