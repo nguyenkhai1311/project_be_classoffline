@@ -44,4 +44,9 @@ router.get("/detail/:id", ClassController.detail);
 
 router.get("/calendar/:id", ClassController.calendar);
 
+router.get("/teachers", ClassController.listTeacher);
+
+router.get("/students", ClassController.listStudent);
+router.post("/students", ClassController.addStudent);
+
 module.exports = router;
