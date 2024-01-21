@@ -63,8 +63,6 @@ module.exports = {
             offset: offset,
         });
 
-        console.log("Pageee: ", page, totalPage);
-
         res.render("admin/class/index", {
             req,
             title,
