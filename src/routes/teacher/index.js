@@ -1,8 +1,17 @@
 var express = require("express");
-var routes = express.Router();
+var router = express.Router();
 
-routes.get("/", (req, res) => {
-    res.send("Teacher");
-});
+const HomePageController = require("../../http/controllers/teachers/HomePageController");
+const ClassController = require("../../http/controllers/teachers/ClassController");
+const CourseController = require("../../http/controllers/teachers/CourseController");
+const ProfileController = require("../../http/controllers/teachers/ProfileController");
 
-module.exports = routes;
+router.get("/", HomePageController.index);
+router.get("/profile", ProfileController.index);
+
+router.get("/classes", ClassController.index);
+router.get("/classes/detail/:id", ClassController.detail);
+
+router.get("/courses", CourseController.index);
+
+module.exports = router;
