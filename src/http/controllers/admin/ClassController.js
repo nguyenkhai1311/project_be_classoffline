@@ -6,12 +6,14 @@ const exportFile = require("../../../utils/exportFile");
 const importFile = require("../../../utils/importFile");
 const { getPaginateUrl } = require("../../../utils/url");
 const date = require("../../../utils/date");
+
 const model = require("../../../models/index");
 const Course = model.Course;
 const Class = model.Class;
 const ScheduleClass = model.ScheduleClass;
 const User = model.User;
 const Type = model.Type;
+const StudentsClass = model.StudentsClass;
 
 const moduleName = "Lớp học";
 
@@ -334,6 +336,8 @@ module.exports = {
     detail: async (req, res) => {
         const title = "Chi tiết lớp học";
         const { id } = req.params;
+        req.flash("classId", id);
+
         const classInfor = await Class.findOne({
             where: {
                 id: id,
@@ -344,7 +348,6 @@ module.exports = {
                 classId: id,
             },
         });
-        console.log(scheduleClass);
         res.render("admin/class/detail", {
             title,
             moduleName,
@@ -366,5 +369,40 @@ module.exports = {
             },
         });
         res.render("admin/class/teacherList", { title, moduleName, teachers });
+    },
+
+    listStudent: async (req, res) => {
+        const title = "Danh sách học viên";
+        const students = await User.findAll({
+            include: {
+                model: Type,
+                where: {
+                    name: "Student",
+                },
+            },
+        });
+        res.render("admin/class/studentList", { title, moduleName, students });
+    },
+
+    addStudent: async (req, res) => {
+        const { listUser } = req.body;
+        const classId = req.flash("classId").slice(-1);
+        console.log("Id của sinh viên", listUser);
+        if (listUser.length === 1) {
+            await StudentsClass.create({
+                studentId: listUser,
+                classId: classId,
+                statusId: 1,
+            });
+        } else {
+            listUser.forEach(async (userId) => {
+                await StudentsClass.create({
+                    studentId: userId,
+                    classId: classId,
+                    statusId: 1,
+                });
+            });
+        }
+        res.redirect(`/admin/classes/detail/${classId}`);
     },
 };

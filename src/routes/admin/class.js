@@ -42,4 +42,9 @@ router.post(
 
 router.get("/detail/:id", ClassController.detail);
 
+router.get("/teachers", ClassController.listTeacher);
+
+router.get("/students", ClassController.listStudent);
+router.post("/students", ClassController.addStudent);
+
 module.exports = router;
