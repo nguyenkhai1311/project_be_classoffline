@@ -9,6 +9,9 @@ const ProfileController = require("../../http/controllers/teachers/ProfileContro
 router.get("/", HomePageController.index);
 router.get("/profile", ProfileController.index);
 
+router.get("/change-password", ProfileController.changePassword);
+router.post("/change-password", ProfileController.handleChangePassword);
+
 router.get("/classes", ClassController.index);
 router.get("/classes/detail/:id", ClassController.detail);
 

@@ -214,6 +214,9 @@ module.exports = {
     detail: async (req, res) => {
         const title = "Chi tiết khóa học";
         const { id } = req.params;
+
+        let moduleArr = [];
+
         req.flash("courseId", id);
         const course = await Course.findOne({
             include: {
@@ -231,16 +234,26 @@ module.exports = {
                 },
             },
         });
-        const documents = await ModuleDocument.findAll({
-            include: {
-                model: CourseModule,
-            },
+
+        const moduleDocument = modules.map(async (moduleVal) => {
+            const documentList = await ModuleDocument.findAll({
+                where: {
+                    moduleId: moduleVal.id,
+                },
+            });
+            return {
+                id: moduleVal.dataValues.id,
+                documentList,
+            };
+        });
+        await Promise.all(moduleDocument).then((result) => {
+            moduleArr = result;
         });
 
         res.render("admin/course/detail", {
             course,
-            documents,
             modules,
+            moduleArr,
             title,
             moduleName,
         });

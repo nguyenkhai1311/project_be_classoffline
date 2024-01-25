@@ -68,17 +68,22 @@
         </div>
         <div id="accordionBody<%= index %>" class="collapse mt-3" role="tabpanel" aria-labelledby="accordionHeading<%= index%>" aria-expanded="false" data-parent="accordion">
           <div class="card-block col-12">
-            <% documents.forEach((document, i) => {%>
-            <% if(document.moduleId === moduleVal.id) {%>
+            <% moduleArr.forEach(({id, documentList}) => {%>
+            <% if(id === moduleVal.id) {%>
+            <% documentList.forEach((value, i) => { %>
             <div class="position-relative">
-              <h6 class="ml-3 "><a href="<%= document.pathName %>" target="_blank"><%=index+1%>.<%= i+1 %>. <%= document.content %></a></h6>
+              <h6 class="ml-3 ">
+                <a href="<%= value.pathName %>" target="_blank">
+                  <%=index+1%>.<%=i+1%>. <%= value.content %>
+                </a>
+              </h6>
               <hr>
               <div class="position-absolute" style="top: 0px; right: 73px; font-size: 15px;">
-                <a href="/admin/module-documents/edit/<%= document.id %>"><i class="far fa-edit" style="color: #316bf0;"></i></a>
-                <button type="button" data-toggle="modal" style="border: none; background-color: #fff;" data-target="#modal-danger-<%= document.id %>">
+                <a href="/admin/module-documents/edit/<%= value.id %>"><i class="far fa-edit" style="color: #316bf0;"></i></a>
+                <button type="button" data-toggle="modal" style="border: none; background-color: #fff;" data-target="#modal-danger-<%= value.id %>">
                   <i class="fa fa-times ml-4" style="color: #ff0000;"></i>
                 </button>
-                <div class="modal fade" id="modal-danger-<%= document.id %>">
+                <div class="modal fade" id="modal-danger-<%= value.id %>">
                   <div class="modal-dialog">
                     <div class="modal-content bg-danger">
                       <div class="modal-header">
@@ -94,7 +99,7 @@
                         <button type="button" class="btn btn-outline-light" data-dismiss="modal">
                           Không
                         </button>
-                        <form action="/admin/module-documents/delete/<%= document.id %>" method="POST">
+                        <form action="/admin/module-documents/delete/<%= value.id %>" method="POST">
                           <input type="hidden" name="_method" value="DELETE">
                           <button type="submit" class="btn btn-outline-light" id="deleteAll">
                             Có
@@ -106,6 +111,7 @@
                 </div>
               </div>
             </div>
+            <% }) %>
             <%}}) %>
           </div>
         </div>

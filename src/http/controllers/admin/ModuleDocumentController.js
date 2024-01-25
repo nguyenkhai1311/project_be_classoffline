@@ -23,6 +23,7 @@ module.exports = {
     store: async (req, res) => {
         const courseId = req.flash("courseId").slice(-1);
         const { documentContent, pathName, moduleId } = req.body;
+
         await ModuleDocument.create({
             content: documentContent,
             pathName: pathName,

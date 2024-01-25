@@ -346,10 +346,40 @@ module.exports = {
                 classId: id,
             },
         });
+
+        const students = await StudentsClass.findAll({
+            include: {
+                model: User,
+            },
+            where: {
+                classId: id,
+            },
+        });
+        console.log(students);
         res.render("admin/class/detail", {
             title,
             moduleName,
             classInfor,
+            students,
+            moment,
+            scheduleClass,
+        });
+    },
+
+    calendar: async (req, res) => {
+        const title = "Lịch học";
+        const { id } = req.params;
+        const scheduleClass = await ScheduleClass.findAll({
+            include: {
+                model: Class,
+            },
+            where: {
+                classId: id,
+            },
+        });
+        res.render("admin/class/calendar", {
+            title,
+            moduleName,
             scheduleClass,
         });
     },
@@ -402,23 +432,5 @@ module.exports = {
             });
         }
         res.redirect(`/admin/classes/detail/${classId}`);
-    },
-
-    calendar: async (req, res) => {
-        const title = "Lịch học";
-        const { id } = req.params;
-        const scheduleClass = await ScheduleClass.findAll({
-            include: {
-                model: Class,
-            },
-            where: {
-                classId: id,
-            },
-        });
-        res.render("admin/class/calendar", {
-            title,
-            moduleName,
-            scheduleClass,
-        });
     },
 };
