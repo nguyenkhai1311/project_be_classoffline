@@ -20,7 +20,7 @@ module.exports = new GitHubStrategy(
                 providerId: id,
             },
         });
-        console.log("Người dùng:", providerDetail);
+
         try {
             if (req.isAuthenticated() && providerDetail === null) {
                 await UserSocial.create({
@@ -35,14 +35,14 @@ module.exports = new GitHubStrategy(
                 });
                 req.isConnectGithub = true;
                 return done(null, user);
-            }else {
+            } else {
                 if (providerDetail) {
                     const user = await User.findOne({
                         where: {
                             id: providerDetail.userId,
                         },
                     });
-        
+
                     return done(null, user);
                 }
                 return done(null, false, {
@@ -52,10 +52,8 @@ module.exports = new GitHubStrategy(
                     ),
                 });
             }
-            
-        }catch(e) {
+        } catch (e) {
             console.log(e);
         }
-        
     }
 );

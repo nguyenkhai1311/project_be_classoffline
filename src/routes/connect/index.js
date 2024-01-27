@@ -2,7 +2,7 @@ var express = require("express");
 var routes = express.Router();
 const passport = require("passport");
 
-const AuthController = require("../../http/controllers/auth/AuthController");
+const ConnectController = require("../../http/controllers/connect/ConnectController");
 
 routes.get(
     "/facebook/redirect",
@@ -14,8 +14,8 @@ routes.get(
     passport.authenticate("connectFacebook", {
         failureRedirect: "/auth/login",
         failureMessage: true,
-        successRedirect: "/admin/profile",
-    })
+    }),
+    ConnectController.connectFacebook
 );
 
 routes.get(
@@ -30,12 +30,12 @@ routes.get(
     passport.authenticate("connectGoogle", {
         failureRedirect: "/auth/login",
         failureMessage: true,
-        successRedirect: "/admin/profile",
-    })
+    }),
+    ConnectController.connectGoogle
 );
 
-routes.get("/facebook/destroy", AuthController.disconnectFacebook);
-routes.get("/google/destroy", AuthController.disconnectGoogle);
-routes.get("/github/destroy", AuthController.disconnectGithub);
+routes.get("/facebook/destroy", ConnectController.disconnectFacebook);
+routes.get("/google/destroy", ConnectController.disconnectGoogle);
+routes.get("/github/destroy", ConnectController.disconnectGithub);
 
 module.exports = routes;
