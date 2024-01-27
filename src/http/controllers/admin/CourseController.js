@@ -214,7 +214,6 @@ module.exports = {
     detail: async (req, res) => {
         const title = "Chi tiết khóa học";
         const { id } = req.params;
-
         let moduleArr = [];
 
         req.flash("courseId", id);

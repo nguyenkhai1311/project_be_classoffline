@@ -11,8 +11,8 @@ const FormatDate = require("../../../helpers/FormatDate");
 const model = require("../../../models/index");
 const UserOtp = model.UserOtp;
 const User = model.User;
-const UserSocial = model.UserSocial;
 const LoginToken = model.LoginToken;
+const Type = model.Type;
 
 const saltRounds = 10;
 
@@ -84,9 +84,21 @@ module.exports = {
         res.redirect("/");
     },
 
-    loginGithub: (req, res) => {
+    loginGithub: async (req, res) => {
         if (req.isConnectGithub) {
-            res.redirect("/admin/profile");
+            const typeName = await Type.findOne({
+                where: {
+                    id: req.user.typeId,
+                },
+            });
+
+            if (typeName === "Admin") {
+                res.redirect("/admin/profile");
+            } else if (typeName === "Teacher" || typeName === "TA") {
+                res.redirect("/teacher/profile");
+            } else {
+                res.redirect("/profile");
+            }
         } else {
             res.redirect("/");
         }
@@ -229,41 +241,5 @@ module.exports = {
         });
         req.flash("email", email);
         res.redirect("/auth/verification");
-    },
-
-    disconnectFacebook: async (req, res) => {
-        const userId = req.user.id;
-        const provider = "facebook";
-        await UserSocial.destroy({
-            where: {
-                userId: userId,
-                provider: provider,
-            },
-        });
-        res.redirect("/admin/profile");
-    },
-
-    disconnectGoogle: async (req, res) => {
-        const userId = req.user.id;
-        const provider = "google";
-        await UserSocial.destroy({
-            where: {
-                userId: userId,
-                provider: provider,
-            },
-        });
-        res.redirect("/admin/profile");
-    },
-
-    disconnectGithub: async (req, res) => {
-        const userId = req.user.id;
-        const provider = "github";
-        await UserSocial.destroy({
-            where: {
-                userId: userId,
-                provider: provider,
-            },
-        });
-        res.redirect("/admin/profile");
     },
 };
