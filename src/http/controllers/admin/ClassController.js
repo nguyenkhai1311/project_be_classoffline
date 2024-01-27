@@ -355,7 +355,7 @@ module.exports = {
                 classId: id,
             },
         });
-        console.log(students);
+
         res.render("admin/class/detail", {
             title,
             moduleName,
@@ -401,6 +401,8 @@ module.exports = {
 
     listStudent: async (req, res) => {
         const title = "Danh sách học viên";
+        const error = req.flash("error");
+
         const students = await User.findAll({
             include: {
                 model: Type,
@@ -409,20 +411,24 @@ module.exports = {
                 },
             },
         });
-        res.render("admin/class/studentList", { title, moduleName, students });
+        res.render("admin/class/studentList", {
+            title,
+            moduleName,
+            error,
+            students,
+        });
     },
 
     addStudent: async (req, res) => {
         const { listUser } = req.body;
         const classId = req.flash("classId").slice(-1);
-        console.log("Id của sinh viên", listUser);
         if (listUser.length === 1) {
             await StudentsClass.create({
                 studentId: listUser,
                 classId: classId,
                 statusId: 1,
             });
-        } else {
+        } else if (listUser.length > 1) {
             listUser.forEach(async (userId) => {
                 await StudentsClass.create({
                     studentId: userId,
@@ -430,6 +436,10 @@ module.exports = {
                     statusId: 1,
                 });
             });
+        } else {
+            const error = "Chưa có học viên trong hệ thống";
+            req.flash("error", error);
+            return res.redirect("/admin/classes/students");
         }
         res.redirect(`/admin/classes/detail/${classId}`);
     },

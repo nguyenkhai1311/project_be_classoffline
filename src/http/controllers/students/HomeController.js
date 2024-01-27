@@ -1,8 +1,14 @@
-const title = "Dashboard";
-let moduleName = "Tổng quan";
+const moduleName = "Trang chủ";
 
 module.exports = {
     index: (req, res) => {
-        res.render("students/home/index", { title, moduleName });
+        const title = "";
+        const userName = req.user.name;
+        res.render("student/home/index", {
+            title,
+            moduleName,
+            userName,
+            layout: "layouts/student.layout.ejs",
+        });
     },
 };
