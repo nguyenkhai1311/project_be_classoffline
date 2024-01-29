@@ -1,0 +1,23 @@
+<h4><%= comment.title %></h4>
+<div class="nav-link">
+	<img src="/assets/img/user2-160x160.jpg"
+		class="img-circle elevation-2"
+		alt="User Image"
+		width="30" />
+	<strong><%= comment.User.name %></strong>
+</div>
+
+<div class="card">
+	<strong>Nội dung</strong>
+	<p><%= comment.content %></p>
+	<a href="<%= comment.attachment %>"><%= comment.attachment %></a>
+</div>
+
+<div>
+	<img src="/assets/img/user2-160x160.jpg"
+		class="img-circle elevation-2"
+		alt="User Image"
+		width="30" />
+	<input type="text"
+		placeholder="Nhập câu trả lời của bạn">
+</div>

@@ -21,10 +21,12 @@
 	<strong>Danh sách học viên trong lớp: </strong>
 	<a href="/admin/classes/students"
 		class="btn btn-primary">Thêm học viên</a>
-	<a href="#!"
+	<a href="/admin/classes/attendance/<%= classInfor.id %>"
 		class="btn btn-warning">Điểm danh</a>
-	<a href="#!"
-		class="btn btn-danger">Đặt câu hỏi</a>
+	<a href="/admin/classes/questions/<%= classInfor.id %>"
+		class="btn btn-danger">Câu hỏi</a>
+	<a href="/admin/classes/exercises/<%= classInfor.id %>"
+		class="btn btn-info">Bài tập</a>
 </h4>
 <table class="table table-bordered text-center">
 	<thead>

@@ -1,0 +1,18 @@
+<h3><strong><%= classVal.name %></strong></h3>
+<a href="/admin/classes/exercises/add/<%= classVal.id %>"
+	class="btn btn-success">Thêm bài tập mới</a>
+<div class="container">
+	<% exercises.forEach((exercise) => { %>
+	<div class="row">
+		<div class="col mt-4">
+			<div class="card-question card-1">
+				<a href="/admin/classes/exercise-submit/<%= exercise.id %>"
+					class="d-flex align-items-center">
+					<i class="fa fa-question-circle"></i>
+					<h3><%= exercise.title %></h3>
+				</a>
+			</div>
+		</div>
+	</div>
+	<% }) %>
+</div>
