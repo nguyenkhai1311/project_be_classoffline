@@ -49,4 +49,22 @@ router.get("/teachers", ClassController.listTeacher);
 router.get("/students", ClassController.listStudent);
 router.post("/students", ClassController.addStudent);
 
+router.get("/attendance/:id", ClassController.attendance);
+router.post("/attendance/:id", ClassController.handleAttendance);
+
+router.get("/questions/:id", ClassController.question);
+
+router.get("/questions/add/:id", ClassController.makeQuestion);
+router.post("/questions/add/:id", ClassController.handleMakeQuestion);
+
+router.get("/question-answer/:id", ClassController.questionAnswer);
+
+router.get("/exercises/:id", ClassController.exercise);
+
+router.get("/exercises/add/:id", ClassController.addExercise);
+router.post("/exercises/add/:id", ClassController.createExercise);
+
+router.get("/exercise-submit/:id", ClassController.submitExercise);
+router.post("/exercise-submit/:id", ClassController.handleSubmitExercise);
+
 module.exports = router;
