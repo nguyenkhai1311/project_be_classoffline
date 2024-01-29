@@ -1,0 +1,18 @@
+<h3><strong><%= classVal.name %></strong></h3>
+<a href="/admin/classes/questions/add/<%= classVal.id %>"
+	class="btn btn-success">Đặt câu hỏi mới</a>
+<div class="container">
+	<% comments.forEach((comment) => { %>
+	<div class="row">
+		<div class="col mt-4">
+			<div class="card-question card-1">
+				<a href="/admin/classes/question-answer/<%= comment.id %>"
+					class="d-flex align-items-center">
+					<i class="fa fa-question-circle"></i>
+					<h3><%= comment.title %></h3>
+				</a>
+			</div>
+		</div>
+	</div>
+	<% }) %>
+</div>

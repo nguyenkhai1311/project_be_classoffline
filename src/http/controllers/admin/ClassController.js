@@ -6,6 +6,7 @@ const exportFile = require("../../../utils/exportFile");
 const importFile = require("../../../utils/importFile");
 const { getPaginateUrl } = require("../../../utils/url");
 const date = require("../../../utils/date");
+const getDate = require("../../../helpers/getDate");
 
 const model = require("../../../models/index");
 const Course = model.Course;
@@ -14,6 +15,10 @@ const ScheduleClass = model.ScheduleClass;
 const User = model.User;
 const Type = model.Type;
 const StudentsClass = model.StudentsClass;
+const StudentsAttendance = model.StudentsAttendance;
+const Comment = model.Comment;
+const Exercise = model.Exercise;
+const ExercisesSubmit = model.ExercisesSubmit;
 
 const moduleName = "Lớp học";
 
@@ -442,5 +447,249 @@ module.exports = {
             return res.redirect("/admin/classes/students");
         }
         res.redirect(`/admin/classes/detail/${classId}`);
+    },
+
+    attendance: async (req, res) => {
+        const title = "Điểm danh";
+        const { id } = req.params;
+        const daysSchedule = [];
+
+        const students = await StudentsClass.findAll({
+            include: {
+                model: User,
+            },
+            where: {
+                classId: id,
+            },
+        });
+
+        const classInfor = await Class.findOne({
+            where: {
+                id: id,
+            },
+        });
+
+        const classSchedule = await ScheduleClass.findAll({
+            where: {
+                classId: id,
+            },
+        });
+
+        classSchedule.forEach(({ schedule }) => {
+            daysSchedule.push(schedule);
+        });
+        const dateLearn = date.getDateLearn(
+            classInfor.startDate,
+            classInfor.endDate,
+            daysSchedule
+        );
+
+        const attendance = await StudentsAttendance.findAll({
+            where: {
+                classId: id,
+            },
+        });
+
+        res.render("admin/class/attendance", {
+            title,
+            moduleName,
+            students,
+            dateLearn,
+            moment,
+            classInfor,
+            attendance,
+        });
+    },
+
+    handleAttendance: async (req, res) => {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        status.forEach(async (value) => {
+            const dateNow = new Date();
+            if (value.split(" - ")[0] === getDate(dateNow)) {
+                const status = await StudentsClass.findOne({
+                    where: {
+                        studentId: value.split(" - ")[1],
+                        classId: id,
+                    },
+                });
+                // Khi "/" giữa ngày tháng thì bị lùi đi 1 ngày
+                const dateLearn = value.split(" - ")[0].replaceAll("/", "-");
+
+                await StudentsAttendance.create({
+                    dateLearn: dateLearn,
+                    studentId: value.split(" - ")[1],
+                    statusId: status.statusId,
+                    classId: id,
+                    status: value.split(" - ")[2],
+                });
+            }
+        });
+        res.redirect(`/admin/classes/attendance/${id}`);
+    },
+
+    question: async (req, res) => {
+        const title = "Câu hỏi";
+        const { id } = req.params;
+
+        const classVal = await Class.findOne({
+            where: {
+                id: id,
+            },
+        });
+
+        const comments = await Comment.findAll({
+            where: {
+                classId: id,
+            },
+        });
+
+        res.render(`admin/class/question`, {
+            title,
+            moduleName,
+            classVal,
+            comments,
+        });
+    },
+
+    makeQuestion: async (req, res) => {
+        const title = "Đặt câu hỏi mới";
+        const { id } = req.params;
+
+        const classVal = await Class.findOne({
+            where: {
+                id: id,
+            },
+        });
+
+        res.render("admin/class/makeQuestion", {
+            title,
+            moduleName,
+            classVal,
+        });
+    },
+
+    handleMakeQuestion: async (req, res) => {
+        const { id } = req.params;
+        const { title, content, attachment } = req.body;
+
+        const comment = await Comment.create({
+            classId: id,
+            title: title,
+            content: content,
+            parentId: 0,
+            studentId: req.user.id,
+            attachment: attachment,
+        });
+
+        res.redirect(`/admin/classes/question-answer/${comment.id}`);
+    },
+
+    questionAnswer: async (req, res) => {
+        const title = "Hỏi đáp";
+        const { id } = req.params;
+
+        const comment = await Comment.findOne({
+            include: {
+                model: User,
+            },
+            where: {
+                id: id,
+            },
+        });
+
+        res.render("admin/class/questionAnswer", {
+            title,
+            moduleName,
+            comment,
+        });
+    },
+
+    exercise: async (req, res) => {
+        const title = "Bài tập";
+        const { id } = req.params;
+
+        const classVal = await Class.findOne({
+            where: {
+                id: id,
+            },
+        });
+
+        const exercises = await Exercise.findAll({
+            classId: id,
+        });
+
+        res.render("admin/class/exercise", {
+            title,
+            moduleName,
+            classVal,
+            exercises,
+        });
+    },
+
+    addExercise: async (req, res) => {
+        const title = "Thêm bài tập";
+        const { id } = req.params;
+
+        const classVal = await Class.findOne({
+            where: {
+                id: id,
+            },
+        });
+
+        res.render("admin/class/addExercise", { title, moduleName, classVal });
+    },
+
+    createExercise: async (req, res) => {
+        const { id } = req.params;
+        const { title, content, attachment } = req.body;
+
+        const exercise = await Exercise.create({
+            classId: id,
+            title: title,
+            content: content,
+            parentId: 0,
+            studentId: req.user.id,
+            attachment: attachment,
+        });
+
+        res.redirect(`/admin/classes/exercise-submit/${exercise.id}`);
+    },
+
+    submitExercise: async (req, res) => {
+        const title = "Nộp bài tập";
+        const { id } = req.params;
+        const exercise = await Exercise.findOne({
+            where: {
+                id: id,
+            },
+        });
+
+        const exerciseSubmits = await ExercisesSubmit.findAll({
+            where: {
+                exerciseId: id,
+            },
+        });
+
+        res.render("admin/class/exerciseSubmit", {
+            title,
+            moduleName,
+            exercise,
+            exerciseSubmits,
+        });
+    },
+
+    handleSubmitExercise: async (req, res) => {
+        const { id } = req.params;
+        const { content, attachment } = req.body;
+
+        await ExercisesSubmit.create({
+            studentId: req.user.id,
+            content: content,
+            attachment: attachment,
+            exerciseId: id,
+        });
+        res.redirect(`/admin/classes/exercise-submit/${id}`);
     },
 };

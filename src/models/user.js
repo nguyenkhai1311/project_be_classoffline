@@ -11,9 +11,9 @@ module.exports = (sequelize, DataTypes) => {
             // define association here
             User.belongsTo(models.Type, { foreignKey: "typeId" });
             User.hasOne(models.UserOtp);
-            User.hasMany(models.UserColumn);
-            User.hasOne(models.LoginToken);
-            User.hasMany(models.UserSocial);
+            User.hasMany(models.UserColumn, { foreignKey: "userId" });
+            User.hasOne(models.LoginToken, { foreignKey: "userId" });
+            User.hasMany(models.UserSocial, { foreignKey: "userId" });
             User.belongsToMany(models.Role, { through: "User_Role" });
             User.belongsToMany(models.Permission, {
                 through: "User_Permissions",
@@ -26,9 +26,9 @@ module.exports = (sequelize, DataTypes) => {
             });
             User.hasMany(models.TeacherCalendar);
             User.hasMany(models.StudentsClass, { foreignKey: "studentId" });
-            User.hasOne(models.StudentsAttendance);
-            User.hasMany(models.ExercisesSubmit);
-            User.hasMany(models.Comment);
+            User.hasOne(models.StudentsAttendance, { foreignKey: "studentId" });
+            User.hasMany(models.ExercisesSubmit, { foreignKey: "studentId" });
+            User.hasMany(models.Comment, { foreignKey: "studentId" });
         }
     }
     User.init(
