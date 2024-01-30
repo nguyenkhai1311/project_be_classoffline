@@ -24,19 +24,16 @@
 							<td><%= index + 1 %></td>
 							<td><%= student.User.name %> - <%= student.User.email %></td>
 							<% dateLearn.forEach((date, index) => { %>
-
 							<td>
-								<% attendance.forEach(({dateLearn, studentId, status}) => { %>
 								<select name="status">
 									<option value="">--</option>
 									<option value="<%= moment(date).format("YYYY/MM/DD") %> - <%= student.User.id %> - 0"
-										<%= moment(dateLearn).format("YYYY/MM/DD") === moment(date).format("YYYY/MM/DD") && studentId === student.User.id && status === 0 && 'selected' %>>Nghỉ</option>
+										<%= checkAttendance(attendanceList, date, student.User.id, 0) && "selected" %>>Nghỉ</option>
 									<option value="<%= moment(date).format("YYYY/MM/DD") %> - <%= student.User.id %> - 1"
-										<%= moment(dateLearn).format("YYYY/MM/DD") === moment(date).format("YYYY/MM/DD") && studentId === student.User.id && status === 1 && 'selected' %>>Đến muộn</option>
+										<%= checkAttendance(attendanceList, date, student.User.id, 1) && "selected" %>>Đến muộn</option>
 									<option value="<%= moment(date).format("YYYY/MM/DD") %> - <%= student.User.id %> - 2"
-										<%= moment(dateLearn).format("YYYY/MM/DD") === moment(date).format("YYYY/MM/DD") && studentId === student.User.id && status === 2 && 'selected' %>>Đúng giờ</option>
+										<%= checkAttendance(attendanceList, date, student.User.id, 2) && "selected" %>>Đúng giờ</option>
 								</select>
-								<% }) %>
 							</td>
 							<% }) %>
 						</tr>

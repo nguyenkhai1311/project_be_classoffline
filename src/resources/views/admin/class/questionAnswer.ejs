@@ -1,23 +1,31 @@
-<h4><%= comment.title %></h4>
+<h2 class="fs-4 font-weight-bold"
+	style="font-size: 2rem;"><%= comment.title %></h2>
 <div class="nav-link">
 	<img src="/assets/img/user2-160x160.jpg"
-		class="img-circle elevation-2"
+		class="img-circle elevation-2 mr-1"
 		alt="User Image"
 		width="30" />
 	<strong><%= comment.User.name %></strong>
 </div>
 
-<div class="card">
-	<strong>Nội dung</strong>
-	<p><%= comment.content %></p>
-	<a href="<%= comment.attachment %>"><%= comment.attachment %></a>
+<div class="card p-3 mt-2"
+	style="padding-left: 3.4rem !important;">
+	<b class="d-inline-block mb-2">Nội dung:</b>
+	<%- comment.content %>
+	<a href="
+	<%= comment.attachment %>"><%= comment.attachment %></a>
 </div>
 
-<div>
+<div class="d-flex align-items-center"
+	style="gap: 10px;">
 	<img src="/assets/img/user2-160x160.jpg"
 		class="img-circle elevation-2"
 		alt="User Image"
 		width="30" />
-	<input type="text"
-		placeholder="Nhập câu trả lời của bạn">
+	<form action=""
+		class="form-group">
+		<input type="text"
+			class="form-control"
+			placeholder="Nhập câu trả lời của bạn">
+	</form>
 </div>

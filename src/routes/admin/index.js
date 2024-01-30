@@ -14,6 +14,7 @@ const teacherRouter = require("./teacher");
 const studentRouter = require("./student");
 const courseModuleRouter = require("./courseModule");
 const moduleDocumentRouter = require("./moduleDocument");
+const roleRouter = require("./role");
 
 router.get("/", DashboardController.index);
 router.get("/changePassword", ProfileController.changePassword);
@@ -27,6 +28,7 @@ router.use("/teachers", teacherRouter);
 router.use("/students", studentRouter);
 router.use("/course-modules", courseModuleRouter);
 router.use("/module-documents", moduleDocumentRouter);
+router.use("/roles", roleRouter);
 
 router.get("/settings", SettingsController.index);
 router.get("/calendar", CalendarController.index);

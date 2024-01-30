@@ -6,7 +6,8 @@ const exportFile = require("../../../utils/exportFile");
 const importFile = require("../../../utils/importFile");
 const { getPaginateUrl } = require("../../../utils/url");
 const date = require("../../../utils/date");
-const getDate = require("../../../helpers/getDate");
+// const getDate = require("../../../helpers/getDate");
+const checkAttendance = require("../../../utils/checkAttendance");
 
 const model = require("../../../models/index");
 const Course = model.Course;
@@ -484,7 +485,7 @@ module.exports = {
             daysSchedule
         );
 
-        const attendance = await StudentsAttendance.findAll({
+        const attendanceList = await StudentsAttendance.findAll({
             where: {
                 classId: id,
             },
@@ -497,7 +498,8 @@ module.exports = {
             dateLearn,
             moment,
             classInfor,
-            attendance,
+            attendanceList,
+            checkAttendance,
         });
     },
 
@@ -505,27 +507,34 @@ module.exports = {
         const { id } = req.params;
         const { status } = req.body;
 
-        status.forEach(async (value) => {
-            const dateNow = new Date();
-            if (value.split(" - ")[0] === getDate(dateNow)) {
-                const status = await StudentsClass.findOne({
-                    where: {
+        await Promise.all(
+            status.map(async (value) => {
+                if (value) {
+                    const status = await StudentsClass.findOne({
+                        where: {
+                            studentId: value.split(" - ")[1],
+                            classId: id,
+                        },
+                    });
+                    await StudentsAttendance.destroy({
+                        where: {
+                            dateLearn: value.split(" - ")[0],
+                            studentId: value.split(" - ")[1],
+                            classId: id,
+                        },
+                    });
+
+                    return await StudentsAttendance.create({
+                        dateLearn: value.split(" - ")[0],
                         studentId: value.split(" - ")[1],
                         classId: id,
-                    },
-                });
-                // Khi "/" giữa ngày tháng thì bị lùi đi 1 ngày
-                const dateLearn = value.split(" - ")[0].replaceAll("/", "-");
+                        statusId: status.id,
+                        status: value.split(" - ")[2],
+                    });
+                }
+            })
+        );
 
-                await StudentsAttendance.create({
-                    dateLearn: dateLearn,
-                    studentId: value.split(" - ")[1],
-                    statusId: status.statusId,
-                    classId: id,
-                    status: value.split(" - ")[2],
-                });
-            }
-        });
         res.redirect(`/admin/classes/attendance/${id}`);
     },
 
