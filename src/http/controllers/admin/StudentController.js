@@ -7,6 +7,8 @@ const exportFile = require("../../../utils/exportFile");
 const importFile = require("../../../utils/importFile");
 const { getPaginateUrl } = require("../../../utils/url");
 const validate = require("../../../utils/validate");
+const permissionUtils = require("../../../utils/permissionUtils");
+
 const model = require("../../../models/index");
 const User = model.User;
 const Type = model.Type;
@@ -80,6 +82,8 @@ module.exports = {
             offset: offset,
         });
 
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/student/index", {
             req,
             students,
@@ -89,6 +93,8 @@ module.exports = {
             totalPage,
             page,
             recordNumber,
+            permissionUser,
+            permissionUtils,
             getPaginateUrl,
         });
     },
@@ -97,11 +103,15 @@ module.exports = {
         const title = "Thêm học viên";
         const errors = req.flash("errors");
 
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/student/add", {
             title,
             moduleName,
             errors,
             validate,
+            permissionUser,
+            permissionUtils,
         });
     },
 
@@ -136,7 +146,16 @@ module.exports = {
                 id: id,
             },
         });
-        res.render("admin/student/edit", { student, title, moduleName });
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
+        res.render("admin/student/edit", {
+            student,
+            title,
+            moduleName,
+            permissionUser,
+            permissionUtils,
+        });
     },
 
     update: async (req, res) => {
@@ -208,7 +227,16 @@ module.exports = {
                 id: id,
             },
         });
-        res.render("admin/student/detail", { title, moduleName, student });
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
+        res.render("admin/student/detail", {
+            title,
+            moduleName,
+            student,
+            permissionUser,
+            permissionUtils,
+        });
     },
 
     export: async (req, res) => {
@@ -226,9 +254,17 @@ module.exports = {
         exportFile(res, students, "User_Student", fileName, columns);
     },
 
-    import: (req, res) => {
+    import: async (req, res) => {
         const title = "Import File Student";
-        res.render("admin/student/import", { title, moduleName });
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
+        res.render("admin/student/import", {
+            title,
+            moduleName,
+            permissionUser,
+            permissionUtils,
+        });
     },
 
     handleImport: async (req, res) => {

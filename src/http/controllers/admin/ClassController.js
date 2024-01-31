@@ -8,6 +8,7 @@ const { getPaginateUrl } = require("../../../utils/url");
 const date = require("../../../utils/date");
 // const getDate = require("../../../helpers/getDate");
 const checkAttendance = require("../../../utils/checkAttendance");
+const permissionUtils = require("../../../utils/permissionUtils");
 
 const model = require("../../../models/index");
 const Course = model.Course;
@@ -71,6 +72,8 @@ module.exports = {
             offset: offset,
         });
 
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/class/index", {
             req,
             title,
@@ -81,15 +84,24 @@ module.exports = {
             recordNumber,
             page,
             totalPage,
+            permissionUser,
+            permissionUtils,
             getPaginateUrl,
         });
     },
 
     add: async (req, res) => {
         const title = "Thêm lớp học";
-        const courses = await Course.findAll();
 
-        res.render("admin/class/add", { title, moduleName, courses });
+        const courses = await Course.findAll();
+        const permissionUser = await permissionUtils.roleUser(req);
+        res.render("admin/class/add", {
+            title,
+            moduleName,
+            courses,
+            permissionUser,
+            permissionUtils,
+        });
     },
 
     store: async (req, res) => {
@@ -169,6 +181,8 @@ module.exports = {
             scheduleValEnd.push(`${schedule} - ${timeLearn.split(" - ")[1]}`);
         });
 
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/class/edit", {
             title,
             moduleName,
@@ -178,6 +192,8 @@ module.exports = {
             scheduleVal,
             scheduleValStart,
             scheduleValEnd,
+            permissionUser,
+            permissionUtils,
         });
     },
 
@@ -292,9 +308,17 @@ module.exports = {
         exportFile(res, scheduleClass, "Classes", fileName, columns);
     },
 
-    import: (req, res) => {
+    import: async (req, res) => {
         const title = "Import File Class";
-        res.render("admin/class/import", { title, moduleName });
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
+        res.render("admin/class/import", {
+            title,
+            moduleName,
+            permissionUser,
+            permissionUtils,
+        });
     },
 
     handleImport: async (req, res) => {
@@ -362,6 +386,8 @@ module.exports = {
             },
         });
 
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/class/detail", {
             title,
             moduleName,
@@ -369,6 +395,8 @@ module.exports = {
             students,
             moment,
             scheduleClass,
+            permissionUser,
+            permissionUtils,
         });
     },
 

@@ -10,11 +10,14 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // define association here
             User.belongsTo(models.Type, { foreignKey: "typeId" });
-            User.hasOne(models.UserOtp);
+            User.hasOne(models.UserOtp, { foreignKey: "userId" });
             User.hasMany(models.UserColumn, { foreignKey: "userId" });
             User.hasOne(models.LoginToken, { foreignKey: "userId" });
             User.hasMany(models.UserSocial, { foreignKey: "userId" });
-            User.belongsToMany(models.Role, { through: "User_Role" });
+            User.belongsToMany(models.Role, {
+                through: "User_Role",
+                foreignKey: "userId",
+            });
             User.belongsToMany(models.Permission, {
                 through: "User_Permissions",
                 foreignKey: "userId",

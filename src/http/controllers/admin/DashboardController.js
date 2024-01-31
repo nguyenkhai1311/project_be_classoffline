@@ -1,3 +1,4 @@
+const permissionUtils = require("../../../utils/permissionUtils");
 const model = require("../../../models/index");
 const User = model.User;
 const Course = model.Course;
@@ -37,6 +38,8 @@ module.exports = {
             },
         });
 
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/dashboard/index", {
             title,
             moduleName,
@@ -45,6 +48,8 @@ module.exports = {
             classQuantity,
             teacherQuantity,
             teachingAssistantQuantity,
+            permissionUtils,
+            permissionUser,
         });
     },
 };
