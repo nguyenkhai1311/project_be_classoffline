@@ -1,3 +1,5 @@
+const permissionUtils = require("../../../utils/permissionUtils");
+
 const model = require("../../../models/index");
 const Course = model.Course;
 const CourseModule = model.CourseModule;
@@ -9,12 +11,17 @@ module.exports = {
     add: async (req, res) => {
         const title = "Thêm tài liệu";
         const courseId = req.flash("courseId").slice(-1);
+
         const courses = await Course.findAll();
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/courseModule/add", {
             title,
             moduleName,
             courseId,
             courses,
+            permissionUser,
+            permissionUtils,
         });
     },
 
@@ -39,11 +46,16 @@ module.exports = {
             },
         });
         const courses = await Course.findAll();
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/courseModule/edit", {
             title,
             moduleName,
             moduleVal,
             courses,
+            permissionUser,
+            permissionUtils,
         });
     },
 

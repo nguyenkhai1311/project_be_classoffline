@@ -4,7 +4,6 @@ var router = express.Router();
 const DashboardController = require("../../http/controllers/admin/DashboardController");
 const ProfileController = require("../../http/controllers/admin/ProfileController");
 const SettingsController = require("../../http/controllers/admin/SettingsController");
-const CalendarController = require("../../http/controllers/admin/CalendarController");
 
 const userRouter = require("./user");
 const profileRouter = require("./profile");
@@ -19,6 +18,7 @@ const roleRouter = require("./role");
 router.get("/", DashboardController.index);
 router.get("/changePassword", ProfileController.changePassword);
 router.post("/changePassword", ProfileController.handleChangePassword);
+router.get("/settings", SettingsController.index);
 
 router.use("/profile", profileRouter);
 router.use("/users", userRouter);
@@ -29,8 +29,5 @@ router.use("/students", studentRouter);
 router.use("/course-modules", courseModuleRouter);
 router.use("/module-documents", moduleDocumentRouter);
 router.use("/roles", roleRouter);
-
-router.get("/settings", SettingsController.index);
-router.get("/calendar", CalendarController.index);
 
 module.exports = router;

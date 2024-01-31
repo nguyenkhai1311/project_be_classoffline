@@ -1,3 +1,5 @@
+const permissionUtils = require("../../../utils/permissionUtils");
+
 const model = require("../../../models/index");
 const Course = model.Course;
 const CourseModule = model.CourseModule;
@@ -13,10 +15,15 @@ module.exports = {
                 model: Course,
             },
         });
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/moduleDocument/add", {
             title,
             moduleName,
             courseModule,
+            permissionUser,
+            permissionUtils,
         });
     },
 
@@ -45,11 +52,16 @@ module.exports = {
                 model: Course,
             },
         });
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/moduleDocument/edit", {
             title,
             moduleName,
             moduleDocument,
             courseModule,
+            permissionUser,
+            permissionUtils,
         });
     },
 
