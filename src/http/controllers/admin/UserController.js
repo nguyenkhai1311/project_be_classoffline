@@ -6,10 +6,13 @@ const constants = require("../../../constants/index");
 const exportFile = require("../../../utils/exportFile");
 const importFile = require("../../../utils/importFile");
 const { getPaginateUrl } = require("../../../utils/url");
+const permissionUtils = require("../../../utils/permissionUtils");
 const validate = require("../../../utils/validate");
 const model = require("../../../models/index");
 const User = model.User;
 const Type = model.Type;
+const Role = model.Role;
+const Permission = model.Permission;
 
 const moduleName = "Người dùng";
 
@@ -80,6 +83,8 @@ module.exports = {
             offset: offset,
         });
 
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/user/index", {
             req,
             users,
@@ -89,6 +94,8 @@ module.exports = {
             totalPage,
             page,
             recordNumber,
+            permissionUser,
+            permissionUtils,
             getPaginateUrl,
         });
     },
@@ -97,11 +104,15 @@ module.exports = {
         const title = "Thêm người dùng";
         const errors = req.flash("errors");
 
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/user/add", {
             title,
             moduleName,
             errors,
             validate,
+            permissionUser,
+            permissionUtils,
         });
     },
 
@@ -136,7 +147,16 @@ module.exports = {
                 id: id,
             },
         });
-        res.render("admin/user/edit", { user, title, moduleName });
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
+        res.render("admin/user/edit", {
+            user,
+            title,
+            moduleName,
+            permissionUser,
+            permissionUtils,
+        });
     },
 
     update: async (req, res) => {
@@ -209,9 +229,17 @@ module.exports = {
         exportFile(res, user, "User_Admin", fileName, columns);
     },
 
-    import: (req, res) => {
+    import: async (req, res) => {
         const title = "Import File";
-        res.render("admin/user/import", { title, moduleName });
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
+        res.render("admin/user/import", {
+            title,
+            moduleName,
+            permissionUser,
+            permissionUtils,
+        });
     },
 
     handleImport: async (req, res) => {
@@ -232,5 +260,140 @@ module.exports = {
             });
         }
         res.redirect("/admin/users");
+    },
+
+    permission: async (req, res) => {
+        const title = "Phân quyền";
+        const { id } = req.params;
+
+        const user = await User.findOne({
+            where: {
+                id: id,
+            },
+        });
+        const roles = await Role.findAll();
+        const roleUser = await Role.findAll({
+            include: {
+                model: User,
+                where: {
+                    id: id,
+                },
+            },
+        });
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
+        res.render("admin/user/permission", {
+            title,
+            moduleName,
+            roles,
+            user,
+            permissionUtils,
+            permissionUser,
+            roleUser,
+        });
+    },
+
+    handlePermission: async (req, res) => {
+        const { id } = req.params;
+        let { roles } = req.body;
+        const user = await User.findOne({
+            where: {
+                id: id,
+            },
+        });
+
+        if (!user) {
+            return res.redirect("/admin/users");
+        }
+
+        if (roles) {
+            if (typeof roles === "string") {
+                roles = [roles];
+            }
+
+            const rolesUpdate = await Promise.all(
+                roles.map((roleId) =>
+                    Role.findOne({
+                        where: {
+                            id: roleId,
+                        },
+                    })
+                )
+            );
+
+            await user.setRoles(rolesUpdate);
+
+            return res.redirect(`/admin/users/permission/${id}`);
+        }
+
+        return res.redirect("/admin/users");
+    },
+
+    addUserPermission: async (req, res) => {
+        const title = "Thêm quyền cho người dùng";
+        const { id } = req.params;
+
+        const user = await User.findOne({
+            where: {
+                id: id,
+            },
+        });
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
+        res.render("admin/user/permissionAdd", {
+            title,
+            moduleName,
+            permissionUser,
+            permissionUtils,
+            user,
+        });
+    },
+
+    storeUserPermission: async (req, res) => {
+        const { id } = req.params;
+        const { permission } = req.body;
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
+        const user = await User.findOne({
+            where: {
+                id: id,
+            },
+        });
+
+        if (permission) {
+            let permissionUserPlus = [];
+
+            if (typeof permission === "string") {
+                permissionUserPlus = !permissionUser.includes(permission) && [
+                    permission,
+                ];
+            } else {
+                permissionUserPlus = permission.filter(
+                    (value) => !permissionUser.includes(value)
+                );
+            }
+
+            await Promise.all(
+                permissionUserPlus.map(async (item) => {
+                    const permissionInstance = await Permission.findOne({
+                        where: {
+                            values: item,
+                        },
+                    });
+                    if (permissionInstance) {
+                        await user.addPermission(permissionInstance);
+                    } else {
+                        await user.createPermission({
+                            values: item,
+                        });
+                    }
+                })
+            );
+        }
+
+        res.redirect(`/admin/users/permissions/add/${id}`);
     },
 };

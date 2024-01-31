@@ -14,6 +14,7 @@
 				</button>
 			</form>
 		</div>
+		<% if(permissionUtils.getPermissionUser(permissionUser, 'users.delete')) {%>
 		<div>
 			<button type="button"
 				class="btn btn-danger"
@@ -64,6 +65,7 @@
 				</div>
 			</div>
 		</div>
+		<% } %>
 	</div>
 	<section class="justify-content-between content mb-3">
 		<div class="container-fluid">
@@ -107,8 +109,12 @@
 				<th>SĐT</th>
 				<th>Địa chỉ</th>
 				<th>Ngày tạo</th>
+				<% if(permissionUtils.getPermissionUser(permissionUser, 'users.permission')) {%>
 				<th>Phân quyền</th>
+				<% } %>
+				<% if(permissionUtils.getPermissionUser(permissionUser, 'users.update') || permissionUtils.getPermissionUser(permissionUser, 'users.delete')) {%>
 				<th colspan="2">Chức năng</th>
+				<% } %>
 			</tr>
 		</thead>
 		<tbody>
@@ -123,7 +129,16 @@
 				<td><%= user.phone %></td>
 				<td><%= user.address %></td>
 				<td><%= moment(user.createdAt).format("DD/MM/YYYY") %></td>
-				<td><button class="btn btn-success"><i class="fas fa-user-cog"></i></button></td>
+				<% if(permissionUtils.getPermissionUser(permissionUser, 'users.permission')) {%>
+				<td>
+					<form action="/admin/users/permission/<%= user.id %>"
+						method="get">
+						<button type="submit"
+							class="btn btn-success"><i class="fas fa-user-cog"></i></button>
+					</form>
+				</td>
+				<% } %>
+				<% if(permissionUtils.getPermissionUser(permissionUser, 'users.update')) {%>
 				<td>
 					<form action="/admin/users/edit/<%= user.id %>"
 						method="get">
@@ -133,6 +148,8 @@
 						</button>
 					</form>
 				</td>
+				<% } %>
+				<% if(permissionUtils.getPermissionUser(permissionUser, 'users.delete')) {%>
 				<td>
 					<button type="button"
 						class="btn btn-danger"
@@ -177,6 +194,7 @@
 						</div>
 					</div>
 				</td>
+				<% } %>
 			</tr>
 			<% }) %>
 		</tbody>

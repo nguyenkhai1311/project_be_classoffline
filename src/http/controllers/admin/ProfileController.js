@@ -1,4 +1,6 @@
 const bcrypt = require("bcrypt");
+
+const permissionUtils = require("../../../utils/permissionUtils");
 const model = require("../../../models/index");
 const User = model.User;
 const UserSocial = model.UserSocial;
@@ -21,21 +23,31 @@ module.exports = {
                 userId: id,
             },
         });
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/profile/index", {
             user,
             userSocials,
             title,
             moduleName,
+            permissionUser,
+            permissionUtils,
         });
     },
 
-    changePassword: (req, res) => {
+    changePassword: async (req, res) => {
         const title = "Đổi mật khẩu";
         const message = req.flash("message");
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/profile/changePassword", {
             message,
             title,
             moduleName,
+            permissionUser,
+            permissionUtils,
         });
     },
 
@@ -84,10 +96,15 @@ module.exports = {
                 id: id,
             },
         });
-        await res.render("admin/profile/update", {
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
+        res.render("admin/profile/update", {
             title,
             moduleName,
             user,
+            permissionUser,
+            permissionUtils,
         });
     },
 

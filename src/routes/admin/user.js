@@ -38,4 +38,10 @@ router.post("/export", UserController.export);
 router.get("/import", UserController.import);
 router.post("/import", upload.single("fileUser"), UserController.handleImport);
 
+router.get("/permission/:id", UserController.permission);
+router.post("/permission/:id", UserController.handlePermission);
+
+router.get("/permissions/add/:id", UserController.addUserPermission);
+router.post("/permissions/add/:id", UserController.storeUserPermission);
+
 module.exports = router;
