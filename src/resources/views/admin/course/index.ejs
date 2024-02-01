@@ -119,8 +119,8 @@
 				<td><%= index + 1 %></td>
 				<td><a href="/admin/courses/detail/<%= course.id %>"><%= course.name %></a></td>
 				<td><%= course.price.toLocaleString() %> đ</td>
-				<td><%= course.User.name %></td>
-				<td><%= course.tryLearn %> buổi</td>
+				<td><a href="/admin/teachers/detail/<%= course.User.id %>"><%= course.User.name %></a></td>
+				<td><%= course.tryLearn ?? "0" %> buổi</td>
 				<td><%= course.quantity %></td>
 				<td><%= course.duration %> buổi </td>
 				<% if(permissionUtils.getPermissionUser(permissionUser, 'courses.update')) {%>

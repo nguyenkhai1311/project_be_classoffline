@@ -12,6 +12,9 @@ const permissionUtils = require("../../../utils/permissionUtils");
 const model = require("../../../models/index");
 const User = model.User;
 const Type = model.Type;
+const StudentsClass = model.StudentsClass;
+const Class = model.Class;
+const Course = model.Course;
 
 const moduleName = "Học viên";
 
@@ -131,8 +134,7 @@ module.exports = {
                 address: address,
                 typeId: type.id,
             });
-            res.redirect("/admin/students");
-            return;
+            return res.redirect("/admin/students");
         }
         req.flash("errors", result.errors);
         res.redirect("/admin/students/add");
@@ -217,16 +219,31 @@ module.exports = {
         const title = "Chi tiết học viên";
         const { id } = req.params;
         const student = await User.findOne({
-            include: {
-                model: Type,
-                where: {
-                    name: "Student",
-                },
-            },
             where: {
                 id: id,
             },
         });
+
+        const classStudent = await StudentsClass.findAll({
+            where: {
+                studentId: id,
+            },
+        });
+
+        // let classList = [];
+
+        let classList = await Promise.all(
+            classStudent.map(async (studentClassVal) => {
+                return await Class.findOne({
+                    include: {
+                        model: Course,
+                    },
+                    where: {
+                        id: studentClassVal.classId,
+                    },
+                });
+            })
+        );
 
         const permissionUser = await permissionUtils.roleUser(req);
 
@@ -234,6 +251,7 @@ module.exports = {
             title,
             moduleName,
             student,
+            classList,
             permissionUser,
             permissionUtils,
         });

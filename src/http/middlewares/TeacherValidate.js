@@ -5,8 +5,8 @@ const User = model.User;
 
 module.exports = () => {
     return [
-        body("name", "Tên người dùng không được để trống").notEmpty(),
-        body("name", "Tên người dùng nên có 2 - 30 ký tự").isLength({
+        body("name", "Tên giảng viên không được để trống").notEmpty(),
+        body("name", "Tên giảng viên nên có 2 - 30 ký tự").isLength({
             min: 2,
             max: 30,
         }),
@@ -29,5 +29,6 @@ module.exports = () => {
         }),
         body("phone", "Số điện thoại không hợp lệ").isMobilePhone("vi-VN"),
         body("address", "Địa chỉ không được để trống").notEmpty(),
+        body("typeName", "Vui lòng chọn chức vụ").notEmpty(),
     ];
 };

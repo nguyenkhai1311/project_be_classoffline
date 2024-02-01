@@ -1,9 +1,11 @@
 const { Op } = require("sequelize");
+const { validationResult } = require("express-validator");
 
 const constants = require("../../../constants/index");
 const exportFile = require("../../../utils/exportFile");
 const importFile = require("../../../utils/importFile");
 const { getPaginateUrl } = require("../../../utils/url");
+const validate = require("../../../utils/validate");
 const permissionUtils = require("../../../utils/permissionUtils");
 const model = require("../../../models/index");
 const User = model.User;
@@ -86,6 +88,8 @@ module.exports = {
 
     add: async (req, res) => {
         const title = "Thêm khóa học";
+        const errors = req.flash("errors");
+
         const teachers = await User.findAll({
             include: {
                 model: Type,
@@ -100,7 +104,9 @@ module.exports = {
         res.render("admin/course/add", {
             title,
             moduleName,
+            errors,
             teachers,
+            validate,
             permissionUser,
             permissionUtils,
         });
@@ -116,16 +122,22 @@ module.exports = {
             courseDuration,
         } = req.body;
 
-        await Course.create({
-            name: courseName,
-            price: coursePrice,
-            teacherId: teacherId,
-            tryLearn: tryLearn,
-            quantity: courseQuantity,
-            duration: courseDuration,
-        });
+        const result = validationResult(req);
+        if (result.isEmpty()) {
+            await Course.create({
+                name: courseName,
+                price: coursePrice,
+                teacherId: teacherId,
+                tryLearn: tryLearn,
+                quantity: courseQuantity,
+                duration: courseDuration,
+            });
 
-        res.redirect("/admin/courses");
+            return res.redirect("/admin/courses");
+        }
+
+        req.flash("errors", result.errors);
+        res.redirect("/admin/courses/add");
     },
 
     edit: async (req, res) => {
