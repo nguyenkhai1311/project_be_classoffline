@@ -19,10 +19,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 const ClassController = require("../../http/controllers/admin/ClassController");
+const ClassValidate = require("../../http/middlewares/ClassValidate");
 
 router.get("/", ClassController.index);
 router.get("/add", ClassController.add);
-router.post("/add", ClassController.store);
+router.post("/add", ClassValidate(), ClassController.store);
 
 router.get("/edit/:id", ClassController.edit);
 router.patch("/edit/:id", ClassController.update);
@@ -44,7 +45,8 @@ router.get("/detail/:id", ClassController.detail);
 
 router.get("/calendar/:id", ClassController.calendar);
 
-router.get("/teachers", ClassController.listTeacher);
+router.get("/teachers/add/:id", ClassController.listTeacher);
+router.post("/teachers/add/:id", ClassController.addTeacher);
 
 router.get("/students", ClassController.listStudent);
 router.post("/students", ClassController.addStudent);

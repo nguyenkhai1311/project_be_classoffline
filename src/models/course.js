@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
             tryLearn: {
                 type: DataTypes.INTEGER(1),
                 defaultValue: 0,
+                allowNull: true,
             },
             quantity: DataTypes.INTEGER,
             duration: DataTypes.INTEGER,

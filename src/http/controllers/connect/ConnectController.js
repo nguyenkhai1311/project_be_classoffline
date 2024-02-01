@@ -10,12 +10,12 @@ module.exports = {
             },
         });
 
-        if (typeName === "Admin") {
-            res.redirect("/admin/profile");
-        } else if (typeName === "Teacher" || typeName === "TA") {
-            res.redirect("/teacher/profile");
+        if (typeName.name === "Admin") {
+            return res.redirect("/admin/profile");
+        } else if (typeName.name === "Teacher" || typeName.name === "TA") {
+            return res.redirect("/teacher/profile");
         } else {
-            res.redirect("/profile");
+            return res.redirect("/profile");
         }
     },
 
@@ -26,9 +26,9 @@ module.exports = {
             },
         });
 
-        if (typeName === "Admin") {
+        if (typeName.name === "Admin") {
             res.redirect("/admin/profile");
-        } else if (typeName === "Teacher" || typeName === "TA") {
+        } else if (typeName.name === "Teacher" || typeName.name === "TA") {
             res.redirect("/teacher/profile");
         } else {
             res.redirect("/profile");
@@ -51,9 +51,9 @@ module.exports = {
             },
         });
 
-        if (typeName === "Admin") {
+        if (typeName.name === "Admin") {
             res.redirect("/admin/profile");
-        } else if (typeName === "Teacher" || typeName === "TA") {
+        } else if (typeName.name === "Teacher" || typeName.name === "TA") {
             res.redirect("/teacher/profile");
         } else {
             res.redirect("/profile");
@@ -76,12 +76,12 @@ module.exports = {
             },
         });
 
-        if (typeName === "Admin") {
-            res.redirect("/admin/profile");
-        } else if (typeName === "Teacher" || typeName === "TA") {
-            res.redirect("/teacher/profile");
+        if (typeName.name === "Admin") {
+            return res.redirect("/admin/profile");
+        } else if (typeName.name === "Teacher" || typeName.name === "TA") {
+            return res.redirect("/teacher/profile");
         } else {
-            res.redirect("/profile");
+            return res.redirect("/profile");
         }
     },
 
@@ -101,12 +101,12 @@ module.exports = {
             },
         });
 
-        if (typeName === "Admin") {
-            res.redirect("/admin/profile");
-        } else if (typeName === "Teacher" || typeName === "TA") {
-            res.redirect("/teacher/profile");
+        if (typeName.name === "Admin") {
+            return res.redirect("/admin/profile");
+        } else if (typeName.name === "Teacher" || typeName.name === "TA") {
+            return res.redirect("/teacher/profile");
         } else {
-            res.redirect("/profile");
+            return res.redirect("/profile");
         }
     },
 };
