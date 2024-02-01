@@ -1,10 +1,12 @@
 const moment = require("moment");
 const { Op } = require("sequelize");
+const { validationResult } = require("express-validator");
 
 const constants = require("../../../constants/index");
 const exportFile = require("../../../utils/exportFile");
 const importFile = require("../../../utils/importFile");
 const { getPaginateUrl } = require("../../../utils/url");
+const validate = require("../../../utils/validate");
 const date = require("../../../utils/date");
 // const getDate = require("../../../helpers/getDate");
 const checkAttendance = require("../../../utils/checkAttendance");
@@ -92,6 +94,7 @@ module.exports = {
 
     add: async (req, res) => {
         const title = "Thêm lớp học";
+        const errors = req.flash("errors");
 
         const courses = await Course.findAll();
         const permissionUser = await permissionUtils.roleUser(req);
@@ -99,6 +102,8 @@ module.exports = {
             title,
             moduleName,
             courses,
+            errors,
+            validate,
             permissionUser,
             permissionUtils,
         });
@@ -115,43 +120,48 @@ module.exports = {
             timeLearnEnd,
         } = req.body;
 
-        const course = await Course.findOne({
-            where: {
-                id: courseId,
-            },
-        });
-
-        const classEndDate = date.getEndDate(
-            classStartDate, // Ngày bắt đầu
-            course.duration, // Tổng số buổi học của 1 khóa
-            classSchedule.length // Tổng số buổi học trong 1 tuần
-        );
-
-        const statusClass = await Class.create({
-            name: className,
-            quantity: classQuantity,
-            startDate: classStartDate,
-            endDate: classEndDate,
-            courseId: courseId,
-        });
-
-        if (classSchedule.length === 1) {
-            await ScheduleClass.create({
-                schedule: classSchedule,
-                timeLearn: `${timeLearnStart} - ${timeLearnEnd}`,
-                classId: statusClass.id,
+        const result = validationResult(req);
+        if (result.isEmpty()) {
+            const course = await Course.findOne({
+                where: {
+                    id: courseId,
+                },
             });
-        } else {
-            for (let index = 0; index < classSchedule.length; index++) {
+
+            const classEndDate = date.getEndDate(
+                classStartDate, // Ngày bắt đầu
+                course.duration, // Tổng số buổi học của 1 khóa
+                classSchedule.length // Tổng số buổi học trong 1 tuần
+            );
+
+            const statusClass = await Class.create({
+                name: className,
+                quantity: classQuantity,
+                startDate: classStartDate,
+                endDate: classEndDate,
+                courseId: courseId,
+            });
+
+            if (classSchedule.length === 1) {
                 await ScheduleClass.create({
-                    schedule: classSchedule[index],
-                    timeLearn: `${timeLearnStart[index]} - ${timeLearnEnd[index]}`,
+                    schedule: classSchedule,
+                    timeLearn: `${timeLearnStart} - ${timeLearnEnd}`,
                     classId: statusClass.id,
                 });
+            } else {
+                for (let index = 0; index < classSchedule.length; index++) {
+                    await ScheduleClass.create({
+                        schedule: classSchedule[index],
+                        timeLearn: `${timeLearnStart[index]} - ${timeLearnEnd[index]}`,
+                        classId: statusClass.id,
+                    });
+                }
             }
-        }
 
-        res.redirect("/admin/classes");
+            return res.redirect("/admin/classes");
+        }
+        req.flash("errors", result.errors);
+        res.redirect("/admin/classes/add");
     },
 
     edit: async (req, res) => {
@@ -386,6 +396,42 @@ module.exports = {
             },
         });
 
+        const typeTeacher = await Type.findOne({
+            where: {
+                name: "Teacher",
+            },
+        });
+
+        const typeTA = await Type.findOne({
+            where: {
+                name: "TA",
+            },
+        });
+
+        const teacherList = await User.findAll({
+            include: {
+                model: Class,
+                where: {
+                    id: id,
+                },
+            },
+            where: {
+                typeId: typeTeacher.id,
+            },
+        });
+
+        const taList = await User.findAll({
+            include: {
+                model: Class,
+                where: {
+                    id: id,
+                },
+            },
+            where: {
+                typeId: typeTA.id,
+            },
+        });
+
         const permissionUser = await permissionUtils.roleUser(req);
 
         res.render("admin/class/detail", {
@@ -395,6 +441,8 @@ module.exports = {
             students,
             moment,
             scheduleClass,
+            teacherList,
+            taList,
             permissionUser,
             permissionUtils,
         });
@@ -411,15 +459,28 @@ module.exports = {
                 classId: id,
             },
         });
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/class/calendar", {
             title,
             moduleName,
             scheduleClass,
+            permissionUser,
+            permissionUtils,
         });
     },
 
     listTeacher: async (req, res) => {
         const title = "Danh sách giảng viên, trợ giảng";
+        const { id } = req.params;
+
+        const classVal = await Class.findOne({
+            where: {
+                id: id,
+            },
+        });
+
         const teachers = await User.findAll({
             include: {
                 model: Type,
@@ -430,7 +491,46 @@ module.exports = {
                 },
             },
         });
-        res.render("admin/class/teacherList", { title, moduleName, teachers });
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
+        res.render("admin/class/teacherList", {
+            classVal,
+            title,
+            moduleName,
+            teachers,
+            permissionUser,
+            permissionUtils,
+        });
+    },
+
+    addTeacher: async (req, res) => {
+        const { id } = req.params;
+        const { teacherId } = req.body;
+
+        const classVal = await Class.findOne({
+            where: {
+                id: id,
+            },
+        });
+
+        if (teacherId) {
+            let teacherIdList = [];
+            if (typeof teacherId === "string") {
+                teacherIdList.push(+teacherId);
+            } else {
+                teacherIdList = teacherId.map(async (value) => +value);
+            }
+
+            await Promise.all(
+                teacherIdList.map(async (value) => {
+                    console.log(value);
+                    await classVal.addUser(value);
+                })
+            );
+        }
+
+        res.redirect(`/admin/classes/teachers/add/${id}`);
     },
 
     listStudent: async (req, res) => {
@@ -445,11 +545,16 @@ module.exports = {
                 },
             },
         });
+
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/class/studentList", {
             title,
             moduleName,
             error,
             students,
+            permissionUser,
+            permissionUtils,
         });
     },
 
@@ -519,6 +624,8 @@ module.exports = {
             },
         });
 
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/class/attendance", {
             title,
             moduleName,
@@ -528,6 +635,8 @@ module.exports = {
             classInfor,
             attendanceList,
             checkAttendance,
+            permissionUser,
+            permissionUtils,
         });
     },
 
@@ -582,11 +691,15 @@ module.exports = {
             },
         });
 
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render(`admin/class/question`, {
             title,
             moduleName,
             classVal,
             comments,
+            permissionUser,
+            permissionUtils,
         });
     },
 
@@ -600,10 +713,14 @@ module.exports = {
             },
         });
 
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/class/makeQuestion", {
             title,
             moduleName,
             classVal,
+            permissionUser,
+            permissionUtils,
         });
     },
 
@@ -636,10 +753,14 @@ module.exports = {
             },
         });
 
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/class/questionAnswer", {
             title,
             moduleName,
             comment,
+            permissionUser,
+            permissionUtils,
         });
     },
 
@@ -657,11 +778,15 @@ module.exports = {
             classId: id,
         });
 
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/class/exercise", {
             title,
             moduleName,
             classVal,
             exercises,
+            permissionUser,
+            permissionUtils,
         });
     },
 
@@ -675,7 +800,15 @@ module.exports = {
             },
         });
 
-        res.render("admin/class/addExercise", { title, moduleName, classVal });
+        const permissionUser = await permissionUtils.roleUser(req);
+
+        res.render("admin/class/addExercise", {
+            title,
+            moduleName,
+            classVal,
+            permissionUser,
+            permissionUtils,
+        });
     },
 
     createExercise: async (req, res) => {
@@ -709,11 +842,15 @@ module.exports = {
             },
         });
 
+        const permissionUser = await permissionUtils.roleUser(req);
+
         res.render("admin/class/exerciseSubmit", {
             title,
             moduleName,
             exercise,
             exerciseSubmits,
+            permissionUser,
+            permissionUtils,
         });
     },
 

@@ -27,6 +27,7 @@ module.exports = {
             tryLearn: {
                 type: Sequelize.TINYINT(1),
                 defaultValue: 0,
+                allowNull: true,
             },
             quantity: {
                 type: Sequelize.INTEGER,

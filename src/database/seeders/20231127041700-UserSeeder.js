@@ -2,9 +2,24 @@
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
+const model = require("../../models/index");
+const Type = model.Type;
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
+        const typeAdmin = await Type.findOne({
+            where: {
+                name: "Admin",
+            },
+        });
+
+        const typeTeacher = await Type.findOne({
+            where: {
+                name: "Teacher",
+            },
+        });
+
         await queryInterface.bulkInsert(
             "Users",
             [
@@ -14,7 +29,7 @@ module.exports = {
                     password: bcrypt.hashSync("123456", saltRounds),
                     phone: "012354631",
                     address: "Hà Nội",
-                    typeId: 1,
+                    typeId: typeAdmin.id,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                 },
@@ -24,7 +39,7 @@ module.exports = {
                     password: bcrypt.hashSync("123456", saltRounds),
                     phone: "012354631",
                     address: "Hà Nội",
-                    typeId: 2,
+                    typeId: typeTeacher.id,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                 },
@@ -34,7 +49,7 @@ module.exports = {
                     password: bcrypt.hashSync("123456", saltRounds),
                     phone: "012354631",
                     address: "Hà Nội",
-                    typeId: 2,
+                    typeId: typeTeacher.id,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                 },
