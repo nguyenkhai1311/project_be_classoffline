@@ -1,4 +1,5 @@
 const { body } = require("express-validator");
+const { Op } = require("sequelize");
 
 const model = require("../../models/index");
 const User = model.User;
@@ -11,15 +12,19 @@ module.exports = () => {
             max: 30,
         }),
         body("email", "Email không được để trống").notEmpty(),
-        body("email").custom(async (value) => {
+        body("email").custom(async (value, { req }) => {
+            const { id } = req.params;
+
             const user = await User.findOne({
                 where: {
                     email: value,
+                    [Op.not]: [
+                        {
+                            id: id,
+                        },
+                    ],
                 },
             });
-
-            console.log(user);
-
             if (user) {
                 throw new Error("Email đã tồn tại");
             }

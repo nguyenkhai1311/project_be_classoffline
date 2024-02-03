@@ -145,6 +145,8 @@ module.exports = {
     edit: async (req, res) => {
         const { id } = req.params;
         const title = "Sửa giảng viên, trợ giảng";
+        const errors = req.flash("errors");
+
         const teacher = await User.findOne({
             include: {
                 model: Type,
@@ -160,6 +162,8 @@ module.exports = {
             teacher,
             title,
             moduleName,
+            errors,
+            validate,
             permissionUtils,
             permissionUser,
         });
@@ -168,25 +172,36 @@ module.exports = {
     update: async (req, res) => {
         const { id } = req.params;
         const { name, email, phone, address, typeName } = req.body;
-        const type = await Type.findOne({
-            where: {
-                name: typeName,
-            },
-        });
-        await User.update(
-            {
-                name: name,
-                email: email,
-                phone: phone,
-                address: address,
-                typeId: type.id,
-            },
-            {
+
+        const result = validationResult(req);
+        console.log(result);
+        if (result.isEmpty()) {
+            const type = await Type.findOne({
                 where: {
-                    id: id,
+                    name: typeName,
                 },
-            }
-        );
+            });
+            await User.update(
+                {
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    address: address,
+                    typeId: type.id,
+                },
+                {
+                    where: {
+                        id: id,
+                    },
+                }
+            );
+
+            return res.redirect(`/admin/teachers/edit/${id}`);
+        }
+
+        console.log("Lỗi", result);
+
+        req.flash("errors", result.errors);
         res.redirect(`/admin/teachers/edit/${id}`);
     },
 

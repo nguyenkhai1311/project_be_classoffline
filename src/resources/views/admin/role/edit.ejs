@@ -7,8 +7,8 @@
 			name="nameRole"
 			placeholder="Tên Role..."
 			class="form-control"
-			value="<%= role.name %>"
-			required />
+			value="<%= role.name %>" />
+		<span class="text-danger"><%= validate.getError(errors, "nameRole") %></span>
 	</div>
 	<table class="table table-bordered">
 		<thead>

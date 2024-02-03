@@ -21,13 +21,14 @@ const upload = multer({ storage: storage });
 
 const TeacherController = require("../../http/controllers/admin/TeacherController");
 const TeacherValidate = require("../../http/middlewares/TeacherValidate");
+const TeacherUpdateValidate = require("../../http/middlewares/TeacherUpdateValidate");
 
 router.get("/", TeacherController.index);
 router.get("/add", TeacherController.add);
 router.post("/add", TeacherValidate(), TeacherController.store);
 
 router.get("/edit/:id", TeacherController.edit);
-router.patch("/edit/:id", TeacherController.update);
+router.patch("/edit/:id", TeacherUpdateValidate(), TeacherController.update);
 
 router.delete("/delete/:id", TeacherController.destroy);
 router.delete("/deleteAll", TeacherController.destroyAll);

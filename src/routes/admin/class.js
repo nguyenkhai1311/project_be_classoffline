@@ -20,13 +20,14 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 const ClassController = require("../../http/controllers/admin/ClassController");
 const ClassValidate = require("../../http/middlewares/ClassValidate");
+const ClassUpdateValidate = require("../../http/middlewares/ClassUpdateValidate");
 
 router.get("/", ClassController.index);
 router.get("/add", ClassController.add);
 router.post("/add", ClassValidate(), ClassController.store);
 
 router.get("/edit/:id", ClassController.edit);
-router.patch("/edit/:id", ClassController.update);
+router.patch("/edit/:id", ClassUpdateValidate(), ClassController.update);
 
 router.delete("/delete/:id", ClassController.destroy);
 

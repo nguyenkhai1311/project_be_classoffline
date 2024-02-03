@@ -141,6 +141,7 @@ module.exports = {
 
     edit: async (req, res) => {
         const { id } = req.params;
+        const errors = req.flash("errors");
         const title = "Sửa người dùng";
         const user = await User.findOne({
             where: {
@@ -153,6 +154,8 @@ module.exports = {
         res.render("admin/user/edit", {
             user,
             title,
+            errors,
+            validate,
             moduleName,
             permissionUser,
             permissionUtils,
@@ -162,25 +165,32 @@ module.exports = {
     update: async (req, res) => {
         const { id } = req.params;
         const { name, email, phone, address } = req.body;
-        const type = await Type.findOne({
-            where: {
-                name: "Admin",
-            },
-        });
-        await User.update(
-            {
-                name: name,
-                email: email,
-                phone: phone,
-                address: address,
-                typeId: type.id,
-            },
-            {
+
+        const result = validationResult(req);
+        if (result.isEmpty()) {
+            const type = await Type.findOne({
                 where: {
-                    id: id,
+                    name: "Admin",
                 },
-            }
-        );
+            });
+            await User.update(
+                {
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    address: address,
+                    typeId: type.id,
+                },
+                {
+                    where: {
+                        id: id,
+                    },
+                }
+            );
+            return res.redirect(`/admin/users/edit/${id}`);
+        }
+
+        req.flash("errors", result.errors);
         res.redirect(`/admin/users/edit/${id}`);
     },
 

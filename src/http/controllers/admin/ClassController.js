@@ -167,6 +167,7 @@ module.exports = {
     edit: async (req, res) => {
         const title = "Sửa lớp học";
         const { id } = req.params;
+        const errors = req.flash("errors");
         let scheduleVal = [];
         let scheduleValStart = [];
         let scheduleValEnd = [];
@@ -202,6 +203,8 @@ module.exports = {
             scheduleVal,
             scheduleValStart,
             scheduleValEnd,
+            errors,
+            validate,
             permissionUser,
             permissionUtils,
         });
@@ -219,53 +222,59 @@ module.exports = {
             timeLearnEnd,
         } = req.body;
 
-        const course = await Course.findOne({
-            where: {
-                id: courseId,
-            },
-        });
-
-        const classEndDate = date.getEndDate(
-            classStartDate, // Ngày bắt đầu
-            course.duration, // Tổng số buổi học của 1 khóa
-            classSchedule.length // Tổng số buổi học trong 1 tuần
-        );
-
-        await Class.update(
-            {
-                name: className,
-                quantity: classQuantity,
-                startDate: classStartDate,
-                endDate: classEndDate,
-                courseId: courseId,
-            },
-            {
+        const result = validationResult(req);
+        if (result.isEmpty()) {
+            const course = await Course.findOne({
                 where: {
-                    id: id,
+                    id: courseId,
                 },
-            }
-        );
-        await ScheduleClass.destroy({
-            where: {
-                classId: id,
-            },
-        });
-        if (classSchedule.length === 1) {
-            await ScheduleClass.create({
-                schedule: classSchedule,
-                timeLearn: `${timeLearnStart} - ${timeLearnEnd}`,
-                classId: id,
             });
-        } else {
-            for (let index = 0; index < classSchedule.length; index++) {
+
+            const classEndDate = date.getEndDate(
+                classStartDate, // Ngày bắt đầu
+                course.duration, // Tổng số buổi học của 1 khóa
+                classSchedule.length // Tổng số buổi học trong 1 tuần
+            );
+
+            await Class.update(
+                {
+                    name: className,
+                    quantity: classQuantity,
+                    startDate: classStartDate,
+                    endDate: classEndDate,
+                    courseId: courseId,
+                },
+                {
+                    where: {
+                        id: id,
+                    },
+                }
+            );
+            await ScheduleClass.destroy({
+                where: {
+                    classId: id,
+                },
+            });
+            if (classSchedule.length === 1) {
                 await ScheduleClass.create({
-                    schedule: classSchedule[index],
-                    timeLearn: `${timeLearnStart[index]} - ${timeLearnEnd[index]}`,
+                    schedule: classSchedule,
+                    timeLearn: `${timeLearnStart} - ${timeLearnEnd}`,
                     classId: id,
                 });
+            } else {
+                for (let index = 0; index < classSchedule.length; index++) {
+                    await ScheduleClass.create({
+                        schedule: classSchedule[index],
+                        timeLearn: `${timeLearnStart[index]} - ${timeLearnEnd[index]}`,
+                        classId: id,
+                    });
+                }
             }
+
+            return res.redirect(`/admin/classes/edit/${id}`);
         }
 
+        req.flash("errors", result.errors);
         res.redirect(`/admin/classes/edit/${id}`);
     },
 

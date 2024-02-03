@@ -143,6 +143,8 @@ module.exports = {
     edit: async (req, res) => {
         const title = "Sửa khóa học";
         const { id } = req.params;
+        const errors = req.flash("errors");
+
         const course = await Course.findOne({
             include: {
                 model: User,
@@ -170,6 +172,8 @@ module.exports = {
             course,
             teacherName,
             teachers,
+            errors,
+            validate,
             permissionUser,
             permissionUtils,
         });
@@ -186,21 +190,27 @@ module.exports = {
             courseDuration,
         } = req.body;
 
-        await Course.update(
-            {
-                name: courseName,
-                price: coursePrice,
-                teacherId: teacherId,
-                tryLearn: tryLearn,
-                quantity: courseQuantity,
-                duration: courseDuration,
-            },
-            {
-                where: {
-                    id: id,
+        const result = validationResult(req);
+        if (result.isEmpty()) {
+            await Course.update(
+                {
+                    name: courseName,
+                    price: coursePrice,
+                    teacherId: teacherId,
+                    tryLearn: tryLearn,
+                    quantity: courseQuantity,
+                    duration: courseDuration,
                 },
-            }
-        );
+                {
+                    where: {
+                        id: id,
+                    },
+                }
+            );
+            return res.redirect(`/admin/courses/edit/${id}`);
+        }
+
+        req.flash("errors", result.errors);
         res.redirect(`/admin/courses/edit/${id}`);
     },
 
