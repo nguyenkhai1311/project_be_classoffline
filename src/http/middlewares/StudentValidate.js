@@ -18,8 +18,6 @@ module.exports = () => {
                 },
             });
 
-            console.log(user);
-
             if (user) {
                 throw new Error("Email đã tồn tại");
             }

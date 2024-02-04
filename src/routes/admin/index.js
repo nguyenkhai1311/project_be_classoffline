@@ -4,6 +4,7 @@ var router = express.Router();
 const DashboardController = require("../../http/controllers/admin/DashboardController");
 const ProfileController = require("../../http/controllers/admin/ProfileController");
 const SettingsController = require("../../http/controllers/admin/SettingsController");
+const ChangePasswordValidate = require("../../http/middlewares/ChangePasswordValidate");
 
 const userRouter = require("./user");
 const profileRouter = require("./profile");
@@ -17,7 +18,11 @@ const roleRouter = require("./role");
 
 router.get("/", DashboardController.index);
 router.get("/changePassword", ProfileController.changePassword);
-router.post("/changePassword", ProfileController.handleChangePassword);
+router.post(
+    "/changePassword",
+    ChangePasswordValidate(),
+    ProfileController.handleChangePassword
+);
 router.get("/settings", SettingsController.index);
 
 router.use("/profile", profileRouter);
