@@ -6,8 +6,8 @@ const User = model.User;
 
 module.exports = () => {
     return [
-        body("nameUser", "Tên học viên không được để trống").notEmpty(),
-        body("nameUser", "Tên học viên nên có 2 - 30 ký tự").isLength({
+        body("nameUser", "Tên người dùng không được để trống").notEmpty(),
+        body("nameUser", "Tên người dùng nên có 2 - 30 ký tự").isLength({
             min: 2,
             max: 30,
         }),

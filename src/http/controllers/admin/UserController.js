@@ -1,7 +1,11 @@
 const moment = require("moment");
 const { Op } = require("sequelize");
 const { validationResult } = require("express-validator");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
+const SendEmail = require("../../../helpers/SendEmail");
+const generatePass = require("../../../utils/generatePass");
 const constants = require("../../../constants/index");
 const exportFile = require("../../../utils/exportFile");
 const importFile = require("../../../utils/importFile");
@@ -120,20 +124,27 @@ module.exports = {
         const result = validationResult(req);
         if (result.isEmpty()) {
             const { name, email, phone, address } = req.body;
+            const password = generatePass();
+
             const type = await Type.findOne({
                 where: {
                     name: "Admin",
                 },
             });
+
             await User.create({
                 name: name,
                 email: email,
+                password: bcrypt.hashSync(password, saltRounds),
                 phone: phone,
                 address: address,
                 typeId: type.id,
             });
-            res.redirect("/admin/users");
-            return;
+
+            const html = "<b>Mật khẩu để đăng nhập lần đầu là: </b>" + password;
+            SendEmail(email, "Mật khẩu đăng nhập lần đầu", html);
+
+            return res.redirect("/admin/users");
         }
         req.flash("errors", result.errors);
         res.redirect("/admin/users/add");
