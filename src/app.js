@@ -37,6 +37,7 @@ const connectGooglePassport = require("./passport/connect/googlePassport");
 const AuthMiddleware = require("./http/middlewares/AuthMiddleware");
 const DeviceMiddleware = require("./http/middlewares/DeviceMiddleware");
 const RoleMiddleware = require("./http/middlewares/RoleMiddleware");
+const LoginFirstTimeMiddleware = require("./http/middlewares/LoginFirstTimeMiddleware");
 
 var app = express();
 // app.use(cors());
@@ -98,6 +99,7 @@ app.use(
 // Routes
 app.use("/auth", authRouter);
 app.use(AuthMiddleware);
+app.use(LoginFirstTimeMiddleware);
 app.use(DeviceMiddleware);
 app.use("/connect", connectRouter);
 app.use("/admin", RoleMiddleware, adminRouter);

@@ -44,7 +44,7 @@ module.exports = {
         const otp = Math.floor(Math.random() * 90000) + 10000; // otp có 5 chữ số
         const timeExpires = new Date(new Date().getTime() + 60000);
         const html = "<b>Mã xác minh để đăng nhập: </b>" + otp;
-        SendMail(email, html);
+        SendMail(email, "Xác minh tài khoản", html);
         await UserOtp.create({
             otp: otp,
             userId: id,
@@ -241,5 +241,26 @@ module.exports = {
         });
         req.flash("email", email);
         res.redirect("/auth/verification");
+    },
+
+    firstLogin: async (req, res) => {
+        const { password, repassword } = req.body;
+        if (password === repassword) {
+            try {
+                await User.update(
+                    {
+                        password: bcrypt.hashSync(password, saltRounds),
+                        firstLogin: 1,
+                    },
+                    {
+                        where: {
+                            email: req.user.email,
+                        },
+                    }
+                );
+            } catch (err) {
+                console.log(err);
+            }
+        }
     },
 };
