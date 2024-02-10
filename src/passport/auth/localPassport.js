@@ -10,7 +10,6 @@ module.exports = new LocalStrategy(
         passwordField: "password",
     },
     async (email, password, done) => {
-        console.log("Email: ", email);
         const user = await User.findOne({
             where: {
                 email,
