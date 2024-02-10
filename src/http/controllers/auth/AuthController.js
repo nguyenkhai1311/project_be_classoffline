@@ -258,11 +258,11 @@ module.exports = {
                         },
                     }
                 );
+
+                return res.redirect("/");
             } catch (err) {
                 console.log(err);
             }
-
-            return res.redirect("/");
         }
     },
 };
