@@ -261,6 +261,8 @@ module.exports = {
             } catch (err) {
                 console.log(err);
             }
+
+            return res.redirect("/");
         }
     },
 };
