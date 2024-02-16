@@ -243,7 +243,13 @@ module.exports = {
         res.redirect("/auth/verification");
     },
 
-    firstLogin: async (req, res, next) => {
+    firstLogin: (req, res) => {
+        res.render("auth/firstLogin", {
+            layout: "layouts/auth.layout.ejs",
+        });
+    },
+
+    handleFirstLogin: async (req, res) => {
         const { password, repassword } = req.body;
         if (password === repassword) {
             try {
