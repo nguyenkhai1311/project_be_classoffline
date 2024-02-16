@@ -243,7 +243,7 @@ module.exports = {
         res.redirect("/auth/verification");
     },
 
-    firstLogin: async (req, res) => {
+    firstLogin: async (req, res, next) => {
         const { password, repassword } = req.body;
         if (password === repassword) {
             try {
@@ -259,7 +259,7 @@ module.exports = {
                     }
                 );
 
-                return res.redirect("/");
+                return res.redirect("/admin");
             } catch (err) {
                 console.log(err);
             }
