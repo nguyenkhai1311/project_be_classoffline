@@ -35,7 +35,8 @@ router.post("/reset", AuthController.handleReset);
 
 router.post("/resetOtp", AuthController.resetOtp);
 
-router.post("/first-login", AuthController.firstLogin);
+router.get("/first-login", AuthController.firstLogin);
+router.post("/first-login", AuthController.handleFirstLogin);
 
 router.use("/", facebookRouter);
 router.use("/", googleRouter);
