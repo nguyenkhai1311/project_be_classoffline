@@ -14,7 +14,9 @@ module.exports = {
     profile: async (req, res) => {
         const title = "Thông tin tài khoản";
         const moduleName = "Tài Khoản";
+        const userName = req.user.name;
         const { id } = req.user;
+
         const user = await User.findOne({
             where: {
                 id: id,
@@ -35,11 +37,13 @@ module.exports = {
             moduleName,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
     changePassword: async (req, res) => {
         const title = "Đổi mật khẩu";
+        const userName = req.user.name;
         const message = req.flash("message");
         const errors = req.flash("errors");
 
@@ -53,6 +57,7 @@ module.exports = {
             validate,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -104,6 +109,7 @@ module.exports = {
 
     edit: async (req, res) => {
         const title = "Cập nhật tài khoản";
+        const userName = req.user.name;
         const { id } = req.user;
         const errors = req.flash("errors");
 
@@ -123,6 +129,7 @@ module.exports = {
             validate,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 

@@ -19,6 +19,7 @@ const moduleName = "Khóa học";
 module.exports = {
     index: async (req, res) => {
         const title = "Danh sách khóa học";
+        const userName = req.user.name;
         const filters = {};
 
         let { keyword, page, recordNumber } = req.query;
@@ -83,11 +84,13 @@ module.exports = {
             permissionUtils,
             permissionUser,
             getPaginateUrl,
+            userName,
         });
     },
 
     add: async (req, res) => {
         const title = "Thêm khóa học";
+        const userName = req.user.name;
         const errors = req.flash("errors");
 
         const teachers = await User.findAll({
@@ -109,6 +112,7 @@ module.exports = {
             validate,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -142,6 +146,7 @@ module.exports = {
 
     edit: async (req, res) => {
         const title = "Sửa khóa học";
+        const userName = req.user.name;
         const { id } = req.params;
         const errors = req.flash("errors");
 
@@ -176,6 +181,7 @@ module.exports = {
             validate,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -248,6 +254,7 @@ module.exports = {
 
     detail: async (req, res) => {
         const title = "Chi tiết khóa học";
+        const userName = req.user.name;
         const { id } = req.params;
         let moduleArr = [];
 
@@ -294,6 +301,7 @@ module.exports = {
             moduleName,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -314,6 +322,7 @@ module.exports = {
 
     import: async (req, res) => {
         const title = "Import File";
+        const userName = req.user.name;
 
         const permissionUser = await permissionUtils.roleUser(req);
 
@@ -322,6 +331,7 @@ module.exports = {
             moduleName,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 

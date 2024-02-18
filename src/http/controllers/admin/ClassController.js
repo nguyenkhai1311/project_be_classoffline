@@ -29,6 +29,7 @@ const moduleName = "Lớp học";
 module.exports = {
     index: async (req, res) => {
         const title = "Danh sách lớp học";
+        const userName = req.user.name;
         const filters = {};
 
         let { keyword, page, recordNumber } = req.query;
@@ -89,11 +90,13 @@ module.exports = {
             permissionUser,
             permissionUtils,
             getPaginateUrl,
+            userName,
         });
     },
 
     add: async (req, res) => {
         const title = "Thêm lớp học";
+        const userName = req.user.name;
         const errors = req.flash("errors");
 
         const courses = await Course.findAll();
@@ -106,6 +109,7 @@ module.exports = {
             validate,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -166,6 +170,7 @@ module.exports = {
 
     edit: async (req, res) => {
         const title = "Sửa lớp học";
+        const userName = req.user.name;
         const { id } = req.params;
         const errors = req.flash("errors");
         let scheduleVal = [];
@@ -207,6 +212,7 @@ module.exports = {
             validate,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -329,6 +335,7 @@ module.exports = {
 
     import: async (req, res) => {
         const title = "Import File Class";
+        const userName = req.user.name;
 
         const permissionUser = await permissionUtils.roleUser(req);
 
@@ -337,6 +344,7 @@ module.exports = {
             moduleName,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -382,6 +390,7 @@ module.exports = {
 
     detail: async (req, res) => {
         const title = "Chi tiết lớp học";
+        const userName = req.user.name;
         const { id } = req.params;
         req.flash("classId", id);
 
@@ -454,12 +463,15 @@ module.exports = {
             taList,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
     calendar: async (req, res) => {
         const title = "Lịch học";
+        const userName = req.user.name;
         const { id } = req.params;
+
         const scheduleClass = await ScheduleClass.findAll({
             include: {
                 model: Class,
@@ -477,11 +489,13 @@ module.exports = {
             scheduleClass,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
     listTeacher: async (req, res) => {
         const title = "Danh sách giảng viên, trợ giảng";
+        const userName = req.user.name;
         const { id } = req.params;
 
         const classVal = await Class.findOne({
@@ -510,6 +524,7 @@ module.exports = {
             teachers,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -544,6 +559,7 @@ module.exports = {
 
     listStudent: async (req, res) => {
         const title = "Danh sách học viên";
+        const userName = req.user.name;
         const error = req.flash("error");
 
         const students = await User.findAll({
@@ -564,6 +580,7 @@ module.exports = {
             students,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -594,6 +611,7 @@ module.exports = {
 
     attendance: async (req, res) => {
         const title = "Điểm danh";
+        const userName = req.user.name;
         const { id } = req.params;
         const daysSchedule = [];
 
@@ -646,6 +664,7 @@ module.exports = {
             checkAttendance,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -686,6 +705,7 @@ module.exports = {
 
     question: async (req, res) => {
         const title = "Câu hỏi";
+        const userName = req.user.name;
         const { id } = req.params;
 
         const classVal = await Class.findOne({
@@ -709,11 +729,13 @@ module.exports = {
             comments,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
     makeQuestion: async (req, res) => {
         const title = "Đặt câu hỏi mới";
+        const userName = req.user.name;
         const { id } = req.params;
 
         const classVal = await Class.findOne({
@@ -730,6 +752,7 @@ module.exports = {
             classVal,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -751,6 +774,7 @@ module.exports = {
 
     questionAnswer: async (req, res) => {
         const title = "Hỏi đáp";
+        const userName = req.user.name;
         const { id } = req.params;
 
         const comment = await Comment.findOne({
@@ -770,11 +794,13 @@ module.exports = {
             comment,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
     exercise: async (req, res) => {
         const title = "Bài tập";
+        const userName = req.user.name;
         const { id } = req.params;
 
         const classVal = await Class.findOne({
@@ -796,11 +822,13 @@ module.exports = {
             exercises,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
     addExercise: async (req, res) => {
         const title = "Thêm bài tập";
+        const userName = req.user.name;
         const { id } = req.params;
 
         const classVal = await Class.findOne({
@@ -817,6 +845,7 @@ module.exports = {
             classVal,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -838,7 +867,9 @@ module.exports = {
 
     submitExercise: async (req, res) => {
         const title = "Nộp bài tập";
+        const userName = req.user.name;
         const { id } = req.params;
+
         const exercise = await Exercise.findOne({
             where: {
                 id: id,
@@ -860,6 +891,7 @@ module.exports = {
             exerciseSubmits,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 

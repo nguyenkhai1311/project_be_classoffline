@@ -10,6 +10,7 @@ const moduleName = "Tài liệu";
 module.exports = {
     add: async (req, res) => {
         const title = "Thêm nội dung tài liệu";
+        const userName = req.user.name;
         const courseModule = await CourseModule.findAll({
             include: {
                 model: Course,
@@ -24,6 +25,7 @@ module.exports = {
             courseModule,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -41,6 +43,7 @@ module.exports = {
 
     edit: async (req, res) => {
         const title = "Sửa nội dung tài liệu";
+        const userName = req.user.name;
         const { id } = req.params;
         const moduleDocument = await ModuleDocument.findOne({
             where: {
@@ -62,6 +65,7 @@ module.exports = {
             courseModule,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 

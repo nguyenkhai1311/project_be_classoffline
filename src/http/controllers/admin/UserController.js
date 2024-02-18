@@ -23,6 +23,7 @@ const moduleName = "Người dùng";
 module.exports = {
     index: async (req, res) => {
         const title = "Danh sách người dùng";
+        const userName = req.user.name;
         const filters = {};
 
         let { keyword, page, recordNumber } = req.query;
@@ -101,11 +102,13 @@ module.exports = {
             permissionUser,
             permissionUtils,
             getPaginateUrl,
+            userName,
         });
     },
 
     add: async (req, res) => {
         const title = "Thêm người dùng";
+        const userName = req.user.name;
         const errors = req.flash("errors");
 
         const permissionUser = await permissionUtils.roleUser(req);
@@ -117,6 +120,7 @@ module.exports = {
             validate,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -152,8 +156,10 @@ module.exports = {
 
     edit: async (req, res) => {
         const { id } = req.params;
+        const userName = req.user.name;
         const errors = req.flash("errors");
         const title = "Sửa người dùng";
+
         const user = await User.findOne({
             where: {
                 id: id,
@@ -170,6 +176,7 @@ module.exports = {
             moduleName,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -252,6 +259,7 @@ module.exports = {
 
     import: async (req, res) => {
         const title = "Import File";
+        const userName = req.user.name;
 
         const permissionUser = await permissionUtils.roleUser(req);
 
@@ -260,6 +268,7 @@ module.exports = {
             moduleName,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -285,6 +294,7 @@ module.exports = {
 
     permission: async (req, res) => {
         const title = "Phân quyền";
+        const userName = req.user.name;
         const { id } = req.params;
 
         const user = await User.findOne({
@@ -312,6 +322,7 @@ module.exports = {
             permissionUtils,
             permissionUser,
             roleUser,
+            userName,
         });
     },
 
@@ -353,6 +364,7 @@ module.exports = {
 
     addUserPermission: async (req, res) => {
         const title = "Thêm quyền cho người dùng";
+        const userName = req.user.name;
         const { id } = req.params;
 
         const user = await User.findOne({
@@ -369,6 +381,7 @@ module.exports = {
             permissionUser,
             permissionUtils,
             user,
+            userName,
         });
     },
 
