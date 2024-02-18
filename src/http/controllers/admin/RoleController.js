@@ -13,6 +13,7 @@ const moduleName = "Role";
 module.exports = {
     index: async (req, res) => {
         const title = "Danh sách Role";
+        const userName = req.user.name;
         const filters = {};
 
         let { keyword, page, recordNumber } = req.query;
@@ -66,11 +67,13 @@ module.exports = {
             permissionUser,
             permissionUtils,
             getPaginateUrl,
+            userName,
         });
     },
 
     add: async (req, res) => {
         const title = "Thêm role";
+        const userName = req.user.name;
         const errors = req.flash("errors");
 
         const permissionUser = await permissionUtils.roleUser(req);
@@ -81,6 +84,7 @@ module.exports = {
             validate,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -125,6 +129,7 @@ module.exports = {
 
     edit: async (req, res) => {
         const title = "Sửa role";
+        const userName = req.user.name;
         const { id } = req.params;
         const errors = req.flash("errors");
 
@@ -150,6 +155,7 @@ module.exports = {
             permissions,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
