@@ -10,6 +10,8 @@ const moduleName = "Tổng quan";
 module.exports = {
     index: async (req, res) => {
         const title = "Dashboard";
+        const userName = req.user.name;
+
         const studentQuantity = await User.count({
             include: {
                 model: Type,
@@ -50,6 +52,7 @@ module.exports = {
             teachingAssistantQuantity,
             permissionUtils,
             permissionUser,
+            userName,
         });
     },
 };

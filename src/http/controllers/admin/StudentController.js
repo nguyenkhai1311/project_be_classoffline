@@ -21,6 +21,7 @@ const moduleName = "Học viên";
 module.exports = {
     index: async (req, res) => {
         const title = "Danh sách học viên";
+        const userName = req.user.name;
         const filters = {};
 
         let { keyword, page, recordNumber } = req.query;
@@ -99,11 +100,13 @@ module.exports = {
             permissionUser,
             permissionUtils,
             getPaginateUrl,
+            userName,
         });
     },
 
     add: async (req, res) => {
         const title = "Thêm học viên";
+        const userName = req.user.name;
         const errors = req.flash("errors");
 
         const permissionUser = await permissionUtils.roleUser(req);
@@ -115,6 +118,7 @@ module.exports = {
             validate,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -142,6 +146,7 @@ module.exports = {
 
     edit: async (req, res) => {
         const { id } = req.params;
+        const userName = req.user.name;
         const title = "Sửa học viên";
         const errors = req.flash("errors");
 
@@ -161,6 +166,7 @@ module.exports = {
             validate,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -228,7 +234,9 @@ module.exports = {
 
     detail: async (req, res) => {
         const title = "Chi tiết học viên";
+        const userName = req.user.name;
         const { id } = req.params;
+
         const student = await User.findOne({
             where: {
                 id: id,
@@ -265,6 +273,7 @@ module.exports = {
             classList,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
@@ -285,6 +294,7 @@ module.exports = {
 
     import: async (req, res) => {
         const title = "Import File Student";
+        const userName = req.user.name;
 
         const permissionUser = await permissionUtils.roleUser(req);
 
@@ -293,6 +303,7 @@ module.exports = {
             moduleName,
             permissionUser,
             permissionUtils,
+            userName,
         });
     },
 
