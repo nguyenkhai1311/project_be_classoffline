@@ -175,9 +175,9 @@ module.exports = {
             },
             JWT_SECRET
         );
-        const link = `http://localhost:3000/auth/reset?token=${token}`;
+        const link = `http://class-offline.huukhaidev.com/auth/reset?token=${token}`;
         const html = `<b>Vui lòng click vào đây để lấy lại mật khẩu <a href="${link}">tại đây</a></b>`;
-        SendMail(email, html);
+        SendMail(email, "Lấy lại mật khẩu", html);
         res.redirect("/auth/login");
     },
 
@@ -233,7 +233,7 @@ module.exports = {
         const otp = Math.floor(Math.random() * 90000) + 10000; // otp có 5 chữ số
         const timeExpires = new Date(new Date().getTime() + 15000);
         const html = "<b>Mã xác minh để đăng nhập: </b>" + otp;
-        SendMail(email, html);
+        SendMail(email, "Xác minh tài khoản", html);
         await UserOtp.create({
             otp: otp,
             userId: id,
